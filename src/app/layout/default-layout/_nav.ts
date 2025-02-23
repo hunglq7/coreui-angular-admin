@@ -20,17 +20,42 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cil-drop' }
   },
   {
+    name: 'Quản lý thiết bị',
+    url: '/toidien',
+    iconComponent: { name: 'cil-devices' }
+  },
+  
+  {
     name: 'Typography',
     url: '/theme/typography',
     linkProps: { fragment: 'headings' },
     iconComponent: { name: 'cil-pencil' }
   },
   {
-    name: 'Components',
+    name: 'Cập nhật thiết bị',
     title: true
   },
   {
-    name: 'Base',
+    name: 'Tời điện',
+    url: '/toidien',
+    iconComponent: { name: 'cil-puzzle' },
+    children: [
+      {
+        name: 'Danh mục tời điện',
+        url: '/toidien/danhmuctoidien',
+        icon: 'nav-icon-bullet'
+      },
+      {
+        name: 'Cập nhật tời điện',
+        url: '/toidien/capnhattoidien',
+        icon: 'nav-icon-bullet'
+      },
+      
+          
+    ]
+  },
+  {
+    name: 'base',
     url: '/base',
     iconComponent: { name: 'cil-puzzle' },
     children: [

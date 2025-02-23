@@ -1,7 +1,8 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, computed, inject, input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-
+import { AuthService } from 'src/app/core/services/auth.service';
+import { Router } from '@angular/router';
 import {
   AvatarComponent,
   BadgeComponent,
@@ -45,9 +46,18 @@ export class DefaultHeaderComponent extends HeaderComponent {
     return this.colorModes.find(mode => mode.name === currentMode)?.icon ?? 'cilSun';
   });
 
-  constructor() {
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {
     super();
   }
+
+  onLogout() {
+    this.authService.logout();
+    this.router.navigate(['login']);
+  }
+
 
   sidebarId = input('sidebar1');
 

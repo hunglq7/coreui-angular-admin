@@ -21,7 +21,7 @@
             id="modalStatic"
           >
             <c-modal-header>
-              <h5 cModalTitle>Modal title</h5>
+              <h5 cModalTitle>Modal title </h5>
               <button cButtonClose></button>
             </c-modal-header>
             <c-modal-body>Modal body text goes here.</c-modal-body>
@@ -45,6 +45,7 @@
           in from the top of the page.
         </p>
         <app-docs-example href="components/modal#live-demo">
+          <button>Thêm mới</button>
           <ng-container *ngTemplateOutlet="liveDemo" />
         </app-docs-example>
       </c-card-body>
@@ -265,7 +266,7 @@
   <button (click)="toggleLiveDemo()" cButton>Launch demo modal</button>
   <c-modal id="liveDemoModal" [visible]="liveDemoVisible" (visibleChange)="handleLiveDemoChange($event)">
     <c-modal-header>
-      <h5 cModalTitle>Modal title</h5>
+      <h5 cModalTitle>Modal title hùng</h5>
       <button (click)="toggleLiveDemo()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>Woohoo, you&#39;re reading this text in a modal!</c-modal-body>
@@ -438,6 +439,7 @@
     </c-modal-header>
     <c-modal-body>...</c-modal-body>
   </c-modal>
+
   <c-modal #modalSm id="modalSm" size="sm">
     <c-modal-header>
       <h5 cModalTitle>Small modal</h5>
