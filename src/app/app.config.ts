@@ -6,7 +6,7 @@ import {
   withHashLocation,
   withInMemoryScrolling,
   withRouterConfig,
-  withViewTransitions
+  withViewTransitions,
 } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { DropdownModule, SidebarModule } from '@coreui/angular';
@@ -17,24 +17,25 @@ import { provideClientHydration } from '@angular/platform-browser';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes,
+    provideRouter(
+      routes,
       withRouterConfig({
-        onSameUrlNavigation: 'reload'
+        onSameUrlNavigation: 'reload',
       }),
-      
+
       withInMemoryScrolling({
         scrollPositionRestoration: 'top',
-        anchorScrolling: 'enabled'
+        anchorScrolling: 'enabled',
       }),
       withEnabledBlockingInitialNavigation(),
       withViewTransitions(),
       withHashLocation()
     ),
     provideHttpClient(),
-    provideClientHydration(),   
+    provideClientHydration(),
     importProvidersFrom(SidebarModule, DropdownModule),
     IconSetService,
     provideAnimationsAsync(),
-    AuthGuard
-  ]
+    AuthGuard,
+  ],
 };

@@ -127,7 +127,7 @@ export class CapnhattoidienComponent implements OnInit {
   pageDisplay = 10;
   filterKeyword = '';
   toitrucs: Tonghoptoitruc[] = [];
-  toitrucDetail: TonghoptoitrucDetail[] = [];
+  toitrucDetail!: TonghoptoitrucDetail;
   dsToitruc: any[] = [];
   dsDonvi: any[] = [];
   Form!: FormGroup;
@@ -148,6 +148,12 @@ export class CapnhattoidienComponent implements OnInit {
     }
   }
 
+  public dateOptions: any = {
+    locale: { format: 'DD/MM/YYYY' },
+    alwaysShowCalendars: false,
+    singleDatePicker: true,
+  };
+
   initFormBuilder() {
     this.Form = new FormGroup({
       id: new FormControl(0),
@@ -165,8 +171,15 @@ export class CapnhattoidienComponent implements OnInit {
 
   loadTonghoptoitrucDetail() {
     this.dataService.getById('/api/Tonghoptoitruc/' + this.Id).subscribe({
-      next: (data) => {
-        this.loadFormData(data);
+      next: (data: TonghoptoitrucDetail) => {
+        console.log(data);
+        var date = new Date(data.ngayLap).getDate();
+        var month = new Date(data.ngayLap).getMonth() + 1;
+        var year = new Date(data.ngayLap).getFullYear();
+        var ngaylap = year + '-' + '0' + month + '-' + date;
+        this.toitrucDetail = data;
+        this.toitrucDetail.ngayLap = ngaylap;
+        console.log(ngaylap);
       },
       error: (err) => {
         alert(err);
@@ -185,6 +198,7 @@ export class CapnhattoidienComponent implements OnInit {
     });
   }
   loadFormData(items: TonghoptoitrucDetail) {
+    this.toitrucDetail = items;
     this.Form.patchValue({
       id: items.id,
       maQuanly: items.maQuanLy,
@@ -244,29 +258,70 @@ export class CapnhattoidienComponent implements OnInit {
   }
   onThemmoi() {
     this.title = 'Thêm mới tời điện';
-    this.themoi = false;
+    this.themoi = true;
     this.liveDemoVisible = !this.liveDemoVisible;
   }
 
   onClode() {
+    this.Form.reset();
     this.liveDemoVisible = !this.liveDemoVisible;
   }
 
-  onEdit() {
+  onEdit(id: number) {
+    this.themoi = false;
+    this.Id = id;
+    this.loadTonghoptoitrucDetail();
     this.title = 'Sửa tời điện';
     this.liveDemoVisible = !this.liveDemoVisible;
+  }
+
+  onDelete(id: number) {
+    this.Id = id;
+    this.dataService.delete('/api/Tonghoptoitruc/' + this.Id).subscribe({
+      next: () => {
+        this.loadTonghoptoitruc();
+        alert('Xóa thành công');
+      },
+      error: (err) => {
+        alert(err);
+      },
+    });
   }
 
   handleLiveDemoChange(event: boolean) {
     this.liveDemoVisible = event;
   }
-  onSubmit1() {
-    this.customStylesValidated = true;
-    alert('Thêm thành công');
+
+  save() {
+    if (this.themoi) {
+      this.dataService.post('/api/Tonghoptoitruc', this.Form.value).subscribe({
+        next: () => {
+          this.loadTonghoptoitruc();
+          alert('Cập nhật thành công');
+          this.onReset();
+          this.themoi = true;
+        },
+        error: (err) => {
+          alert(err);
+        },
+      });
+    } else {
+      console.log(this.Form.value);
+      this.dataService.put('/api/Tonghoptoitruc', this.Form.value).subscribe({
+        next: () => {
+          this.loadTonghoptoitruc();
+          alert('Cập nhật thành công');
+          this.onReset();
+        },
+        error: (err) => {
+          alert(err);
+        },
+      });
+    }
   }
 
-  onReset1() {
-    this.customStylesValidated = false;
+  onReset() {
+    this.Form.reset();
   }
 
   readonly activeItem = signal(0);

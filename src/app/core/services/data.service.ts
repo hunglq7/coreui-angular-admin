@@ -11,12 +11,7 @@ import { SystemConstants } from '../commons/system.constants';
 })
 export class DataService {
   baseUrl: string = SystemConstants.BASE_API;
-  constructor(
-    private http: HttpClient,   
-    public authenService: AuthService
-  ) {
-  
-  }
+  constructor(private http: HttpClient, public authenService: AuthService) {}
 
   get(uri: string) {
     let headers = new HttpHeaders();
@@ -32,7 +27,6 @@ export class DataService {
   }
 
   getById(uri: string) {
-    debugger;
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json; charset=utf-8 ');
     headers = headers.set(
@@ -76,7 +70,6 @@ export class DataService {
     });
   }
   put(uri: string, data: any) {
-    debugger;
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json; charset=utf-8 ');
     headers = headers.set(
@@ -87,6 +80,7 @@ export class DataService {
   }
 
   post(uri: string, data: any) {
+    debugger;
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json; charset=utf-8 ');
     headers = headers.set(
