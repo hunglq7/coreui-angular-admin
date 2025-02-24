@@ -5,10 +5,7 @@
         <strong>Cập nhật thiết bị tời điện</strong>
       </c-card-header>
       <c-card-body>
-        <c-tabs
-          [activeItemKey]="0"
-          (activeItemKeyChange)="handleActiveItemChange($event)"
-        >
+        <c-tabs [activeItemKey]="0" (activeItemKeyChange)="handleActiveItemChange($event)">
           <c-tabs-list variant="underline-border">
             <button cTab [itemKey]="0">
               <svg cIcon class="me-2" name="cil-calendar"></svg>
@@ -31,24 +28,18 @@
                 <c-card class="mb-4">
                   <c-card-body>
                     <c-row>
-                      <c-col xs="4">
+                      <c-col sm="4">
                         <c-input-group>
-                          <input
-                            [(ngModel)]="filterKeyword"
-                            placeholder="Nhập từ cần tìm..."
-                            aria-describedby="inputGroupPrepend"
-                            cFormControl
-                            id="validationCustomUsername"
-                            type="text"
-                          />
+                          <input [(ngModel)]="filterKeyword" placeholder="Nhập từ cần tìm..."
+                            aria-describedby="inputGroupPrepend" cFormControl id="validationCustomUsername"
+                            type="text" />
                           <span>
                             <button cButton (click)="loadTonghoptoitruc()">
                               Tìm
-                            </button></span
-                          >
+                            </button></span>
                         </c-input-group>
                       </c-col>
-                      <c-col>
+                      <c-col sm="8">
                         <ng-container *ngTemplateOutlet="liveDemo" />
                       </c-col>
                     </c-row>
@@ -67,7 +58,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        @for (item of toidiens ; track $index) {
+                        @for (item of toitrucs ; track $index) {
                         <tr>
                           <th scope="row">{{ $index + 1 }}</th>
                           <td>{{ item.maQuanLy }}</td>
@@ -76,11 +67,7 @@
                           <td>{{ item.ngayLap | date : "dd/MM/yyyy" }}</td>
                           <td>{{ item.soLuong }}</td>
                           <td>
-                            <button
-                              cButton
-                              size="sm"
-                              (click)="toggleLiveDemo()"
-                            >
+                            <button cButton size="sm">
                               Sửa
                             </button>
                             <button cButton color="danger" size="sm">
@@ -94,18 +81,9 @@
                     </table>
                   </c-card-body>
                   <div class="d-flex justify-content-center">
-                    <pagination
-                      [boundaryLinks]="true"
-                      [itemsPerPage]="pageSize"
-                      (pageChanged)="pageChanged($event)"
-                      [totalItems]="totalRow"
-                      [(ngModel)]="pageIndex"
-                      class="pagination-sm"
-                      previousText="&lsaquo;"
-                      nextText="&rsaquo;"
-                      firstText="&laquo;"
-                      lastText="&raquo;"
-                    ></pagination>
+                    <pagination [boundaryLinks]="true" [itemsPerPage]="pageSize" (pageChanged)="pageChanged($event)"
+                      [totalItems]="totalRow" [(ngModel)]="pageIndex" class="pagination-sm" previousText="&lsaquo;"
+                      nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
                   </div>
                 </c-card>
               </c-col>
@@ -138,108 +116,68 @@
 
 <!-- Model -->
 <ng-template #liveDemo>
-  <button (click)="toggleLiveDemo()" cButton>Thêm mới</button>
-  <c-modal
-    id="liveDemoModal"
-    size="xl"
-    [visible]="liveDemoVisible"
-    (visibleChange)="handleLiveDemoChange($event)"
-  >
+  <button (click)="onThemmoi()" cButton>Thêm mới</button>
+  <c-modal id="liveDemoModal" size="xl" [visible]="liveDemoVisible" (visibleChange)="handleLiveDemoChange($event)">
     <c-modal-header>
       <h5 cModalTitle>{{ title }}</h5>
-      <button (click)="toggleLiveDemo()" cButtonClose></button>
+      <button (click)="onClode()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
-      <form
-        #customStylesForm="ngForm"
-        (ngSubmit)="onSubmit1()"
-        [validated]="customStylesValidated"
-        cForm
-        class="row g-3 needs-validation"
-      >
+      <form #customStylesForm="ngForm" (ngSubmit)="onSubmit1()" [validated]="customStylesValidated" cForm
+        class="row g-3 needs-validation">
         <c-col md="4">
-          <label cLabel for="validationCustom01">First name</label>
-          <input
-            cFormControl
-            id="validationCustom01"
-            required
-            type="text"
-            value="Mark"
-          />
+          <label cLabel for="validationCustom01">Mã quản lý</label>
+          <input cFormControl id="validationCustom01" required type="text" value="Mark" />
           <c-form-feedback [valid]="true">Dữ liệu hợp lệ</c-form-feedback>
         </c-col>
         <c-col md="4">
-          <label cLabel for="validationCustom02">Last name</label>
-          <input
-            cFormControl
-            id="validationCustom02"
-            required
-            type="text"
-            value="Otto"
-          />
-          <c-form-feedback [valid]="true">Dữ liệu hợp lệ!</c-form-feedback>
+          <label cLabel for="validationCustom04">Thiết bị</label>
+          <select cSelect id="validationCustom04" required>
+            <option value="">Chọn thiết bị...</option>
+            @for (item of dsToitruc ; track $index) {
+            <option value={{item.id}}>{{item.maHieu}}</option>
+            }
+
+          </select>
+          <c-form-feedback [valid]="false">Thiết bị phải chọn.</c-form-feedback>
         </c-col>
         <c-col md="4">
-          <label cLabel for="validationCustomUsername">Username</label>
-          <c-input-group class="has-validation">
-            <span cInputGroupText id="inputGroupPrepend">&#64;</span>
-            <input
-              aria-describedby="inputGroupPrepend"
-              cFormControl
-              id="validationCustomUsername"
-              required
-              type="text"
-            />
-            <c-form-feedback [valid]="false"
-              >Please choose a username.</c-form-feedback
-            >
-          </c-input-group>
+          <label cLabel for="validationCustom04">Đơn vị</label>
+          <select cSelect id="validationCustom04" required>
+            <option value="">Chọn đơn vị...</option>
+            @for (item of dsDonvi ; track $index) {
+            <option value={{item.id}}>{{item.tenPhong}}</option>
+            }
+
+          </select>
+          <c-form-feedback [valid]="false">Đơn vị phải chọn.</c-form-feedback>
         </c-col>
         <c-col md="6">
-          <label cLabel for="validationCustom03">City</label>
+          <label cLabel for="validationCustom03">Vị trí lắp đặt</label>
           <input cFormControl id="validationCustom03" required type="text" />
-
-          <c-form-feedback [valid]="false"
-            >Please provide a valid city.</c-form-feedback
-          >
+          <c-form-feedback [valid]="false">Vị trí lắp đặt phải nhập.</c-form-feedback>
         </c-col>
         <c-col md="3">
-          <label cLabel for="validationCustom04">State</label>
-          <select cSelect id="validationCustom04" required>
-            <option value="">Choose...</option>
-            <option>...</option>
-          </select>
-          <c-form-feedback [valid]="false"
-            >Please provide a valid State.</c-form-feedback
-          >
+          <label cLabel for="validationCustom05">Ngày lắp</label>
+          <input cFormControl id="validationCustom05" required type="date" />
+          <c-form-feedback [valid]="false">Ngày lắp đặt.</c-form-feedback>
         </c-col>
         <c-col md="3">
-          <label cLabel for="validationCustom05">Zip code</label>
-          <input cFormControl id="validationCustom05" required type="text" />
-          <c-form-feedback [valid]="false"
-            >Please provide a valid zip.</c-form-feedback
-          >
+          <label cLabel for="validationCustom05">Số lượng</label>
+          <input cFormControl id="validationCustom05" required type="number" />
+          <c-form-feedback [valid]="false">Số lượng phải nhập.</c-form-feedback>
         </c-col>
         <c-col xs="12">
-          <c-form-check>
-            <input
-              cFormCheckInput
-              id="invalidCheck"
-              name="invalidCheck"
-              required
-              type="checkbox"
-            />
-            <label cFormCheckLabel for="invalidCheck"
-              >Agree to terms and conditions</label
-            >
-          </c-form-check>
-          <c-form-feedback [valid]="false"
-            >You must agree before submitting.</c-form-feedback
-          >
+          <label cLabel for="validationCustom05">Tình trạng thiết bị</label>
+          <input cFormControl id="validationCustom05" required type="text" />
+        </c-col>
+        <c-col xs="12">
+          <label cLabel for="validationCustom05">Ghi chú</label>
+          <input cFormControl id="validationCustom05" required type="text" />
         </c-col>
         <c-col xs="12">
           <button cButton class="me-1" color="primary" type="submit">
-            Submit form
+            Lưu lại
           </button>
           <button (click)="onReset1()" cButton color="secondary" type="reset">
             Reset

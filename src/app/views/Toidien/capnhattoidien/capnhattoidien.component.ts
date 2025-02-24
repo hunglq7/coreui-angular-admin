@@ -6,7 +6,13 @@ import {
   ElementRef,
 } from '@angular/core';
 import { CommonModule, NgTemplateOutlet } from '@angular/common';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormsModule,
+  FormGroup,
+  Validators,
+  FormControl,
+} from '@angular/forms';
 import {
   ButtonCloseDirective,
   ButtonDirective,
@@ -33,15 +39,15 @@ import {
   FormControlDirective,
   FormFeedbackComponent,
   InputGroupComponent,
-  InputGroupTextDirective,
   FormSelectDirective,
-  FormCheckComponent,
-  FormCheckInputDirective,
-  FormCheckLabelDirective,
+  DropdownModule,
+  SharedModule,
 } from '@coreui/angular';
+
 import { IconDirective } from '@coreui/icons-angular';
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+
 export interface Tonghoptoitruc {
   id: number;
   maQuanLy: string;
@@ -52,6 +58,19 @@ export interface Tonghoptoitruc {
   mucDichSuDung: string;
   soLuong: number;
   tinhTrangThietBi: string;
+}
+
+export interface TonghoptoitrucDetail {
+  id: number;
+  maQuanLy: string;
+  thietbiId: number;
+  donViSuDungId: number;
+  viTriLapDat: string;
+  ngayLap: string;
+  mucDichSuDung: string;
+  soLuong: number;
+  tinhTrangThietBi: string;
+  ghiChu: string;
 }
 
 @Component({
@@ -65,14 +84,8 @@ export interface Tonghoptoitruc {
     FormControlDirective,
     FormFeedbackComponent,
     InputGroupComponent,
-    InputGroupTextDirective,
     FormSelectDirective,
-    FormCheckComponent,
-    FormCheckInputDirective,
-    FormCheckLabelDirective,
     ButtonDirective,
-    ReactiveFormsModule,
-    FormsModule,
     ModalComponent,
     ModalHeaderComponent,
     ModalTitleDirective,
@@ -96,6 +109,8 @@ export interface Tonghoptoitruc {
     TabsListComponent,
     IconDirective,
     PaginationModule,
+    DropdownModule,
+    SharedModule,
   ],
   templateUrl: './capnhattoidien.component.html',
   styleUrl: './capnhattoidien.component.scss',
@@ -111,12 +126,101 @@ export class CapnhattoidienComponent implements OnInit {
   pageSize = 10;
   pageDisplay = 10;
   filterKeyword = '';
-  toidiens: Tonghoptoitruc[] = [];
+  toitrucs: Tonghoptoitruc[] = [];
+  toitrucDetail: TonghoptoitrucDetail[] = [];
+  dsToitruc: any[] = [];
+  dsDonvi: any[] = [];
+  Form!: FormGroup;
+  Id!: Number;
+  themoi: boolean = false;
 
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService) {
+    this.initFormBuilder();
+  }
   ngOnInit(): void {
     this.loadTonghoptoitruc();
+    this.getDataDonvi();
+    this.getDataToitruc();
+    if (this.Id) {
+      this.loadTonghoptoitrucDetail();
+    } else {
+      this.themoiTonghoptoitrucDetail();
+    }
   }
+
+  initFormBuilder() {
+    this.Form = new FormGroup({
+      id: new FormControl(0),
+      maQuanLy: new FormControl('', [Validators.required]),
+      thietbiId: new FormControl('', [Validators.required]),
+      donViSuDungId: new FormControl('', [Validators.required]),
+      viTriLapDat: new FormControl('', [Validators.required]),
+      ngayLap: new FormControl('', [Validators.required]),
+      mucDichSuDung: new FormControl(''),
+      soLuong: new FormControl('', [Validators.required]),
+      tinhTrangThietBi: new FormControl(''),
+      ghiChu: new FormControl(''),
+    });
+  }
+
+  loadTonghoptoitrucDetail() {
+    this.dataService.getById('/api/Tonghoptoitruc/' + this.Id).subscribe({
+      next: (data) => {
+        this.loadFormData(data);
+      },
+      error: (err) => {
+        alert(err);
+      },
+    });
+  }
+
+  themoiTonghoptoitrucDetail() {
+    this.dataService.getById('/api/Toitruc/' + 0).subscribe({
+      next: (data) => {
+        this.loadFormData(data);
+      },
+      error: (err) => {
+        alert(err);
+      },
+    });
+  }
+  loadFormData(items: TonghoptoitrucDetail) {
+    this.Form.patchValue({
+      id: items.id,
+      maQuanly: items.maQuanLy,
+      thietbiId: items.thietbiId,
+      donViSuDung: items.donViSuDungId,
+      viTriLapDat: items.viTriLapDat,
+      ngayLap: items.ngayLap,
+      mucDichSuDung: items.mucDichSuDung,
+      soLuong: items.soLuong,
+      tinhTrangThietBi: items.tinhTrangThietBi,
+      ghiChu: items.ghiChu,
+    });
+  }
+
+  getDataDonvi() {
+    this.dataService.get('/api/Phongban').subscribe({
+      next: (data: any) => {
+        this.dsDonvi = data;
+      },
+      error: (eror) => {
+        alert(eror);
+      },
+    });
+  }
+
+  getDataToitruc() {
+    this.dataService.get('/api/Toitruc/getAll').subscribe({
+      next: (data: any) => {
+        this.dsToitruc = data;
+      },
+      error: (eror) => {
+        alert(eror);
+      },
+    });
+  }
+
   loadTonghoptoitruc() {
     this.dataService
       .get(
@@ -128,7 +232,7 @@ export class CapnhattoidienComponent implements OnInit {
           this.pageSize
       )
       .subscribe((data: any) => {
-        this.toidiens = data.items;
+        this.toitrucs = data.items;
         this.pageSize = data.pageSize;
         this.pageIndex = data.pageIndex;
         this.totalRow = data.totalRecords;
@@ -138,12 +242,17 @@ export class CapnhattoidienComponent implements OnInit {
     this.pageIndex = event.page;
     this.loadTonghoptoitruc();
   }
-  toggleLiveDemo() {
+  onThemmoi() {
     this.title = 'Thêm mới tời điện';
+    this.themoi = false;
     this.liveDemoVisible = !this.liveDemoVisible;
   }
 
-  onEditLiveDemo() {
+  onClode() {
+    this.liveDemoVisible = !this.liveDemoVisible;
+  }
+
+  onEdit() {
     this.title = 'Sửa tời điện';
     this.liveDemoVisible = !this.liveDemoVisible;
   }
