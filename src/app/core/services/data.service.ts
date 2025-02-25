@@ -80,7 +80,6 @@ export class DataService {
   }
 
   post(uri: string, data: any) {
-    debugger;
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json; charset=utf-8 ');
     headers = headers.set(

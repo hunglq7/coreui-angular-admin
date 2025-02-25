@@ -1,81 +1,188 @@
-import { Component,OnInit } from '@angular/core';
-import { NgTemplateOutlet } from '@angular/common';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import {
-  ButtonCloseDirective,
-  ButtonDirective, 
-  ModalBodyComponent,
-  ModalComponent,
-  ModalFooterComponent,
-  ModalHeaderComponent,
-  ModalTitleDirective,  
-  ThemeDirective,
+import { Component, OnInit } from '@angular/core';
+import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
+import { DataService } from '../../../core/services/data.service';
+import { Router } from '@angular/router';
+import { AgGridAngular } from 'ag-grid-angular';
+('@coreui/angular');
 
+import {
+  RowComponent,
+  ColComponent,
+  TextColorDirective,
+  CardComponent,
+  CardHeaderComponent,
+  CardBodyComponent,
 } from '@coreui/angular';
 
-import { RowComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent, TableDirective } from '@coreui/angular';
-import {  FormDirective, FormLabelDirective, FormControlDirective, FormFeedbackComponent, InputGroupComponent, InputGroupTextDirective, FormSelectDirective, FormCheckComponent, FormCheckInputDirective, FormCheckLabelDirective, } from '@coreui/angular';
+export interface Danhmuctoitruc {
+  id: number;
+  tenThietBi: string;
+  loaiThietBi: string;
+  namSanXuat: string;
+  hangSanXuat: string;
+  tinhTrang: boolean;
+  ghiChu: string;
+}
 @Component({
   selector: 'app-danhmuctoidien',
   imports: [
-         ReactiveFormsModule, FormsModule, FormDirective, FormLabelDirective,
-          FormControlDirective, FormFeedbackComponent, InputGroupComponent, InputGroupTextDirective,
-           FormSelectDirective, FormCheckComponent, FormCheckInputDirective, FormCheckLabelDirective, 
-           ButtonDirective,
-    ReactiveFormsModule,FormsModule,
-    ModalComponent, ModalHeaderComponent, ModalTitleDirective, ThemeDirective, ButtonCloseDirective, 
-    ModalBodyComponent, ModalFooterComponent, ButtonDirective,NgTemplateOutlet,
-    RowComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent,
-     TableDirective],
+    RowComponent,
+    ColComponent,
+    TextColorDirective,
+    CardComponent,
+    CardHeaderComponent,
+    CardBodyComponent,
+    AgGridAngular,
+  ],
   templateUrl: './danhmuctoidien.component.html',
-  styleUrl: './danhmuctoidien.component.scss'
+  styleUrl: './danhmuctoidien.component.scss',
 })
 export class DanhmuctoidienComponent implements OnInit {
-  public liveDemoVisible = false;
-  title: string = 'Thêm danh mục';
-  customStylesValidated = false;
-  browserDefaultsValidated = false;
-  tooltipValidated = false;
+  private gridApi!: GridApi<Danhmuctoitruc>;
+  dsDanhmuctoitruc: Danhmuctoitruc[] = [];
 
-ngOnInit() {}
-  toggleLiveDemo() {
-    this.liveDemoVisible = !this.liveDemoVisible;
+  public rowSelection: 'single' | 'multiple' = 'multiple';
+
+  constructor(private dataService: DataService, private router: Router) {}
+  ngOnInit() {
+    this.getDanhmuctoitruc();
   }
 
-  handleLiveDemoChange(event: boolean) {
-    this.liveDemoVisible = event;
-  }
-  onSubmit1() {
-    this.customStylesValidated = true;
-    alert('Thêm thành công');
-    console.log('Submit... 1');
+  defaulColDef = {
+    flex: 1,
+    minWith: 100,
+    minHight: 50,
+  };
+
+  colDefs: ColDef[] = [
+    {
+      field: 'id',
+      headerName: 'Id',
+      width: 200,
+      headerCheckboxSelection: true,
+      checkboxSelection: true,
+      hide: true,
+      cellRenderer: (item: any) => {
+        return 'MTB-' + item.value;
+      },
+    },
+
+    {
+      field: 'tenThietBi',
+      headerName: 'Tên thiết bị',
+      filter: 'agTextColumnFilter',
+      editable: true,
+      headerCheckboxSelection: true,
+      checkboxSelection: true,
+      cellEditorPopup: true,
+    },
+    {
+      field: 'loaiThietBi',
+      headerName: 'Loại thiết bị',
+      filter: 'agTextColumnFilter',
+      editable: true,
+      cellEditorPopup: true,
+    },
+    {
+      field: 'hangSanXuat',
+      headerName: 'Hãng sản xuất',
+      cellEditorParams: {
+        maxLength: 10000,
+      },
+      filter: 'agTextColumnFilter',
+      editable: true,
+      cellEditorPopup: true,
+    },
+
+    {
+      field: 'namSanXuat',
+      headerName: 'Năm sản xuất',
+      filter: 'agDateColumnFilter',
+      editable: true,
+      cellEditorPopup: true,
+    },
+    {
+      field: 'tinhTrang',
+      headerName: 'Tình trạng',
+      filter: 'agTextColumnFilter',
+      editable: true,
+      cellEditorPopup: true,
+    },
+    {
+      field: 'ghiChu',
+      headerName: 'Ghi chú',
+      filter: 'agTextColumnFilter',
+      editable: true,
+      cellEditorPopup: true,
+    },
+  ];
+  getDanhmuctoitruc() {
+    this.dataService.get('/api/Danhmuctoitruc').subscribe({
+      next: (response: any) => {
+        this.dsDanhmuctoitruc = response;
+        alert(JSON.stringify(this.dsDanhmuctoitruc));
+      },
+      error: () => {
+        alert('Lấy dữ liệu thất bại');
+      },
+    });
   }
 
-  onReset1() {
-    this.customStylesValidated = false;
-    console.log('Reset... 1');
+  onGridReady(params: GridReadyEvent<Danhmuctoitruc>) {
+    this.gridApi = params.api;
   }
 
-  onSubmit2() {
-    this.browserDefaultsValidated = true;
-    console.log('Submit... 2');
+  onAddRow() {
+    this.gridApi.applyTransaction({
+      add: [
+        {
+          id: 0,
+          tenThietBi: '',
+          loaiThietBi: '',
+          hangSanXuat: '',
+          tinhTrang: true,
+          namSanXuat: '',
+          ghiChu: '',
+        },
+      ],
+      addIndex: 0,
+    });
   }
 
-  onReset2() {
-    this.browserDefaultsValidated = false;
-    console.log('Reset... 3');
+  edit() {
+    const selectedRows = this.gridApi.getSelectedRows();
+    this.dataService
+      .put('/api/Danhmuctoitruc/UpdateMultiple', selectedRows)
+      .subscribe({
+        next: (data) => {
+          this.getDanhmuctoitruc();
+        },
+        error: () => {
+          alert('Sửa thất bại');
+        },
+      });
   }
 
-  onSubmit3() {
-    this.tooltipValidated = true;
-    console.log('Submit... 3');
+  confirmDelete() {
+    this.delete();
   }
 
-  onReset3() {
-    this.tooltipValidated = false;
-    console.log('Reset... 3');
+  delete() {
+    const selectedRows = this.gridApi.getSelectedRows();
+    this.dataService
+      .post('/api/Danhmuctoitruc/DeleteMultipale', selectedRows)
+      .subscribe({
+        next: (data) => {
+          this.getDanhmuctoitruc();
+          this.router.navigate(['/dashboard/danhmuctoitruc']);
+        },
+        error: () => {
+          alert('Xóa thất bại');
+        },
+      });
   }
 
-
-  
+  onBtExport() {
+    this.gridApi.exportDataAsCsv();
+  }
 }

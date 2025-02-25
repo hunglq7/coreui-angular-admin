@@ -172,14 +172,16 @@ export class CapnhattoidienComponent implements OnInit {
   loadTonghoptoitrucDetail() {
     this.dataService.getById('/api/Tonghoptoitruc/' + this.Id).subscribe({
       next: (data: TonghoptoitrucDetail) => {
-        console.log(data);
-        var date = new Date(data.ngayLap).getDate();
-        var month = new Date(data.ngayLap).getMonth() + 1;
-        var year = new Date(data.ngayLap).getFullYear();
-        var ngaylap = year + '-' + '0' + month + '-' + date;
         this.toitrucDetail = data;
-        this.toitrucDetail.ngayLap = ngaylap;
-        console.log(ngaylap);
+        var myDate = new Date(data.ngayLap);
+        var myDateString;
+        myDateString =
+          myDate.getFullYear() +
+          '-' +
+          ('0' + (myDate.getMonth() + 1)).slice(-2) +
+          '-' +
+          ('0' + myDate.getDate()).slice(-2);
+        this.toitrucDetail.ngayLap = myDateString;
       },
       error: (err) => {
         alert(err);
@@ -298,20 +300,20 @@ export class CapnhattoidienComponent implements OnInit {
         next: () => {
           this.loadTonghoptoitruc();
           alert('Cập nhật thành công');
-          this.onReset();
-          this.themoi = true;
+          this.liveDemoVisible = !this.liveDemoVisible;
+          this.Form.reset();
         },
         error: (err) => {
           alert(err);
         },
       });
     } else {
-      console.log(this.Form.value);
       this.dataService.put('/api/Tonghoptoitruc', this.Form.value).subscribe({
         next: () => {
           this.loadTonghoptoitruc();
           alert('Cập nhật thành công');
-          this.onReset();
+          this.liveDemoVisible = !this.liveDemoVisible;
+          this.Form.reset();
         },
         error: (err) => {
           alert(err);
