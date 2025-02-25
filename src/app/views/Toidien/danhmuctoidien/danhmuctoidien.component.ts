@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
+import {
+  ColDef,
+  GridApi,
+  GridReadyEvent,
+  provideGlobalGridOptions,
+} from 'ag-grid-community';
 import { DataService } from '../../../core/services/data.service';
 import { Router } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular';
-('@coreui/angular');
 
 import {
   RowComponent,
@@ -23,6 +27,7 @@ export interface Danhmuctoitruc {
   tinhTrang: boolean;
   ghiChu: string;
 }
+
 @Component({
   selector: 'app-danhmuctoidien',
   imports: [
@@ -32,6 +37,7 @@ export interface Danhmuctoitruc {
     CardComponent,
     CardHeaderComponent,
     CardBodyComponent,
+
     AgGridAngular,
   ],
   templateUrl: './danhmuctoidien.component.html',
@@ -40,8 +46,6 @@ export interface Danhmuctoitruc {
 export class DanhmuctoidienComponent implements OnInit {
   private gridApi!: GridApi<Danhmuctoitruc>;
   dsDanhmuctoitruc: Danhmuctoitruc[] = [];
-
-  public rowSelection: 'single' | 'multiple' = 'multiple';
 
   constructor(private dataService: DataService, private router: Router) {}
   ngOnInit() {
@@ -116,11 +120,11 @@ export class DanhmuctoidienComponent implements OnInit {
       cellEditorPopup: true,
     },
   ];
+
   getDanhmuctoitruc() {
     this.dataService.get('/api/Danhmuctoitruc').subscribe({
       next: (response: any) => {
         this.dsDanhmuctoitruc = response;
-        alert(JSON.stringify(this.dsDanhmuctoitruc));
       },
       error: () => {
         alert('Lấy dữ liệu thất bại');
@@ -172,9 +176,8 @@ export class DanhmuctoidienComponent implements OnInit {
     this.dataService
       .post('/api/Danhmuctoitruc/DeleteMultipale', selectedRows)
       .subscribe({
-        next: (data) => {
+        next: () => {
           this.getDanhmuctoitruc();
-          this.router.navigate(['/dashboard/danhmuctoitruc']);
         },
         error: () => {
           alert('Xóa thất bại');
