@@ -3,19 +3,9 @@
     <c-card class="mb-4">
       <c-card-header> </c-card-header>
       <c-card-body>
-        <ag-grid-angular
-          class="ag-theme-quartz"
-          style="height: 100; width: 100%"
-          [rowData]="dsDanhmuctoitruc"
-          #agGrid
-          [columnDefs]="colDefs"
-          [defaultColDef]="defaulColDef"
-          (gridReady)="onGridReady($event)"
-          [suppressRowDeselection]="true"
-          [pagination]="true"
-          [animateRows]="true"
-          [paginationPageSize]="20"
-        >
+        <ag-grid-angular class="ag-theme-quartz" style="height: 600px; width: 100%" [rowData]="dsDanhmuctoitruc" #agGrid
+          [columnDefs]="colDefs" [defaultColDef]="defaulColDef" (gridReady)="onGridReady($event)"
+          [suppressRowDeselection]="true" [pagination]="true" [animateRows]="true" [paginationPageSize]="20">
         </ag-grid-angular>
       </c-card-body>
     </c-card>

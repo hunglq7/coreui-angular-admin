@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  ColDef,
-  GridApi,
-  GridReadyEvent,
-  provideGlobalGridOptions,
-} from 'ag-grid-community';
+import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
 import { DataService } from '../../../core/services/data.service';
 import { Router } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular';
