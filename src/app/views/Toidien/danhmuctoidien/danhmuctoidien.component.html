@@ -2,8 +2,27 @@
   <c-col xs="12">
     <c-card class="mb-4">
       <c-card-header>
-        <button cButton size="sm" color="secondary">Thêm mới</button>
-        <button cButton size="sm">Lưu lại</button>
+        <button
+          cButton
+          size="sm"
+          style="width: 70px"
+          color="success"
+          (click)="onAddRow()"
+        >
+          Thêm
+        </button>
+        <button
+          cButton
+          style="width: 70px"
+          size="sm"
+          color="danger"
+          (click)="confirmDelete()"
+        >
+          Xóa
+        </button>
+        <button cButton style="width: 70px" size="sm" (click)="save()">
+          Lưu
+        </button>
       </c-card-header>
       <c-card-body style="height: 550px; width: 100%">
         <ag-grid-angular

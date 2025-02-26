@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ButtonDirective } from '@coreui/angular';
+import { ToastrService } from 'ngx-toastr';
 import {
   ColDef,
   GridApi,
@@ -50,7 +51,11 @@ export class DanhmuctoidienComponent implements OnInit {
   private gridApi!: GridApi<Danhmuctoitruc>;
   dsDanhmuctoitruc: Danhmuctoitruc[] = [];
 
-  constructor(private dataService: DataService, private router: Router) {}
+  constructor(
+    private dataService: DataService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
   ngOnInit() {
     this.getDanhmuctoitruc();
   }
@@ -127,9 +132,6 @@ export class DanhmuctoidienComponent implements OnInit {
       next: (response: any) => {
         this.dsDanhmuctoitruc = response;
       },
-      error: () => {
-        alert('Lấy dữ liệu thất bại');
-      },
     });
   }
 
@@ -154,16 +156,20 @@ export class DanhmuctoidienComponent implements OnInit {
     });
   }
 
-  edit() {
+  save() {
     const selectedRows = this.gridApi.getSelectedRows();
     this.dataService
       .put('/api/Danhmuctoitruc/UpdateMultiple', selectedRows)
       .subscribe({
         next: (data) => {
           this.getDanhmuctoitruc();
+          this.toastr.success(
+            'Thêm thành công ' + data + ' bản ghi',
+            'Success'
+          );
         },
         error: () => {
-          alert('Sửa thất bại');
+          this.toastr.warning('Phải chọn danh sách cần lưu ', 'Warning');
         },
       });
   }
@@ -177,11 +183,12 @@ export class DanhmuctoidienComponent implements OnInit {
     this.dataService
       .post('/api/Danhmuctoitruc/DeleteMultipale', selectedRows)
       .subscribe({
-        next: () => {
+        next: (data) => {
           this.getDanhmuctoitruc();
+          this.toastr.success('Xóa thành công ' + data + ' bản ghi', 'Success');
         },
         error: () => {
-          alert('Xóa thất bại');
+          this.toastr.error('Xóa bản ghi thất bại ', 'Error');
         },
       });
   }
