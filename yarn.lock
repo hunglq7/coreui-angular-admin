@@ -2431,17 +2431,25 @@ adjust-sourcemap-loader@^4.0.0:
     loader-utils "^2.0.0"
     regex-parser "^2.2.11"
 
-ag-grid-angular@^31.3.4:
-  version "31.3.4"
-  resolved "https://registry.yarnpkg.com/ag-grid-angular/-/ag-grid-angular-31.3.4.tgz#2db9c5339fc1889dc8822b555238ddcde423043f"
-  integrity sha512-ELDqSc0R1fZRQBPTJgYWWF3Gbe7EbenmwzH3cNaQp38HbBQFkUcAvDqKHgSfmESe1GM76PoMHMxpCdqaWM3SmQ==
+ag-charts-types@11.1.1:
+  version "11.1.1"
+  resolved "https://registry.yarnpkg.com/ag-charts-types/-/ag-charts-types-11.1.1.tgz#2d5132978248c9422b7129df6d2c3537c1ad99c5"
+  integrity sha512-bRmUcf5VVhEEekhX8Vk0NSwa8Te8YM/zchjyYKR2CX4vDYiwoohM1Jg9RFvbIhVbLC1S6QrPEbx5v2C6RDfpSA==
+
+ag-grid-angular@^33.1.1:
+  version "33.1.1"
+  resolved "https://registry.yarnpkg.com/ag-grid-angular/-/ag-grid-angular-33.1.1.tgz#1c12364fb6f482688b5a647f3660b9739016a869"
+  integrity sha512-6U0oM4ofcXB1q318dYkWnsFuz6Ne2aKZ9E8A+6IPsx5/9UaF9VlBaA2hIlKXDf2O1JPdoO6gnkm81OAyVu81wQ==
   dependencies:
+    ag-grid-community "33.1.1"
     tslib "^2.3.0"
 
-ag-grid-community@^31.2.1:
-  version "31.3.4"
-  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-31.3.4.tgz#d9397672d6941aebc633a37b2b32e3637aa05642"
-  integrity sha512-jOxQO86C6eLnk1GdP24HB6aqaouFzMWizgfUwNY5MnetiWzz9ZaAmOGSnW/XBvdjXvC5Fpk3gSbvVKKQ7h9kBw==
+ag-grid-community@33.1.1:
+  version "33.1.1"
+  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-33.1.1.tgz#04f0317317ea1d35f128dc1a4f8e70a04aa27774"
+  integrity sha512-CNubIro0ipj4nfQ5WJPG9Isp7UI6MMDvNzrPdHNf3W+IoM8Uv3RUhjEn7xQqpQHuu6o/tMjrqpacipMUkhzqnw==
+  dependencies:
+    ag-charts-types "11.1.1"
 
 agent-base@^7.1.0, agent-base@^7.1.2:
   version "7.1.3"

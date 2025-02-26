@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
+import { ButtonDirective } from '@coreui/angular';
+import {
+  ColDef,
+  GridApi,
+  GridReadyEvent,
+  RowSelectionModule,
+  RowSelectionOptions,
+} from 'ag-grid-community';
 import { DataService } from '../../../core/services/data.service';
 import { Router } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular';
@@ -12,7 +19,8 @@ import {
   CardHeaderComponent,
   CardBodyComponent,
 } from '@coreui/angular';
-
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+ModuleRegistry.registerModules([AllCommunityModule, RowSelectionModule]);
 export interface Danhmuctoitruc {
   id: number;
   tenThietBi: string;
@@ -32,7 +40,7 @@ export interface Danhmuctoitruc {
     CardComponent,
     CardHeaderComponent,
     CardBodyComponent,
-
+    ButtonDirective,
     AgGridAngular,
   ],
   templateUrl: './danhmuctoidien.component.html',
@@ -46,7 +54,9 @@ export class DanhmuctoidienComponent implements OnInit {
   ngOnInit() {
     this.getDanhmuctoitruc();
   }
-
+  rowSelection: RowSelectionOptions | 'single' | 'multiple' = {
+    mode: 'multiRow',
+  };
   defaulColDef = {
     flex: 1,
     minWith: 100,
@@ -58,8 +68,6 @@ export class DanhmuctoidienComponent implements OnInit {
       field: 'id',
       headerName: 'Id',
       width: 200,
-      headerCheckboxSelection: true,
-      checkboxSelection: true,
       hide: true,
       cellRenderer: (item: any) => {
         return 'MTB-' + item.value;
@@ -71,8 +79,6 @@ export class DanhmuctoidienComponent implements OnInit {
       headerName: 'Tên thiết bị',
       filter: 'agTextColumnFilter',
       editable: true,
-      headerCheckboxSelection: true,
-      checkboxSelection: true,
       cellEditorPopup: true,
     },
     {

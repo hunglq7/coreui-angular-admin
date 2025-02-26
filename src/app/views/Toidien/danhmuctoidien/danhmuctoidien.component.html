@@ -1,13 +1,26 @@
 <c-row ngPreserveWhitespaces>
   <c-col xs="12">
     <c-card class="mb-4">
-      <c-card-header> </c-card-header>
-      <c-card-body>
-        <ag-grid-angular class="ag-theme-quartz" style="height: 600px; width: 100%" [rowData]="dsDanhmuctoitruc" #agGrid
-          [columnDefs]="colDefs" [defaultColDef]="defaulColDef" (gridReady)="onGridReady($event)"
-          [suppressRowDeselection]="true" [pagination]="true" [animateRows]="true" [paginationPageSize]="20">
-        </ag-grid-angular>
-      </c-card-body>
+      <c-card-header>
+        <button cButton size="sm" color="secondary">Thêm mới</button>
+        <button cButton size="sm">Lưu lại</button>
+      </c-card-header>
+      <c-card-body style="height: 550px; width: 100%">
+        <ag-grid-angular
+          class="ag-theme-quartz"
+          style="height: 100%; width: 100%"
+          [rowData]="dsDanhmuctoitruc"
+          #agGrid
+          [columnDefs]="colDefs"
+          [defaultColDef]="defaulColDef"
+          (gridReady)="onGridReady($event)"
+          [rowSelection]="rowSelection"
+          [pagination]="true"
+          [animateRows]="true"
+          [paginationPageSize]="20"
+        >
+        </ag-grid-angular
+      ></c-card-body>
     </c-card>
   </c-col>
 </c-row>
