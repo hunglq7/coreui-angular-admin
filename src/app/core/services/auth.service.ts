@@ -5,7 +5,6 @@ import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { LoginRequest } from '../interface/login-request';
 import { jwtDecode } from 'jwt-decode';
-import { SystemConstants } from '../commons/system.constants';
 import { HttpApi } from '../http/http-api';
 import { inject } from '@angular/core';
 const OAUTH_DATA = environment.oauth;
@@ -14,11 +13,9 @@ const OAUTH_DATA = environment.oauth;
   providedIn: 'root',
 })
 export class AuthService {
-  baseUrl: string = SystemConstants.BASE_API;
-  http:HttpClient=inject(HttpClient);
-  constructor( ) {
-    
-  }
+  baseUrl: string = environment.BASE_API;
+  http: HttpClient = inject(HttpClient);
+  constructor() {}
 
   register(userRequest: any): Observable<any> {
     const data = {

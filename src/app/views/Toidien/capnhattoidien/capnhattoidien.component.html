@@ -1,120 +1,82 @@
-<c-row ngPreserveWhitespaces>
-  <c-col xs="12">
-    <c-card class="mb-3">
-      <c-card-header ngPreserveWhitespaces>
-        <strong>Cập nhật thiết bị tời điện</strong>
-      </c-card-header>
-      <c-card-body>
-        <c-tabs [activeItemKey]="0" (activeItemKeyChange)="handleActiveItemChange($event)">
-          <c-tabs-list variant="underline-border">
-            <button cTab [itemKey]="0">
-              <svg cIcon class="me-2" name="cil-calendar"></svg>
-              Cập nhật thiết bị
-            </button>
-            <button cTab [itemKey]="1">
-              <svg cIcon class="me-2" name="cil-grid"></svg>
-              Danh mục thiết bị
-            </button>
-            <button cTab [itemKey]="2">
-              <svg cIcon class="me-2" name="cil-settings"></svg>
-              Thông số kỹ thuật
-            </button>
-          </c-tabs-list>
-          <c-tabs-content>
-            <c-tab-panel [itemKey]="0" class="p-1">
-              <!-- Cập nhật tời điện -->
-
-              <c-col xs="12">
-                <c-card class="mb-4">
-                  <c-card-body>
-                    <c-row>
-                      <c-col sm="4">
-                        <c-input-group>
-                          <input [(ngModel)]="filterKeyword" placeholder="Nhập từ cần tìm..."
-                            aria-describedby="inputGroupPrepend" cFormControl id="validationCustomUsername"
-                            type="text" />
-                          <span>
-                            <button cButton (click)="loadTonghoptoitruc()">
-                              Tìm
-                            </button></span>
-                        </c-input-group>
-                      </c-col>
-                      <c-col sm="8">
-                        <ng-container *ngTemplateOutlet="liveDemo" />
-                      </c-col>
-                    </c-row>
-
-                    <hr />
-                    <table [hover]="true" cTable>
-                      <thead>
-                        <tr>
-                          <th scope="col">STT</th>
-                          <th scope="col">Mã QL</th>
-                          <th scope="col">Đơn vị</th>
-                          <th scope="col">Vị trí lắp đặt</th>
-                          <th scope="col">Ngày lắp</th>
-                          <th scope="col">Số lượng</th>
-                          <th scope="col">Hành động</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        @for (item of toitrucs ; track $index) {
-                        <tr>
-                          <th scope="row">{{ $index + 1 }}</th>
-                          <td>{{ item.maQuanLy }}</td>
-                          <td>{{ item.phongBan }}</td>
-                          <td>{{ item.viTriLapDat }}</td>
-                          <td>{{ item.ngayLap | date : "dd/MM/yyyy" }}</td>
-                          <td>{{ item.soLuong }}</td>
-                          <td>
-                            <button (click)="onEdit(item.id)" cButton size="sm">
-                              Sửa
-                            </button>
-                            <button (click)="onDelete(item.id)" cButton color="danger" size="sm">
-                              Xóa
-                            </button>
-                          </td>
-                        </tr>
-
-                        }
-                      </tbody>
-                    </table>
-                  </c-card-body>
-                  <div class="d-flex justify-content-center">
-                    <pagination [boundaryLinks]="true" [itemsPerPage]="pageSize" (pageChanged)="pageChanged($event)"
-                      [totalItems]="totalRow" [(ngModel)]="pageIndex" class="pagination-sm" previousText="&lsaquo;"
-                      nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
-                  </div>
-                </c-card>
-              </c-col>
-            </c-tab-panel>
-
-            <c-tab-panel [itemKey]="1" class="p-3">
-              <!-- Nhật ký thiết bị -->
-              This is some placeholder content the
-              <strong class="text-success">Profile</strong> tab's associated
-              content. Clicking another tab will toggle the visibility of this
-              one for the next. The tab JavaScript swaps classes to control the
-              content visibility and styling. You can use it with tabs, pills,
-              and any other .nav-powered navigation.
-            </c-tab-panel>
-            <c-tab-panel [itemKey]="2" class="p-3">
-              <!-- Thông số kỹ thuật -->
-              This is some placeholder content the
-              <strong class="text-warning">Contact</strong> tab's associated
-              content. Clicking another tab will toggle the visibility of this
-              one for the next. The tab JavaScript swaps classes to control the
-              content visibility and styling. You can use it with tabs, pills,
-              and any other .nav-powered navigation.
-            </c-tab-panel>
-          </c-tabs-content>
-        </c-tabs>
-      </c-card-body>
-    </c-card>
-  </c-col>
-</c-row>
-
 <!-- Model -->
+<c-col sm="12">
+  <c-card class="mb-3">
+    <c-card-header ngPreserveWhitespaces>
+      <strong>Cập nhật thiết bị tời điện</strong>
+    </c-card-header>
+    <c-card-body>
+      <c-col sm="12">
+        <c-card class="mb-4">
+          <c-card-body class="table-responsive">
+            <c-row>
+              <c-col sm="4">
+                <c-input-group>
+                  <input [(ngModel)]="filterKeyword" placeholder="Nhập từ cần tìm..."
+                    aria-describedby="inputGroupPrepend" cFormControl id="validationCustomUsername" type="text" />
+                  <span>
+                    <button cButton (click)="loadTonghoptoitruc()">
+                      Tìm
+                    </button></span>
+                </c-input-group>
+              </c-col>
+              <c-col sm="8">
+                <ng-container *ngTemplateOutlet="liveDemo" />
+              </c-col>
+            </c-row>
+            <hr />
+            <c-row>
+              <c-col sm="12">
+                <table [hover]="true" cTable>
+                  <thead>
+                    <tr>
+                      <th>STT</th>
+                      <th scope="col">Mã QL</th>
+                      <th scope="col">Đơn vị</th>
+                      <th scope="col">Vị trí lắp đặt</th>
+                      <th scope="col">Ngày lắp</th>
+                      <th scope="col">Số lượng</th>
+                      <th scope="col">Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (item of toitrucs ; track $index) {
+                    <tr>
+                      <th scope="row">{{ $index + 1 }}</th>
+                      <td>{{ item.maQuanLy }}</td>
+                      <td>{{ item.phongBan }}</td>
+                      <td>{{ item.viTriLapDat }}</td>
+                      <td>{{ item.ngayLap | date : "dd/MM/yyyy" }}</td>
+                      <td>{{ item.soLuong }}</td>
+                      <td>
+                        <button (click)="onEdit(item.id)" style="margin-right: 5px;" cButton size="sm">
+                          Sửa
+                        </button>
+                        <button (click)="onDelete(item.id)" cButton color="danger" size="sm">
+                          Xóa
+                        </button>
+                      </td>
+                    </tr>
+                    }
+                  </tbody>
+                </table>
+              </c-col>
+            </c-row>
+            <div class="d-flex justify-content-center">
+              <pagination [boundaryLinks]="true" [itemsPerPage]="pageSize" (pageChanged)="pageChanged($event)"
+                [totalItems]="totalRow" [(ngModel)]="pageIndex" class="pagination-sm" previousText="&lsaquo;"
+                nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+            </div>
+          </c-card-body>
+        </c-card>
+      </c-col>
+
+    </c-card-body>
+  </c-card>
+</c-col>
+
+
+
+
 <ng-template #liveDemo>
   <button (click)="onThemmoi()" cButton>Thêm mới</button>
   <c-modal id="liveDemoModal" size="xl" [visible]="liveDemoVisible" (visibleChange)="handleLiveDemoChange($event)">
@@ -123,80 +85,128 @@
       <button (click)="onClode()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
-      <form [formGroup]="Form" #customStylesForm="ngForm" (ngSubmit)="save()" [validated]="customStylesValidated" cForm
-        class="row g-3 needs-validation">
-        <div>
-          <input hidden="true" [(ngModel)]="toitrucDetail.id" formControlName="id" cFormControl id="validationCustom01"
-            type="number" value="Mark" />
-        </div>
-        <c-col md="4">
-          <label cLabel for="validationCustom01">Mã quản lý</label>
-          <input [(ngModel)]="toitrucDetail.maQuanLy" formControlName="maQuanLy" cFormControl id="validationCustom01"
-            required type="text" value="Mark" />
-          <c-form-feedback [valid]="true">Dữ liệu hợp lệ</c-form-feedback>
-        </c-col>
-        <c-col md="4">
-          <label cLabel for="validationCustom04">Thiết bị</label>
-          <select [(ngModel)]="toitrucDetail.thietbiId" formControlName="thietbiId" cSelect id="validationCustom04"
-            required>
-            <option value="">Chọn thiết bị...</option>
-            @for (item of dsToitruc ; track $index) {
-            <option value="{{ item.id }}">{{ item.maHieu }}</option>
-            }
-          </select>
-          <c-form-feedback [valid]="false">Thiết bị phải chọn.</c-form-feedback>
-        </c-col>
-        <c-col md="4">
-          <label cLabel for="validationCustom04">Đơn vị</label>
-          <select [(ngModel)]="toitrucDetail.donViSuDungId" formControlName="donViSuDungId" cSelect
-            id="validationCustom04" required>
-            <option value="">Chọn đơn vị...</option>
-            @for (item of dsDonvi ; track $index) {
-            <option value="{{ item.id }}">{{ item.tenPhong }}</option>
-            }
-          </select>
-          <c-form-feedback [valid]="false">Đơn vị phải chọn.</c-form-feedback>
-        </c-col>
-        <c-col md="6">
-          <label cLabel for="validationCustom03">Vị trí lắp đặt</label>
-          <input [(ngModel)]="toitrucDetail.viTriLapDat" formControlName="viTriLapDat" cFormControl
-            id="validationCustom03" required type="text" />
-          <c-form-feedback [valid]="false">Vị trí lắp đặt phải nhập.</c-form-feedback>
-        </c-col>
-        <c-col md="3">
-          <label cLabel for="validationCustom05">Ngày lắp</label>
-          <input [(ngModel)]="toitrucDetail.ngayLap" formControlName="ngayLap" cFormControl id="validationCustom05"
-            required type="date" />
-          <c-form-feedback [valid]="false">Ngày lắp đặt.</c-form-feedback>
-        </c-col>
-        <c-col md="3">
-          <label cLabel for="validationCustom05">Số lượng</label>
-          <input [(ngModel)]="toitrucDetail.soLuong" formControlName="soLuong" cFormControl id="validationCustom05"
-            required type="number" />
-          <c-form-feedback [valid]="false">Số lượng phải nhập.</c-form-feedback>
-        </c-col>
-        <c-col xs="6">
-          <label cLabel for="validationCustom05">Tình trạng thiết bị</label>
-          <input [(ngModel)]="toitrucDetail.tinhTrangThietBi" formControlName="tinhTrangThietBi" cFormControl
-            id="validationCustom05" required type="text" />
-        </c-col>
-        <c-col xs="6">
-          <label cLabel for="validationCustom05">Mục đích sử dụng</label>
-          <input [(ngModel)]="toitrucDetail.mucDichSuDung" formControlName="mucDichSuDung" cFormControl
-            id="validationCustom05" required type="text" />
-        </c-col>
+
+      <c-row>
         <c-col xs="12">
-          <label cLabel for="validationCustom05">Ghi chú</label>
-          <input [(ngModel)]="toitrucDetail.ghiChu" formControlName="ghiChu" cFormControl id="validationCustom05"
-            required type="text" />
+          <c-card class="mb-3">
+
+            <c-card-body>
+              <c-tabs [activeItemKey]="0" (activeItemKeyChange)="handleActiveItemChange($event)">
+                <c-tabs-list variant="underline-border">
+                  <button cTab [itemKey]="0">
+                    <svg cIcon class="me-2" name="cilHome"></svg>
+                    Home
+                  </button>
+                  <button cTab [itemKey]="1">
+                    <svg cIcon class="me-2" name="cilUser"></svg>
+                    Profile
+                  </button>
+                  <button cTab [itemKey]="2" [disabled]="activeItem()===0">
+                    <svg cIcon class="me-2" name="cilCode"></svg>
+                    Contact
+                  </button>
+                </c-tabs-list>
+                <c-tabs-content>
+                  <c-tab-panel [itemKey]="0" class="p-3">
+                    <form [formGroup]="Form" #customStylesForm="ngForm" (ngSubmit)="save()"
+                      [validated]="customStylesValidated" cForm class="row g-3 needs-validation">
+                      <div>
+                        <input hidden="true" [(ngModel)]="toitrucDetail.id" formControlName="id" cFormControl
+                          id="validationCustom01" type="number" value="Mark" />
+                      </div>
+                      <c-col md="4">
+                        <label cLabel for="validationCustom01">Mã quản lý</label>
+                        <input [(ngModel)]="toitrucDetail.maQuanLy" formControlName="maQuanLy" cFormControl
+                          id="validationCustom01" required type="text" value="Mark" />
+                        <c-form-feedback [valid]="true">Dữ liệu hợp lệ</c-form-feedback>
+                      </c-col>
+                      <c-col md="4">
+                        <label cLabel for="validationCustom04">Thiết bị</label>
+                        <select [(ngModel)]="toitrucDetail.thietbiId" formControlName="thietbiId" cSelect
+                          id="validationCustom04" required>
+                          <option value="">Chọn thiết bị...</option>
+                          @for (item of dsToitruc ; track $index) {
+                          <option value="{{ item.id }}">{{ item.tenThietBi }}</option>
+                          }
+                        </select>
+                        <c-form-feedback [valid]="false">Thiết bị phải chọn.</c-form-feedback>
+                      </c-col>
+                      <c-col md="4">
+                        <label cLabel for="validationCustom04">Đơn vị</label>
+                        <select [(ngModel)]="toitrucDetail.donViSuDungId" formControlName="donViSuDungId" cSelect
+                          id="validationCustom04" required>
+                          <option value="">Chọn đơn vị...</option>
+                          @for (item of dsDonvi ; track $index) {
+                          <option value="{{ item.id }}">{{ item.tenPhong }}</option>
+                          }
+                        </select>
+                        <c-form-feedback [valid]="false">Đơn vị phải chọn.</c-form-feedback>
+                      </c-col>
+                      <c-col md="6">
+                        <label cLabel for="validationCustom03">Vị trí lắp đặt</label>
+                        <input [(ngModel)]="toitrucDetail.viTriLapDat" formControlName="viTriLapDat" cFormControl
+                          id="validationCustom03" required type="text" />
+                        <c-form-feedback [valid]="false">Vị trí lắp đặt phải nhập.</c-form-feedback>
+                      </c-col>
+                      <c-col md="3">
+                        <label cLabel for="validationCustom05">Ngày lắp</label>
+                        <input [(ngModel)]="toitrucDetail.ngayLap" formControlName="ngayLap" cFormControl
+                          id="validationCustom05" required type="date" />
+                        <c-form-feedback [valid]="false">Ngày lắp đặt.</c-form-feedback>
+                      </c-col>
+                      <c-col md="3">
+                        <label cLabel for="validationCustom05">Số lượng</label>
+                        <input [(ngModel)]="toitrucDetail.soLuong" formControlName="soLuong" cFormControl
+                          id="validationCustom05" required type="number" />
+                        <c-form-feedback [valid]="false">Số lượng phải nhập.</c-form-feedback>
+                      </c-col>
+                      <c-col xs="6">
+                        <label cLabel for="validationCustom05">Tình trạng thiết bị</label>
+                        <input [(ngModel)]="toitrucDetail.tinhTrangThietBi" formControlName="tinhTrangThietBi"
+                          cFormControl id="validationCustom05" required type="text" />
+                      </c-col>
+                      <c-col xs="6">
+                        <label cLabel for="validationCustom05">Mục đích sử dụng</label>
+                        <input [(ngModel)]="toitrucDetail.mucDichSuDung" formControlName="mucDichSuDung" cFormControl
+                          id="validationCustom05" required type="text" />
+                      </c-col>
+                      <c-col xs="12">
+                        <label cLabel for="validationCustom05">Ghi chú</label>
+                        <input [(ngModel)]="toitrucDetail.ghiChu" formControlName="ghiChu" cFormControl
+                          id="validationCustom05" required type="text" />
+                      </c-col>
+                      <c-col xs="12">
+                        <button cButton class="me-1" color="primary" type="submit">
+                          Lưu lại
+                        </button>
+                        <button cButton color="danger" (click)="onClode()">Đóng</button>
+                      </c-col>
+                    </form>
+                  </c-tab-panel>
+                  <c-tab-panel [itemKey]="1" class="p-3">
+                    This is some placeholder content the <strong class="text-success">Profile</strong> tab's associated
+                    content. Clicking another
+                    tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control
+                    the
+                    content visibility and styling. You can use it with tabs, pills, and any other .nav-powered
+                    navigation.
+                  </c-tab-panel>
+                  <c-tab-panel [itemKey]="2" class="p-3">
+                    This is some placeholder content the <strong class="text-warning">Contact</strong> tab's associated
+                    content. Clicking another
+                    tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control
+                    the
+                    content visibility and styling. You can use it with tabs, pills, and any other .nav-powered
+                    navigation.
+                  </c-tab-panel>
+                </c-tabs-content>
+              </c-tabs>
+            </c-card-body>
+          </c-card>
         </c-col>
-        <c-col xs="12">
-          <button cButton class="me-1" color="primary" type="submit">
-            Lưu lại
-          </button>
-          <button cButton color="danger" (click)="onClode()">Đóng</button>
-        </c-col>
-      </form>
+
+      </c-row>
+
     </c-modal-body>
     <c-modal-footer> </c-modal-footer>
   </c-modal>

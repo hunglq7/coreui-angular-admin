@@ -10,22 +10,7 @@ export const navItems: INavData[] = [
       text: 'NEW',
     },
   },
-  {
-    title: true,
-    name: 'Theme',
-  },
-  {
-    name: 'Colors',
-    url: '/theme/colors',
-    iconComponent: { name: 'cil-drop' },
-  },
 
-  {
-    name: 'Typography',
-    url: '/theme/typography',
-    linkProps: { fragment: 'headings' },
-    iconComponent: { name: 'cil-pencil' },
-  },
   {
     name: 'Cập nhật thiết bị',
     title: true,
@@ -38,6 +23,11 @@ export const navItems: INavData[] = [
       {
         name: 'Danh mục tời điện',
         url: '/toidien/danhmuctoidien',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Thông số kỹ thuật',
+        url: '/toidien/thongsotoidien',
         icon: 'nav-icon-bullet',
       },
       {

@@ -3,14 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { HttpBackend, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './auth.service';
 import { map, Observable } from 'rxjs';
-
-import { SystemConstants } from '../commons/system.constants';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
-  baseUrl: string = SystemConstants.BASE_API;
+  baseUrl: string = environment.BASE_API;
   constructor(private http: HttpClient, public authenService: AuthService) {}
 
   get(uri: string) {
@@ -70,6 +69,7 @@ export class DataService {
     });
   }
   put(uri: string, data: any) {
+    debugger;
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json; charset=utf-8 ');
     headers = headers.set(
@@ -80,6 +80,7 @@ export class DataService {
   }
 
   post(uri: string, data: any) {
+    debugger;
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json; charset=utf-8 ');
     headers = headers.set(
