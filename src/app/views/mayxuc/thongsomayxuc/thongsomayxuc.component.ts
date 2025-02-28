@@ -28,32 +28,33 @@ import {
   FormLabelDirective,
   FormControlDirective,
   FormFeedbackComponent,
-  InputGroupComponent,
   FormSelectDirective,
+  InputGroupComponent,
   DropdownModule,
   SharedModule,
 } from '@coreui/angular';
-
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
-export interface Thongsokythuattoitruc {
+
+export interface Thongsokythuatmayxuc {
   id: number;
-  tenToiTruc: string;
+  tenMayXuc: string;
   noiDung: string;
   donViTinh: string;
   thongSo: string;
 }
-export interface ThongsokythuattoitrucDetail {
+
+export interface ThongsokythuatmayxucEdit {
   id: number;
-  danhmuctoitrucId: number;
+  mayXucId: number;
   noiDung: string;
   donViTinh: string;
   thongSo: string;
 }
 
 @Component({
-  selector: 'app-thongsokythuattoidien',
+  selector: 'app-thongsomayxuc',
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -90,10 +91,10 @@ export interface ThongsokythuattoitrucDetail {
     CardComponent,
     RowComponent,
   ],
-  templateUrl: './thongsokythuattoidien.component.html',
-  styleUrl: './thongsokythuattoidien.component.scss',
+  templateUrl: './thongsomayxuc.component.html',
+  styleUrl: './thongsomayxuc.component.scss',
 })
-export class ThongsokythuattoidienComponent implements OnInit {
+export class ThongsomayxucComponent implements OnInit {
   public liveDemoVisible = false;
   title: string = '';
   customStylesValidated = false;
@@ -104,22 +105,13 @@ export class ThongsokythuattoidienComponent implements OnInit {
   pageSize = 10;
   pageDisplay = 10;
   filterKeyword = '';
-  dataSource: Thongsokythuattoitruc[] = [];
-  entity!: ThongsokythuattoitrucDetail;
-  dsDanhmucToidien: any[] = [];
+  dataSource: Thongsokythuatmayxuc[] = [];
+  entity!: ThongsokythuatmayxucEdit;
+  dsDanhmucMayxuc: any[] = [];
   Form!: FormGroup;
   Id!: Number;
   themoi: boolean = false;
 
-  ngOnInit(): void {
-    this.loadData();
-    this.getDanhmuctoitruc();
-    if ((this.Id = 0)) {
-      this.addThongsokythuattoitrucDetail();
-    } else {
-      this.getThongsokythuattoitrucDetail();
-    }
-  }
   constructor(
     private dataService: DataService,
     private toastr: ToastrService,
@@ -127,57 +119,84 @@ export class ThongsokythuattoidienComponent implements OnInit {
   ) {
     this.initFormBuilder();
   }
+  ngOnInit(): void {
+    this.loadData();
+    this.getDanhmucMayxuc();
+    if ((this.Id = 0)) {
+      this.addNewthongsoMayxuc();
+    } else {
+      this.getThongsokythuatMayxuc();
+    }
+  }
+
   private initFormBuilder() {
     this.Form = new FormGroup({
       id: new FormControl({ value: null, disabled: false }),
-      danhmuctoitrucId: new FormControl({ value: null, disabled: false }),
+      mayXucId: new FormControl({ value: null, disabled: false }),
       noiDung: new FormControl({ value: null, disabled: false }),
       donViTinh: new FormControl({ value: null, disabled: false }),
       thongSo: new FormControl({ value: null, disabled: false }),
     });
   }
-  public pageChanged(event: any): void {
-    this.pageIndex = event.page;
-    this.loadData();
+
+  private loadFormData(items: ThongsokythuatmayxucEdit) {
+    this.entity = items;
+    this.Form.setValue({
+      id: items.id,
+      mayXucId: items.mayXucId,
+      noiDung: items.noiDung,
+      donViTinh: items.donViTinh,
+      thongSo: items.thongSo,
+    });
   }
 
-  save() {
-    if (this.themoi) {
-      this.dataService
-        .post('/api/Thongsokythuattoitruc', this.Form.value)
-        .subscribe({
-          next: () => {
-            this.loadData();
-            this.toastr.success('Lưu dữ liệu thành công', 'Success');
-            this.liveDemoVisible = !this.liveDemoVisible;
-            this.Form.reset();
-          },
-          error: () => {
-            this.toastr.error('Lưu dữ liệu thất bại', 'Error');
-          },
-        });
-    } else {
-      this.dataService
-        .put('/api/Thongsokythuattoitruc/update', this.Form.value)
-        .subscribe({
-          next: () => {
-            this.loadData();
-            this.toastr.success('Lưu dữ liệu thành công', 'Success');
-            this.liveDemoVisible = !this.liveDemoVisible;
-            this.Form.reset();
-          },
-          error: () => {
-            this.toastr.error('Lưu dữ liệu thất bại', 'Error');
-          },
-        });
-    }
+  addNewthongsoMayxuc() {
+    this.dataService.getById('/api/Thongsokythuatmayxuc/' + 0).subscribe({
+      next: (data: any) => {
+        this.loadFormData(data);
+      },
+    });
+  }
+
+  getThongsokythuatMayxuc() {
+    this.dataService.getById('/api/Thongsokythuatmayxuc/' + this.Id).subscribe({
+      next: (data: any) => {
+        this.loadFormData(data);
+      },
+      error: () => {
+        this.toastr.error('Lấy dữ liệu thất bại', 'Error');
+      },
+    });
+  }
+
+  getDanhmucMayxuc() {
+    this.dataService.get('/api/MayXuc').subscribe({
+      next: (data: any) => {
+        this.dsDanhmucMayxuc = data;
+      },
+    });
+  }
+
+  loadData() {
+    this.dataService.get('/api/Thongsokythuatmayxuc').subscribe({
+      next: (data: any) => {
+        this.dataSource = data;
+      },
+      error: () => {
+        this.toastr.error('Lấy dữ liệu thất bại', 'Error');
+      },
+    });
+  }
+
+  handleLiveDemoChange(event: boolean) {
+    this.liveDemoVisible = event;
   }
 
   onThemmoi() {
     this.title = 'Thêm mới thông số';
     this.themoi = true;
     this.Id = 0;
-    this.addThongsokythuattoitrucDetail();
+    this.addNewthongsoMayxuc();
     this.liveDemoVisible = !this.liveDemoVisible;
   }
 
@@ -189,7 +208,7 @@ export class ThongsokythuattoidienComponent implements OnInit {
   onEdit(id: number) {
     this.themoi = false;
     this.Id = id;
-    this.getThongsokythuattoitrucDetail();
+    this.getThongsokythuatMayxuc();
     this.title = 'Sửa tời điện';
     this.liveDemoVisible = !this.liveDemoVisible;
   }
@@ -205,7 +224,7 @@ export class ThongsokythuattoidienComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.dataService
-          .delete('/api/Thongsokythuattoitruc/' + this.Id)
+          .delete('/api/Thongsokythuatmayxuc/' + this.Id)
           .subscribe({
             next: () => {
               this.loadData();
@@ -219,56 +238,40 @@ export class ThongsokythuattoidienComponent implements OnInit {
     });
   }
 
-  private loadFormData(items: ThongsokythuattoitrucDetail) {
-    this.entity = items;
-    this.Form.setValue({
-      id: items.id,
-      danhmuctoitrucId: items.danhmuctoitrucId,
-      noiDung: items.noiDung,
-      donViTinh: items.donViTinh,
-      thongSo: items.thongSo,
-    });
+  save() {
+    if (this.themoi) {
+      this.dataService
+        .post('/api/Thongsokythuatmayxuc', this.Form.value)
+        .subscribe({
+          next: () => {
+            this.loadData();
+            this.toastr.success('Lưu dữ liệu thành công', 'Success');
+            this.liveDemoVisible = !this.liveDemoVisible;
+            this.Form.reset();
+          },
+          error: () => {
+            this.toastr.error('Lưu dữ liệu thất bại', 'Error');
+          },
+        });
+    } else {
+      this.dataService
+        .put('/api/Thongsokythuatmayxuc/update', this.Form.value)
+        .subscribe({
+          next: () => {
+            this.loadData();
+            this.toastr.success('Lưu dữ liệu thành công', 'Success');
+            this.liveDemoVisible = !this.liveDemoVisible;
+            this.Form.reset();
+          },
+          error: () => {
+            this.toastr.error('Lưu dữ liệu thất bại', 'Error');
+          },
+        });
+    }
   }
 
-  getThongsokythuattoitrucDetail() {
-    this.dataService
-      .getById('/api/Thongsokythuattoitruc/' + this.Id)
-      .subscribe({
-        next: (data: any) => {
-          this.loadFormData(data);
-        },
-        error: () => {
-          this.toastr.error('Lấy dữ liệu thất bại', 'Error');
-        },
-      });
-  }
-
-  addThongsokythuattoitrucDetail() {
-    this.dataService.getById('/api/Thongsokythuattoitruc/' + 0).subscribe({
-      next: (data: any) => {
-        this.loadFormData(data);
-      },
-    });
-  }
-  getDanhmuctoitruc() {
-    this.dataService.get('/api/Danhmuctoitruc').subscribe({
-      next: (data: any) => {
-        this.dsDanhmucToidien = data;
-      },
-    });
-  }
-  loadData() {
-    this.dataService.get('/api/Thongsokythuattoitruc').subscribe({
-      next: (data: any) => {
-        this.dataSource = data;
-      },
-      error: () => {
-        this.toastr.error('Lấy dữ liệu thất bại', 'Error');
-      },
-    });
-  }
-
-  handleLiveDemoChange(event: boolean) {
-    this.liveDemoVisible = event;
+  public pageChanged(event: any): void {
+    this.pageIndex = event.page;
+    this.loadData();
   }
 }

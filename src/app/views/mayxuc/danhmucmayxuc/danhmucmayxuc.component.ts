@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ButtonDirective } from '@coreui/angular';
 import { ToastrService } from 'ngx-toastr';
-
+import { ConfirmDialogComponent } from '../../../shared/utils/dialogs/confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 import {
   ColDef,
   GridApi,
@@ -10,7 +11,6 @@ import {
   RowSelectionOptions,
 } from 'ag-grid-community';
 import { DataService } from '../../../core/services/data.service';
-import { Router } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular';
 
 import {
@@ -24,18 +24,18 @@ import {
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 ModuleRegistry.registerModules([AllCommunityModule, RowSelectionModule]);
 
-export interface Danhmuctoitruc {
+export interface MayXuc {
   id: number;
   tenThietBi: string;
   loaiThietBi: string;
-  namSanXuat: string;
-  hangSanXuat: string;
+  hangSanXuat: String;
   tinhTrang: boolean;
+  namSanXuat: string;
   ghiChu: string;
 }
 
 @Component({
-  selector: 'app-danhmuctoidien',
+  selector: 'app-danhmucmayxuc',
   imports: [
     RowComponent,
     ColComponent,
@@ -46,19 +46,19 @@ export interface Danhmuctoitruc {
     ButtonDirective,
     AgGridAngular,
   ],
-  templateUrl: './danhmuctoidien.component.html',
-  styleUrl: './danhmuctoidien.component.scss',
+  templateUrl: './danhmucmayxuc.component.html',
+  styleUrl: './danhmucmayxuc.component.scss',
 })
-export class DanhmuctoidienComponent implements OnInit {
-  private gridApi!: GridApi<Danhmuctoitruc>;
-  dsDanhmuctoitruc: Danhmuctoitruc[] = [];
-
+export class DanhmucmayxucComponent implements OnInit {
+  private gridApi!: GridApi<MayXuc>;
+  dataMayxuc: MayXuc[] = [];
   constructor(
     private dataService: DataService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dialog: MatDialog
   ) {}
-  ngOnInit() {
-    this.getDanhmuctoitruc();
+  ngOnInit(): void {
+    this.loadDataMayxuc();
   }
   rowSelection: RowSelectionOptions | 'single' | 'multiple' = {
     mode: 'multiRow',
@@ -68,6 +68,25 @@ export class DanhmuctoidienComponent implements OnInit {
     minWith: 100,
     minHight: 50,
   };
+  onGridReady(params: GridReadyEvent<MayXuc>) {
+    this.gridApi = params.api;
+  }
+  onAddRow() {
+    this.gridApi.applyTransaction({
+      add: [
+        {
+          id: 0,
+          tenThietBi: '',
+          loaiThietBi: '',
+          hangSanXuat: '',
+          tinhTrang: true,
+          namSanXuat: '',
+          ghiChu: '',
+        },
+      ],
+      addIndex: 0,
+    });
+  }
 
   colDefs: ColDef[] = [
     {
@@ -128,73 +147,55 @@ export class DanhmuctoidienComponent implements OnInit {
     },
   ];
 
-  getDanhmuctoitruc() {
-    this.dataService.get('/api/Danhmuctoitruc').subscribe({
+  loadDataMayxuc() {
+    this.dataService.get('/api/MayXuc').subscribe({
       next: (response: any) => {
-        this.dsDanhmuctoitruc = response;
+        this.dataMayxuc = response;
       },
-    });
-  }
-
-  onGridReady(params: GridReadyEvent<Danhmuctoitruc>) {
-    this.gridApi = params.api;
-  }
-
-  onAddRow() {
-    this.gridApi.applyTransaction({
-      add: [
-        {
-          id: 0,
-          tenThietBi: '',
-          loaiThietBi: '',
-          hangSanXuat: '',
-          tinhTrang: true,
-          namSanXuat: '',
-          ghiChu: '',
-        },
-      ],
-      addIndex: 0,
+      error: () => {
+        this.toastr.error('Lấy dữ liệu thất bại', 'Error');
+      },
     });
   }
 
   save() {
     const selectedRows = this.gridApi.getSelectedRows();
-    this.dataService
-      .put('/api/Danhmuctoitruc/UpdateMultiple', selectedRows)
-      .subscribe({
-        next: (data) => {
-          this.getDanhmuctoitruc();
-          this.toastr.success(
-            'Thêm thành công ' + data + ' bản ghi',
-            'Success'
-          );
-        },
-        error: () => {
-          this.toastr.warning('Phải chọn danh sách cần lưu ', 'Warning');
-        },
-      });
+    this.dataService.put('/api/Mayxuc/UpdateMultiple', selectedRows).subscribe({
+      next: (data) => {
+        this.loadDataMayxuc();
+        this.toastr.success('Thêm thành công ' + data + ' bản ghi', 'Success');
+      },
+      error: () => {
+        this.toastr.warning('Phải chọn danh sách cần lưu ', 'Warning');
+      },
+    });
   }
 
   confirmDelete() {
-    this.delete();
-  }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        name: 'Bán có muốn xóa bản ghi này?',
+      },
+    });
 
-  delete() {
-    const selectedRows = this.gridApi.getSelectedRows();
-    this.dataService
-      .post('/api/Danhmuctoitruc/DeleteMultipale', selectedRows)
-      .subscribe({
-        next: (data) => {
-          this.getDanhmuctoitruc();
-          this.toastr.success('Xóa thành công ' + data + ' bản ghi', 'Success');
-        },
-        error: () => {
-          this.toastr.error('Xóa bản ghi thất bại ', 'Error');
-        },
-      });
-  }
-
-  onBtExport() {
-    this.gridApi.exportDataAsCsv();
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        const selectedRows = this.gridApi.getSelectedRows();
+        this.dataService
+          .post('/api/Mayxuc/DeleteMultipale', selectedRows)
+          .subscribe({
+            next: (data) => {
+              this.loadDataMayxuc();
+              this.toastr.success(
+                'Xóa thành công ' + data + ' bản ghi',
+                'Success'
+              );
+            },
+            error: () => {
+              this.toastr.error('Xóa bản ghi thất bại ', 'Error');
+            },
+          });
+      }
+    });
   }
 }

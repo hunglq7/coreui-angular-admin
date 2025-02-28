@@ -1,10 +1,12 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule, NgTemplateOutlet } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../../shared/utils/dialogs/confirm-dialog/confirm-dialog.component';
+import { NhatkymayxucTabComponent } from '../nhatkymayxuc-tab/nhatkymayxuc-tab.component';
 import {
   ReactiveFormsModule,
   FormsModule,
   FormGroup,
-  Validators,
   FormControl,
 } from '@angular/forms';
 import {
@@ -45,34 +47,34 @@ import { IconDirective } from '@coreui/icons-angular';
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
-
-export interface Tonghoptoitruc {
+export interface TongHopMayXuc {
   id: number;
   maQuanLy: string;
-  tenThietBi: string;
-  phongBan: string;
+  tenMayXuc: string;
+  loaiThietBi: string;
+  tenPhongBan: string;
   viTriLapDat: string;
   ngayLap: string;
-  mucDichSuDung: string;
   soLuong: number;
-  tinhTrangThietBi: string;
+  tinhTrang: string;
+  ghiChu: string;
 }
 
-export interface TonghoptoitrucDetail {
+export interface TongHopMayXucEdit {
   id: number;
+  mayXucId: number;
   maQuanLy: string;
-  thietbiId: number;
-  donViSuDungId: number;
+  loaiThietBiId: number;
+  phongBanId: number;
   viTriLapDat: string;
   ngayLap: string;
-  mucDichSuDung: string;
   soLuong: number;
-  tinhTrangThietBi: string;
+  tinhTrang: string;
   ghiChu: string;
 }
 
 @Component({
-  selector: 'app-capnhattoidien',
+  selector: 'app-tonghopmayxuc',
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -115,12 +117,12 @@ export interface TonghoptoitrucDetail {
     TabsContentComponent,
     TabsListComponent,
     IconDirective,
+    NhatkymayxucTabComponent,
   ],
-
-  templateUrl: './capnhattoidien.component.html',
-  styleUrl: './capnhattoidien.component.scss',
+  templateUrl: './tonghopmayxuc.component.html',
+  styleUrl: './tonghopmayxuc.component.scss',
 })
-export class CapnhattoidienComponent implements OnInit {
+export class TonghopmayxucComponent implements OnInit {
   public liveDemoVisible = false;
   title: string = '';
   customStylesValidated = false;
@@ -131,53 +133,65 @@ export class CapnhattoidienComponent implements OnInit {
   pageSize = 10;
   pageDisplay = 10;
   filterKeyword = '';
-  toitrucs: Tonghoptoitruc[] = [];
-  toitrucDetail!: TonghoptoitrucDetail;
-  dsToitruc: any[] = [];
+  dataMayxucDetail: TongHopMayXuc[] = [];
+  entity!: TongHopMayXucEdit;
+  dsMayxuc: any[] = [];
   dsDonvi: any[] = [];
+  dsLoai: any[] = [];
   Form!: FormGroup;
   Id!: Number;
   themoi: boolean = false;
-
-  constructor(private dataService: DataService, private toastr: ToastrService) {
-    this.initFormBuilder();
-  }
   ngOnInit(): void {
-    this.loadTonghoptoitruc();
+    this.loadTonghopMayxuc();
     this.getDataDonvi();
-    this.getDataToitruc();
+    this.getLoaiThietBi();
+    this.getDataMayxuc();
     if ((this.Id = 0)) {
-      this.themoiTonghoptoitrucDetail();
+      this.addNewTonghopMayxucDetail();
     } else {
-      this.loadTonghoptoitrucDetail();
+      this.loadTonghopMayxucDetail();
     }
   }
 
+  constructor(
+    private dataService: DataService,
+    private toastr: ToastrService,
+    private dialog: MatDialog
+  ) {
+    this.initFormBuilder();
+  }
+  private initFormBuilder() {
+    this.Form = new FormGroup({
+      id: new FormControl({ value: null, disabled: false }),
+      maQuanLy: new FormControl({ value: null, disabled: false }),
+      mayXucId: new FormControl({ value: null, disabled: false }),
+      phongBanId: new FormControl({ value: null, disabled: false }),
+      loaiThietBiId: new FormControl({ value: null, disabled: false }),
+      viTriLapDat: new FormControl({ value: null, disabled: false }),
+      ngayLap: new FormControl({ value: null, disabled: false }),
+      soLuong: new FormControl({ value: null, disabled: false }),
+      tinhTrang: new FormControl({ value: null, disabled: false }),
+      ghiChu: new FormControl({ value: null, disabled: false }),
+    });
+  }
   public dateOptions: any = {
     locale: { format: 'DD/MM/YYYY' },
     alwaysShowCalendars: false,
     singleDatePicker: true,
   };
 
-  initFormBuilder() {
-    this.Form = new FormGroup({
-      id: new FormControl(''),
-      maQuanLy: new FormControl('', [Validators.required]),
-      thietbiId: new FormControl('', [Validators.required]),
-      donViSuDungId: new FormControl('', [Validators.required]),
-      viTriLapDat: new FormControl('', [Validators.required]),
-      ngayLap: new FormControl('', [Validators.required]),
-      mucDichSuDung: new FormControl(''),
-      soLuong: new FormControl('', [Validators.required]),
-      tinhTrangThietBi: new FormControl(''),
-      ghiChu: new FormControl(''),
+  getLoaiThietBi() {
+    this.dataService.get('/api/Loaithietbi').subscribe({
+      next: (data: any) => {
+        this.dsLoai = data;
+      },
     });
   }
 
-  loadTonghoptoitrucDetail() {
-    this.dataService.getById('/api/Tonghoptoitruc/' + this.Id).subscribe({
-      next: (data: TonghoptoitrucDetail) => {
-        this.toitrucDetail = data;
+  loadTonghopMayxucDetail() {
+    this.dataService.getById('/api/Tonghopmayxuc/' + this.Id).subscribe({
+      next: (data: TongHopMayXucEdit) => {
+        this.entity = data;
         var myDate = new Date(data.ngayLap);
         var myDateString;
         myDateString =
@@ -186,7 +200,7 @@ export class CapnhattoidienComponent implements OnInit {
           ('0' + (myDate.getMonth() + 1)).slice(-2) +
           '-' +
           ('0' + myDate.getDate()).slice(-2);
-        this.toitrucDetail.ngayLap = myDateString;
+        this.entity.ngayLap = myDateString;
       },
       error: (err) => {
         alert(err);
@@ -194,26 +208,27 @@ export class CapnhattoidienComponent implements OnInit {
     });
   }
 
-  themoiTonghoptoitrucDetail() {
-    this.dataService.getById('/api/Tonghoptoitruc/' + 0).subscribe({
+  addNewTonghopMayxucDetail() {
+    this.dataService.getById('/api/Tonghopmayxuc/' + 0).subscribe({
       next: (data) => {
         this.loadFormData(data);
       },
     });
   }
-  loadFormData(items: TonghoptoitrucDetail) {
-    this.toitrucDetail = items;
-    this.Form.patchValue({
-      id: items.id,
-      maQuanly: items.maQuanLy,
-      thietbiId: items.thietbiId,
-      donViSuDung: items.donViSuDungId,
-      viTriLapDat: items.viTriLapDat,
-      ngayLap: items.ngayLap,
-      mucDichSuDung: items.mucDichSuDung,
-      soLuong: items.soLuong,
-      tinhTrangThietBi: items.tinhTrangThietBi,
-      ghiChu: items.ghiChu,
+
+  private loadFormData(mayxuc: TongHopMayXucEdit) {
+    this.entity = mayxuc;
+    this.Form.setValue({
+      id: mayxuc.id,
+      maQuanLy: mayxuc.maQuanLy,
+      mayXucId: mayxuc.mayXucId,
+      phongBanId: mayxuc.phongBanId,
+      loaiThietBiId: mayxuc.loaiThietBiId,
+      viTriLapDat: mayxuc.viTriLapDat,
+      ngayLap: mayxuc.ngayLap,
+      soLuong: mayxuc.soLuong,
+      tinhTrang: mayxuc.tinhTrang,
+      ghiChu: mayxuc.ghiChu,
     });
   }
 
@@ -225,18 +240,18 @@ export class CapnhattoidienComponent implements OnInit {
     });
   }
 
-  getDataToitruc() {
-    this.dataService.get('/api/Danhmuctoitruc').subscribe({
+  getDataMayxuc() {
+    this.dataService.get('/api/Mayxuc').subscribe({
       next: (data: any) => {
-        this.dsToitruc = data;
+        this.dsMayxuc = data;
       },
     });
   }
 
-  loadTonghoptoitruc() {
+  loadTonghopMayxuc() {
     this.dataService
       .get(
-        '/api/Tonghoptoitruc/paging?Keyword=' +
+        '/api/Tonghopmayxuc/paging?Keyword=' +
           this.filterKeyword +
           '&PageIndex=' +
           this.pageIndex +
@@ -244,21 +259,23 @@ export class CapnhattoidienComponent implements OnInit {
           this.pageSize
       )
       .subscribe((data: any) => {
-        this.toitrucs = data.items;
+        this.dataMayxucDetail = data.items;
         this.pageSize = data.pageSize;
         this.pageIndex = data.pageIndex;
         this.totalRow = data.totalRecords;
       });
   }
+
   public pageChanged(event: any): void {
     this.pageIndex = event.page;
-    this.loadTonghoptoitruc();
+    this.loadTonghopMayxuc();
   }
+
   onThemmoi() {
     this.title = 'Thêm mới tời điện';
     this.themoi = true;
     this.Id = 0;
-    this.themoiTonghoptoitrucDetail();
+    this.addNewTonghopMayxucDetail();
     this.liveDemoVisible = !this.liveDemoVisible;
   }
 
@@ -270,21 +287,31 @@ export class CapnhattoidienComponent implements OnInit {
   onEdit(id: number) {
     this.themoi = false;
     this.Id = id;
-    this.loadTonghoptoitrucDetail();
+    this.loadTonghopMayxucDetail();
     this.title = 'Sửa tời điện';
     this.liveDemoVisible = !this.liveDemoVisible;
   }
 
   onDelete(id: number) {
     this.Id = id;
-    this.dataService.delete('/api/Tonghoptoitruc/' + this.Id).subscribe({
-      next: () => {
-        this.loadTonghoptoitruc();
-        this.toastr.success('Xóa dữ liệu thành công', 'Success');
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        name: 'Bán có muốn xóa bản ghi này?',
       },
-      error: (err) => {
-        this.toastr.error('Xóa dữ liệu thất bại', 'Error');
-      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.dataService.delete('/api/Tonghopmayxuc/' + this.Id).subscribe({
+          next: () => {
+            this.loadTonghopMayxuc();
+            this.toastr.success('Xóa dữ liệu thành công', 'Success');
+          },
+          error: () => {
+            this.toastr.error('Xóa dữ liệu thất bại', 'Error');
+          },
+        });
+      }
     });
   }
 
@@ -294,9 +321,9 @@ export class CapnhattoidienComponent implements OnInit {
 
   save() {
     if (this.themoi) {
-      this.dataService.post('/api/Tonghoptoitruc', this.Form.value).subscribe({
+      this.dataService.post('/api/Tonghopmayxuc', this.Form.value).subscribe({
         next: () => {
-          this.loadTonghoptoitruc();
+          this.loadTonghopMayxuc();
           this.toastr.success('Lưu dữ liệu thành công', 'Success');
           this.liveDemoVisible = !this.liveDemoVisible;
           this.Form.reset();
@@ -306,9 +333,9 @@ export class CapnhattoidienComponent implements OnInit {
         },
       });
     } else {
-      this.dataService.put('/api/Tonghoptoitruc', this.Form.value).subscribe({
+      this.dataService.put('/api/Tonghopmayxuc', this.Form.value).subscribe({
         next: () => {
-          this.loadTonghoptoitruc();
+          this.loadTonghopMayxuc();
           this.toastr.success('Lưu dữ liệu thành công', 'Success');
           this.liveDemoVisible = !this.liveDemoVisible;
           this.Form.reset();

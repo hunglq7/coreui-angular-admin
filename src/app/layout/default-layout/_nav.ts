@@ -50,13 +50,23 @@ export const navItems: INavData[] = [
     ],
   },
   {
-    name: 'Máy khoan',
-    url: '/buttons',
+    name: 'Máy xuc',
+    url: '/mayxuc',
     iconComponent: { name: 'cil-cursor' },
     children: [
       {
-        name: 'Buttons',
-        url: '/buttons/buttons',
+        name: 'Danh mục máy xúc',
+        url: '/mayxuc/danhmucmayxuc',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Thông số máy xúc',
+        url: '/mayxuc/thongsomayxuc',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Cập nhật máy xúc',
+        url: '/mayxuc/tonghopmayxuc',
         icon: 'nav-icon-bullet',
       },
     ],
@@ -109,7 +119,7 @@ export const navItems: INavData[] = [
 
   {
     title: true,
-    name: 'Extras',
+    name: 'Cài đặt',
   },
   {
     name: 'Hệ thống',

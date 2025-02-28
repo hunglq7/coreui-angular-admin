@@ -25,6 +25,11 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./views/Toidien/routes').then((m) => m.routes),
       },
+      {
+        path: 'mayxuc',
+        loadChildren: () =>
+          import('./views/mayxuc/routes').then((m) => m.routes),
+      },
     ],
   },
   {

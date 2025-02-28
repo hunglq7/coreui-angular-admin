@@ -44,7 +44,7 @@
                     @for (item of dataSource ; track $index) {
                     <tr>
                       <th scope="row">{{ $index + 1 }}</th>
-                      <td>{{ item.tenToiTruc }}</td>
+                      <td>{{ item.tenMayXuc }}</td>
                       <td>{{ item.noiDung }}</td>
                       <td>{{ item.donViTinh }}</td>
                       <td>{{ item.thongSo }}</td>
@@ -130,14 +130,14 @@
         <c-col md="12">
           <label cLabel for="validationCustom04">Thiết bị</label>
           <select
-            [(ngModel)]="entity.danhmuctoitrucId"
+            [(ngModel)]="entity.mayXucId"
             formControlName="danhmuctoitrucId"
             cSelect
             id="validationCustom04"
             required
           >
             <option value="">Chọn thiết bị...</option>
-            @for (item of dsDanhmucToidien; track $index) {
+            @for (item of dsDanhmucMayxuc; track $index) {
             <option value="{{ item.id }}">{{ item.tenThietBi }}</option>
             }
           </select>
