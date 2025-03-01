@@ -14,7 +14,6 @@ import {
   ButtonDirective,
   ModalBodyComponent,
   ModalComponent,
-  ModalFooterComponent,
   ModalHeaderComponent,
   ModalTitleDirective,
   ThemeDirective,
@@ -60,7 +59,7 @@ export interface TongHopMayXuc {
   ghiChu: string;
 }
 
-export interface TongHopMayXucEdit {
+export interface TonghopMayxucDetail {
   id: number;
   mayXucId: number;
   maQuanLy: string;
@@ -92,7 +91,6 @@ export interface TongHopMayXucEdit {
     ThemeDirective,
     ButtonCloseDirective,
     ModalBodyComponent,
-    ModalFooterComponent,
     ButtonDirective,
     NgTemplateOutlet,
     RowComponent,
@@ -105,9 +103,6 @@ export interface TongHopMayXucEdit {
     DropdownModule,
     TableDirective,
     SharedModule,
-
-    // Tab
-
     CardBodyComponent,
     CardComponent,
     RowComponent,
@@ -134,13 +129,14 @@ export class TonghopmayxucComponent implements OnInit {
   pageDisplay = 10;
   filterKeyword = '';
   dataMayxucDetail: TongHopMayXuc[] = [];
-  entity!: TongHopMayXucEdit;
+  tonghopmayxucDetail!: TonghopMayxucDetail;
   dsMayxuc: any[] = [];
   dsDonvi: any[] = [];
   dsLoai: any[] = [];
+  Tieude: string = 'CHuyền từ component tra';
   Form!: FormGroup;
   Id!: Number;
-  themoi: boolean = false;
+  public themoi: boolean = false;
   ngOnInit(): void {
     this.loadTonghopMayxuc();
     this.getDataDonvi();
@@ -190,8 +186,9 @@ export class TonghopmayxucComponent implements OnInit {
 
   loadTonghopMayxucDetail() {
     this.dataService.getById('/api/Tonghopmayxuc/' + this.Id).subscribe({
-      next: (data: TongHopMayXucEdit) => {
-        this.entity = data;
+      next: (data: TonghopMayxucDetail) => {
+        this.tonghopmayxucDetail = data;
+        alert(JSON.stringify(this.tonghopmayxucDetail));
         var myDate = new Date(data.ngayLap);
         var myDateString;
         myDateString =
@@ -200,10 +197,7 @@ export class TonghopmayxucComponent implements OnInit {
           ('0' + (myDate.getMonth() + 1)).slice(-2) +
           '-' +
           ('0' + myDate.getDate()).slice(-2);
-        this.entity.ngayLap = myDateString;
-      },
-      error: (err) => {
-        alert(err);
+        this.tonghopmayxucDetail.ngayLap = myDateString;
       },
     });
   }
@@ -216,8 +210,8 @@ export class TonghopmayxucComponent implements OnInit {
     });
   }
 
-  private loadFormData(mayxuc: TongHopMayXucEdit) {
-    this.entity = mayxuc;
+  private loadFormData(mayxuc: TonghopMayxucDetail) {
+    this.tonghopmayxucDetail = mayxuc;
     this.Form.setValue({
       id: mayxuc.id,
       maQuanLy: mayxuc.maQuanLy,
@@ -333,17 +327,19 @@ export class TonghopmayxucComponent implements OnInit {
         },
       });
     } else {
-      this.dataService.put('/api/Tonghopmayxuc', this.Form.value).subscribe({
-        next: () => {
-          this.loadTonghopMayxuc();
-          this.toastr.success('Lưu dữ liệu thành công', 'Success');
-          this.liveDemoVisible = !this.liveDemoVisible;
-          this.Form.reset();
-        },
-        error: () => {
-          this.toastr.error('Lưu dữ liệu thất bại', 'Error');
-        },
-      });
+      this.dataService
+        .put('/api/Tonghopmayxuc/update', this.Form.value)
+        .subscribe({
+          next: () => {
+            this.loadTonghopMayxuc();
+            this.toastr.success('Lưu dữ liệu thành công', 'Success');
+            this.liveDemoVisible = !this.liveDemoVisible;
+            this.Form.reset();
+          },
+          error: () => {
+            this.toastr.error('Lưu dữ liệu thất bại', 'Error');
+          },
+        });
     }
   }
 

@@ -10,17 +10,10 @@
             <c-row>
               <c-col sm="4">
                 <c-input-group>
-                  <input
-                    [(ngModel)]="filterKeyword"
-                    placeholder="Nhập từ cần tìm..."
-                    aria-describedby="inputGroupPrepend"
-                    cFormControl
-                    id="validationCustomUsername"
-                    type="text"
-                  />
+                  <input [(ngModel)]="filterKeyword" placeholder="Nhập từ cần tìm..."
+                    aria-describedby="inputGroupPrepend" cFormControl id="validationCustomUsername" type="text" />
                   <span>
-                    <button cButton (click)="loadData()">Tìm</button></span
-                  >
+                    <button cButton (click)="loadData()">Tìm</button></span>
                 </c-input-group>
               </c-col>
               <c-col sm="8">
@@ -49,20 +42,10 @@
                       <td>{{ item.donViTinh }}</td>
                       <td>{{ item.thongSo }}</td>
                       <td>
-                        <button
-                          (click)="onEdit(item.id)"
-                          style="margin-right: 5px"
-                          cButton
-                          size="sm"
-                        >
+                        <button (click)="onEdit(item.id)" style="margin-right: 5px" cButton size="sm">
                           Sửa
                         </button>
-                        <button
-                          (click)="onDelete(item.id)"
-                          cButton
-                          color="danger"
-                          size="sm"
-                        >
+                        <button (click)="onDelete(item.id)" cButton color="danger" size="sm">
                           Xóa
                         </button>
                       </td>
@@ -73,18 +56,9 @@
               </c-col>
             </c-row>
             <div class="d-flex justify-content-center">
-              <pagination
-                [boundaryLinks]="true"
-                [itemsPerPage]="pageSize"
-                (pageChanged)="pageChanged($event)"
-                [totalItems]="totalRow"
-                [(ngModel)]="pageIndex"
-                class="pagination-sm"
-                previousText="&lsaquo;"
-                nextText="&rsaquo;"
-                firstText="&laquo;"
-                lastText="&raquo;"
-              ></pagination>
+              <pagination [boundaryLinks]="true" [itemsPerPage]="pageSize" (pageChanged)="pageChanged($event)"
+                [totalItems]="totalRow" [(ngModel)]="pageIndex" class="pagination-sm" previousText="&lsaquo;"
+                nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
             </div>
           </c-card-body>
         </c-card>
@@ -96,46 +70,23 @@
 <!-- Model -->
 <ng-template #liveDemo>
   <button (click)="onThemmoi()" cButton>Thêm mới</button>
-  <c-modal
-    id="liveDemoModal"
-    size="xl"
-    [visible]="liveDemoVisible"
-    (visibleChange)="handleLiveDemoChange($event)"
-  >
+  <c-modal id="liveDemoModal" size="xl" [visible]="liveDemoVisible" (visibleChange)="handleLiveDemoChange($event)">
     <c-modal-header>
       <h5 cModalTitle>{{ title }}</h5>
       <button (click)="onClode()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
-      <form
-        [formGroup]="Form"
-        #customStylesForm="ngForm"
-        (ngSubmit)="save()"
-        [validated]="customStylesValidated"
-        cForm
-        class="row g-3 needs-validation"
-      >
+      <form [formGroup]="Form" #customStylesForm="ngForm" (ngSubmit)="save()" [validated]="customStylesValidated" cForm
+        class="row g-3 needs-validation">
         <div>
-          <input
-            hidden="true"
-            [(ngModel)]="entity.id"
-            formControlName="id"
-            cFormControl
-            id="validationCustom01"
-            type="number"
-            value="Mark"
-          />
+          <input hidden="true" [(ngModel)]="entity.id" formControlName="id" cFormControl id="validationCustom01"
+            type="number" value="Mark" />
         </div>
 
         <c-col md="12">
           <label cLabel for="validationCustom04">Thiết bị</label>
-          <select
-            [(ngModel)]="entity.mayXucId"
-            formControlName="danhmuctoitrucId"
-            cSelect
-            id="validationCustom04"
-            required
-          >
+          <select [(ngModel)]="entity.mayXucId" formControlName="danhmuctoitrucId" cSelect id="validationCustom04"
+            required>
             <option value="">Chọn thiết bị...</option>
             @for (item of dsDanhmucMayxuc; track $index) {
             <option value="{{ item.id }}">{{ item.tenThietBi }}</option>
@@ -146,40 +97,22 @@
 
         <c-col md="12">
           <label cLabel for="validationCustom03">Thông số kỹ thuật</label>
-          <input
-            [(ngModel)]="entity.noiDung"
-            formControlName="noiDung"
-            cFormControl
-            id="validationCustom03"
-            required
-            type="text"
-          />
+          <input [(ngModel)]="entity.noiDung" formControlName="noiDung" cFormControl id="validationCustom03" required
+            type="text" />
           <c-form-feedback [valid]="false">Nội dung phải nhập.</c-form-feedback>
         </c-col>
 
         <c-col md="12">
           <label cLabel for="validationCustom03">Đơn vị </label>
-          <input
-            [(ngModel)]="entity.donViTinh"
-            formControlName="donViTinh"
-            cFormControl
-            id="validationCustom03"
-            required
-            type="text"
-          />
+          <input [(ngModel)]="entity.donViTinh" formControlName="donViTinh" cFormControl id="validationCustom03"
+            required type="text" />
           <c-form-feedback [valid]="false">Đơn vị phải nhập.</c-form-feedback>
         </c-col>
 
         <c-col md="12">
           <label cLabel for="validationCustom05">Thông số</label>
-          <input
-            [(ngModel)]="entity.thongSo"
-            formControlName="thongSo"
-            cFormControl
-            id="validationCustom05"
-            required
-            type="text"
-          />
+          <input [(ngModel)]="entity.thongSo" formControlName="thongSo" cFormControl id="validationCustom05" required
+            type="text" />
           <c-form-feedback [valid]="false">Thông số phải nhập.</c-form-feedback>
         </c-col>
 

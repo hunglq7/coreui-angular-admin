@@ -13,14 +13,7 @@ import {
 import { DataService } from '../../../core/services/data.service';
 import { AgGridAngular } from 'ag-grid-angular';
 
-import {
-  RowComponent,
-  ColComponent,
-  TextColorDirective,
-  CardComponent,
-  CardHeaderComponent,
-  CardBodyComponent,
-} from '@coreui/angular';
+import { RowComponent, ColComponent } from '@coreui/angular';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 ModuleRegistry.registerModules([AllCommunityModule, RowSelectionModule]);
 
@@ -36,25 +29,17 @@ export interface NhatkymayxucDetail {
 
 @Component({
   selector: 'app-nhatkymayxuc-tab',
-  imports: [
-    RowComponent,
-    ColComponent,
-    TextColorDirective,
-    CardComponent,
-    CardHeaderComponent,
-    CardBodyComponent,
-    ButtonDirective,
-    AgGridAngular,
-  ],
+  imports: [RowComponent, ColComponent, ButtonDirective, AgGridAngular],
   templateUrl: './nhatkymayxuc-tab.component.html',
   styleUrl: './nhatkymayxuc-tab.component.scss',
 })
 export class NhatkymayxucTabComponent implements OnInit {
   @Input() TonghopmayxucDetail: any;
+  @Input() Tieude: string = '';
   private gridApi!: GridApi<NhatkymayxucDetail>;
   tenPhong: any[] = [];
   dsDonvi: any[] = [];
-  nhatkymayxucDetail: NhatkymayxucDetail[] = [];
+  rowData: NhatkymayxucDetail[] = [];
   tonghopmayxucId!: number;
 
   constructor(
@@ -63,6 +48,7 @@ export class NhatkymayxucTabComponent implements OnInit {
     private dialog: MatDialog
   ) {}
   ngOnInit(): void {
+    alert(JSON.stringify(this.TonghopmayxucDetail));
     this.getDetailById();
   }
 
@@ -108,17 +94,11 @@ export class NhatkymayxucTabComponent implements OnInit {
       field: 'ngaythang',
       headerName: 'Ngày sử dụng',
       editable: true,
-      headerCheckboxSelection: true,
-      checkboxSelection: true,
       cellEditorPopup: true,
     },
     {
       field: 'donVi',
       headerName: 'Đơn vị',
-      cellEditor: 'agSelectCellEditor',
-      cellEditorParams: {
-        values: this.tenPhong,
-      },
       editable: true,
       cellEditorPopup: true,
     },
@@ -148,7 +128,6 @@ export class NhatkymayxucTabComponent implements OnInit {
           resul.push(n.tenPhong);
         });
         this.tenPhong = resul;
-        console.log(this.tenPhong);
       },
       error: (eror) => {
         alert(eror);
@@ -158,15 +137,57 @@ export class NhatkymayxucTabComponent implements OnInit {
 
   getDetailById() {
     this.tonghopmayxucId = this.TonghopmayxucDetail.id;
+
     this.dataService
       .getById('/api/Nhatkymayxuc/DatailById/' + this.tonghopmayxucId)
       .subscribe({
         next: (response) => {
-          this.nhatkymayxucDetail = response;
-          console.log('Nhật ký' + this.nhatkymayxucDetail);
+          this.rowData = response;
         },
         error: () => {
           this.toastr.error('Lấy dữ liệu thất bại', 'Error');
+        },
+      });
+  }
+
+  onDelete() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        name: 'Bán có muốn xóa bản ghi này?',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        const selectedRows = this.gridApi.getSelectedRows();
+        this.dataService.delete('/api/Nhatkymayxuc/' + selectedRows).subscribe({
+          next: () => {
+            this.getDetailById();
+            this.toastr.success('Xóa dữ liệu thành công', 'Success');
+          },
+          error: () => {
+            this.toastr.error('Xóa dữ liệu thất bại', 'Error');
+          },
+        });
+      }
+    });
+  }
+
+  save() {
+    const selectedRows = this.gridApi.getSelectedRows();
+
+    this.dataService
+      .put('/api/Nhatkymayxuc/UpdateMultiple', selectedRows)
+      .subscribe({
+        next: (data: any) => {
+          this.getDetailById();
+          this.toastr.success(
+            'Thêm thành công ' + data + ' bản ghi',
+            'Success'
+          );
+        },
+        error: () => {
+          this.toastr.warning('Phải chọn danh sách cần lưu ', 'Warning');
         },
       });
   }

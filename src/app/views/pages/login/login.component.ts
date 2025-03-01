@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 import {
   FormBuilder,
   FormGroup,
@@ -55,7 +56,11 @@ export class LoginComponent implements OnInit {
   message!: string;
   loginSubscription!: Subscription;
 
-  constructor(private router: Router, private authService: AuthService) {
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private toastr: ToastrService
+  ) {
     this.initFormBuilder();
   }
   ngOnInit() {}
@@ -70,7 +75,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['dashboard']);
         },
         error: () => {
-          alert('Tên hoặc mật khẩu không đúng');
+          this.toastr.error('Tên đăng nhập hoặc mật khẩu không đúng');
         },
       });
   }
