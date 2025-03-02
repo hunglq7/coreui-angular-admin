@@ -1,0 +1,20 @@
+<div class="container-fluid">
+  <table class="table table-bordered table-hover">
+    <thead class="bg-secondary">
+      <tr>
+        <th>Nội dung</th>
+        <th>Đơn vị tính</th>
+        <th>Thông số</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(item of items ;track $index){
+      <tr>
+        <td>{{ item.noiDung }}</td>
+        <td>{{ item.donViTinh }}</td>
+        <td>{{ item.thongSo }}</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>

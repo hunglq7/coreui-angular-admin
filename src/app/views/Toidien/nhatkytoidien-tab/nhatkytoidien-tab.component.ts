@@ -15,9 +15,9 @@ import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 
 ModuleRegistry.registerModules([AllCommunityModule, RowSelectionModule]);
 
-export interface NhatkymayxucDetail {
+export interface Nhatkytoitruc {
   id: number;
-  tonghopmayxucId: number;
+  tonghoptoitrucId: number;
   ngaythang: string;
   donVi: string;
   viTri: string;
@@ -26,27 +26,26 @@ export interface NhatkymayxucDetail {
 }
 
 @Component({
-  selector: 'app-nhatkymayxuc-tab',
+  selector: 'app-nhatkytoidien-tab',
   imports: [RowComponent, ColComponent, ButtonDirective, AgGridAngular],
-  templateUrl: './nhatkymayxuc-tab.component.html',
-  styleUrl: './nhatkymayxuc-tab.component.scss',
+  templateUrl: './nhatkytoidien-tab.component.html',
+  styleUrl: './nhatkytoidien-tab.component.scss',
 })
-export class NhatkymayxucTabComponent implements OnChanges {
-  @Input('TonghopmayxucDetail') TonghopmayxucDetail: any;
-  private gridApi!: GridApi<NhatkymayxucDetail>;
-  tenPhong: any[] = [];
-  dsDonvi: any[] = [];
-  rowData: NhatkymayxucDetail[] = [];
-  tonghopmayxucId!: number;
+export class NhatkytoidienTabComponent implements OnChanges {
+  @Input('TonghoptoitrucDetail') TonghoptoitrucDetail: any;
+  private gridApi!: GridApi<Nhatkytoitruc>;
+  rowData: Nhatkytoitruc[] = [];
+  tonghoptoitrucId!: number;
   entity: any;
   constructor(
     private dataService: DataService,
     private toastr: ToastrService
   ) {}
+
   ngOnChanges(changes: SimpleChanges): void {
-    this.entity = changes['TonghopmayxucDetail'].currentValue;
-    this.tonghopmayxucId = this.entity.id;
-    if (this.tonghopmayxucId > 0) {
+    this.entity = changes['TonghoptoitrucDetail'].currentValue;
+    this.tonghoptoitrucId = this.entity.id;
+    if (this.tonghoptoitrucId > 0) {
       this.getDataDetailById();
     }
   }
@@ -59,15 +58,16 @@ export class NhatkymayxucTabComponent implements OnChanges {
     minWith: 100,
     minHight: 50,
   };
-  onGridReady(params: GridReadyEvent<NhatkymayxucDetail>) {
+  onGridReady(params: GridReadyEvent<Nhatkytoitruc>) {
     this.gridApi = params.api;
   }
+
   onAddRow() {
     this.gridApi.applyTransaction({
       add: [
         {
           id: 0,
-          tonghopmayxucId: this.tonghopmayxucId,
+          tonghoptoitrucId: this.tonghoptoitrucId,
           ngaythang: '',
           donVi: '',
           viTri: '',
@@ -86,7 +86,7 @@ export class NhatkymayxucTabComponent implements OnChanges {
       hide: true,
     },
     {
-      field: 'tonghopmayxucId',
+      field: 'tonghoptoitrucId',
       hide: true,
     },
     {
@@ -118,25 +118,9 @@ export class NhatkymayxucTabComponent implements OnChanges {
     { field: 'ghiChu', headerName: 'Ghi trú' },
   ];
 
-  // getDataDonvi() {
-  //   this.dataService.get('/api/Phongban').subscribe({
-  //     next: (data: any) => {
-  //       this.dsDonvi = data;
-  //       let resul: any[] = [];
-  //       this.dsDonvi.forEach(function (n) {
-  //         resul.push(n.tenPhong);
-  //       });
-  //       this.tenPhong = resul;
-  //     },
-  //     error: (eror) => {
-  //       alert(eror);
-  //     },
-  //   });
-  // }
-
   getDataDetailById() {
     this.dataService
-      .getById('/api/Nhatkymayxuc/DatailById/' + this.tonghopmayxucId)
+      .getById('/api/NhatkyTonghoptoitruc/' + this.tonghoptoitrucId)
       .subscribe({
         next: (response) => {
           this.rowData = response;
@@ -145,9 +129,10 @@ export class NhatkymayxucTabComponent implements OnChanges {
   }
 
   onDelete() {
+    debugger;
     const selectedRows = this.gridApi.getSelectedRows();
     this.dataService
-      .post('/api/Nhatkymayxuc/DeleteMultipale', selectedRows)
+      .post('/api/NhatkyTonghoptoitruc/DeleteMultipale', selectedRows)
       .subscribe({
         next: () => {
           this.getDataDetailById();
@@ -162,7 +147,7 @@ export class NhatkymayxucTabComponent implements OnChanges {
   save() {
     const selectedRows = this.gridApi.getSelectedRows();
     this.dataService
-      .put('/api/Nhatkymayxuc/UpdateMultiple', selectedRows)
+      .put('/api/NhatkyTonghoptoitruc/UpdateMultiple', selectedRows)
       .subscribe({
         next: (data: any) => {
           this.getDataDetailById();

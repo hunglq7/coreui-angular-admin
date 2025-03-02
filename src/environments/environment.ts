@@ -19,7 +19,7 @@ export const environment = {
   baseUrl: {
     host: 'http://localhost:5252/api',
   },
-  BASE_API: 'http://192.168.10.8:5005',
+  BASE_API: 'http://192.168.1.253:5005',
 };
 
 /*

@@ -1,9 +1,10 @@
-<h2 mat-dialog-title> Thông báo</h2>
-<mat-dialog-content>
-    <p style="color: red;">{{data.name}}</p>
-
-</mat-dialog-content>
-<mat-dialog-actions>
+<div style="z-index: 100">
+  <h2 mat-dialog-title>Thông báo</h2>
+  <mat-dialog-content>
+    <p style="color: red">{{ data.name }}</p>
+  </mat-dialog-content>
+  <mat-dialog-actions>
     <button mat-button (click)="onNoClick()">No Thanks</button>
     <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Ok</button>
-</mat-dialog-actions>
+  </mat-dialog-actions>
+</div>

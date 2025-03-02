@@ -1,5 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule, NgTemplateOutlet } from '@angular/common';
+import { NhatkytoidienTabComponent } from '../nhatkytoidien-tab/nhatkytoidien-tab.component';
+import { ThongsotoidienTabComponent } from '../thongsotoidien-tab/thongsotoidien-tab.component';
 import {
   ReactiveFormsModule,
   FormsModule,
@@ -91,7 +93,6 @@ export interface TonghoptoitrucDetail {
     ButtonCloseDirective,
     ModalBodyComponent,
     ModalFooterComponent,
-    ButtonDirective,
     NgTemplateOutlet,
     RowComponent,
     ColComponent,
@@ -103,18 +104,14 @@ export interface TonghoptoitrucDetail {
     DropdownModule,
     TableDirective,
     SharedModule,
-
-    // Tab
-
-    CardBodyComponent,
-    CardComponent,
-    RowComponent,
     TabDirective,
     TabPanelComponent,
     TabsComponent,
     TabsContentComponent,
     TabsListComponent,
     IconDirective,
+    NhatkytoidienTabComponent,
+    ThongsotoidienTabComponent,
   ],
 
   templateUrl: './capnhattoidien.component.html',
@@ -161,7 +158,7 @@ export class CapnhattoidienComponent implements OnInit {
 
   initFormBuilder() {
     this.Form = new FormGroup({
-      id: new FormControl(''),
+      id: new FormControl(),
       maQuanLy: new FormControl('', [Validators.required]),
       thietbiId: new FormControl('', [Validators.required]),
       donViSuDungId: new FormControl('', [Validators.required]),
@@ -187,9 +184,6 @@ export class CapnhattoidienComponent implements OnInit {
           '-' +
           ('0' + myDate.getDate()).slice(-2);
         this.toitrucDetail.ngayLap = myDateString;
-      },
-      error: (err) => {
-        alert(err);
       },
     });
   }
@@ -255,7 +249,7 @@ export class CapnhattoidienComponent implements OnInit {
     this.loadTonghoptoitruc();
   }
   onThemmoi() {
-    this.title = 'Thêm mới tời điện';
+    this.title = 'Thêm mới thiết bị';
     this.themoi = true;
     this.Id = 0;
     this.themoiTonghoptoitrucDetail();
@@ -271,7 +265,7 @@ export class CapnhattoidienComponent implements OnInit {
     this.themoi = false;
     this.Id = id;
     this.loadTonghoptoitrucDetail();
-    this.title = 'Sửa tời điện';
+    this.title = 'Sửa thiết bị';
     this.liveDemoVisible = !this.liveDemoVisible;
   }
 
@@ -282,7 +276,7 @@ export class CapnhattoidienComponent implements OnInit {
         this.loadTonghoptoitruc();
         this.toastr.success('Xóa dữ liệu thành công', 'Success');
       },
-      error: (err) => {
+      error: () => {
         this.toastr.error('Xóa dữ liệu thất bại', 'Error');
       },
     });

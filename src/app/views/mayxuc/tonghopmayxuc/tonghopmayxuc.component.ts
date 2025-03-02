@@ -3,6 +3,7 @@ import { CommonModule, NgTemplateOutlet } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/utils/dialogs/confirm-dialog/confirm-dialog.component';
 import { NhatkymayxucTabComponent } from '../nhatkymayxuc-tab/nhatkymayxuc-tab.component';
+import { ThongsomayxucTabComponent } from '../thongsomayxuc-tab/thongsomayxuc-tab.component';
 import {
   ReactiveFormsModule,
   FormsModule,
@@ -33,15 +34,12 @@ import {
   FormSelectDirective,
   DropdownModule,
   SharedModule,
-} from '@coreui/angular';
-
-// Tab
-import {
   TabPanelComponent,
   TabsComponent,
   TabsContentComponent,
   TabsListComponent,
 } from '@coreui/angular';
+
 import { IconDirective } from '@coreui/icons-angular';
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
@@ -91,7 +89,6 @@ export interface TonghopMayxucDetail {
     ThemeDirective,
     ButtonCloseDirective,
     ModalBodyComponent,
-    ButtonDirective,
     NgTemplateOutlet,
     RowComponent,
     ColComponent,
@@ -103,9 +100,6 @@ export interface TonghopMayxucDetail {
     DropdownModule,
     TableDirective,
     SharedModule,
-    CardBodyComponent,
-    CardComponent,
-    RowComponent,
     TabDirective,
     TabPanelComponent,
     TabsComponent,
@@ -113,6 +107,7 @@ export interface TonghopMayxucDetail {
     TabsListComponent,
     IconDirective,
     NhatkymayxucTabComponent,
+    ThongsomayxucTabComponent,
   ],
   templateUrl: './tonghopmayxuc.component.html',
   styleUrl: './tonghopmayxuc.component.scss',
@@ -133,10 +128,10 @@ export class TonghopmayxucComponent implements OnInit {
   dsMayxuc: any[] = [];
   dsDonvi: any[] = [];
   dsLoai: any[] = [];
-  Tieude: string = 'CHuyền từ component tra';
   Form!: FormGroup;
   Id!: Number;
   public themoi: boolean = false;
+
   ngOnInit(): void {
     this.loadTonghopMayxuc();
     this.getDataDonvi();
@@ -188,7 +183,6 @@ export class TonghopmayxucComponent implements OnInit {
     this.dataService.getById('/api/Tonghopmayxuc/' + this.Id).subscribe({
       next: (data: TonghopMayxucDetail) => {
         this.tonghopmayxucDetail = data;
-        alert(JSON.stringify(this.tonghopmayxucDetail));
         var myDate = new Date(data.ngayLap);
         var myDateString;
         myDateString =
@@ -205,7 +199,17 @@ export class TonghopmayxucComponent implements OnInit {
   addNewTonghopMayxucDetail() {
     this.dataService.getById('/api/Tonghopmayxuc/' + 0).subscribe({
       next: (data) => {
-        this.loadFormData(data);
+        this.tonghopmayxucDetail = data;
+        var myDate = new Date(data.ngayLap);
+        var myDateString;
+        myDateString =
+          myDate.getFullYear() +
+          '-' +
+          ('0' + (myDate.getMonth() + 1)).slice(-2) +
+          '-' +
+          ('0' + myDate.getDate()).slice(-2);
+        this.tonghopmayxucDetail.ngayLap = myDateString;
+        this.loadFormData(this.tonghopmayxucDetail);
       },
     });
   }
@@ -266,7 +270,7 @@ export class TonghopmayxucComponent implements OnInit {
   }
 
   onThemmoi() {
-    this.title = 'Thêm mới tời điện';
+    this.title = 'Thêm mới thiết bị';
     this.themoi = true;
     this.Id = 0;
     this.addNewTonghopMayxucDetail();
@@ -282,7 +286,7 @@ export class TonghopmayxucComponent implements OnInit {
     this.themoi = false;
     this.Id = id;
     this.loadTonghopMayxucDetail();
-    this.title = 'Sửa tời điện';
+    this.title = 'Cập nhật thiết bị';
     this.liveDemoVisible = !this.liveDemoVisible;
   }
 

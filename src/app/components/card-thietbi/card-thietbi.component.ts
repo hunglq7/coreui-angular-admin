@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from '../../core/services/data.service';
 import {
   CardModule,
   RowComponent,
@@ -23,4 +24,27 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './card-thietbi.component.html',
   styleUrl: './card-thietbi.component.scss',
 })
-export class CardThietbiComponent {}
+export class CardThietbiComponent implements OnInit {
+  sumTonghopmayxuc!: number;
+  sumTonghoptoitruc!: number;
+  constructor(private dataService: DataService) {}
+  ngOnInit(): void {
+    this.GetSumTonghopmayxuc();
+    this.GetSumTonghoptoitruc();
+  }
+  GetSumTonghopmayxuc() {
+    this.dataService.get('/api/Tonghopmayxuc/sumTonghopmayxuc').subscribe({
+      next: (data: any) => {
+        this.sumTonghopmayxuc = data;
+      },
+    });
+  }
+
+  GetSumTonghoptoitruc() {
+    this.dataService.get('/api/Tonghoptoitruc/sumTonghoptoitruc').subscribe({
+      next: (data: any) => {
+        this.sumTonghoptoitruc = data;
+      },
+    });
+  }
+}

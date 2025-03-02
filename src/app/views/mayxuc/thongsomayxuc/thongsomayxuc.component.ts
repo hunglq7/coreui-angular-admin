@@ -73,7 +73,6 @@ export interface ThongsokythuatmayxucEdit {
     ButtonCloseDirective,
     ModalBodyComponent,
     ModalFooterComponent,
-    ButtonDirective,
     NgTemplateOutlet,
     RowComponent,
     ColComponent,
@@ -85,11 +84,6 @@ export interface ThongsokythuatmayxucEdit {
     DropdownModule,
     TableDirective,
     SharedModule,
-
-    // Tab
-    CardBodyComponent,
-    CardComponent,
-    RowComponent,
   ],
   templateUrl: './thongsomayxuc.component.html',
   styleUrl: './thongsomayxuc.component.scss',
@@ -163,9 +157,6 @@ export class ThongsomayxucComponent implements OnInit {
       next: (data: any) => {
         this.loadFormData(data);
       },
-      error: () => {
-        this.toastr.error('Lấy dữ liệu thất bại', 'Error');
-      },
     });
   }
 
@@ -181,9 +172,6 @@ export class ThongsomayxucComponent implements OnInit {
     this.dataService.get('/api/Thongsokythuatmayxuc').subscribe({
       next: (data: any) => {
         this.dataSource = data;
-      },
-      error: () => {
-        this.toastr.error('Lấy dữ liệu thất bại', 'Error');
       },
     });
   }

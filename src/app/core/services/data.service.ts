@@ -39,7 +39,6 @@ export class DataService {
       })
       .pipe(
         map((data: any) => {
-          console.log(data);
           return data;
         })
       );
