@@ -231,6 +231,10 @@
                           required
                           type="text"
                         />
+                        @if( Form.controls['viTriLapDat'].hasError('required')){
+                        <small color="danger">Vị trí lắp đặt phải nhập</small>
+
+                        }
                         <c-form-feedback [valid]="false"
                           >Vị trí lắp đặt phải nhập.</c-form-feedback
                         >
@@ -313,6 +317,7 @@
                       </c-col>
                       <c-col xs="12">
                         <button
+                          [disabled]="customStylesForm.form.valid"
                           cButton
                           class="me-1"
                           color="primary"
