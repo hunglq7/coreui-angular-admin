@@ -7,7 +7,7 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cil-speedometer' },
     badge: {
       color: 'info',
-      text: 'NEW',
+      text: 'Home',
     },
   },
 
@@ -52,7 +52,7 @@ export const navItems: INavData[] = [
   {
     name: 'Máy xuc',
     url: '/mayxuc',
-    iconComponent: { name: 'cil-cursor' },
+    iconComponent: { name: 'cil-puzzle' },
     children: [
       {
         name: 'Danh mục máy xúc',
@@ -74,7 +74,7 @@ export const navItems: INavData[] = [
   {
     name: 'Biến áp',
     url: '/forms',
-    iconComponent: { name: 'cil-notes' },
+    iconComponent: { name: 'cil-puzzle' },
     children: [
       {
         name: 'Form Control',
@@ -85,12 +85,12 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Rơ le',
-    iconComponent: { name: 'cil-chart-pie' },
+    iconComponent: { name: 'cil-puzzle' },
     url: '/charts',
   },
   {
     name: 'Khởi động từ',
-    iconComponent: { name: 'cil-star' },
+    iconComponent: { name: 'cil-puzzle' },
     url: '/icons',
     children: [
       {
@@ -107,7 +107,7 @@ export const navItems: INavData[] = [
   {
     name: 'Cột thủy lực',
     url: '/notifications',
-    iconComponent: { name: 'cil-bell' },
+    iconComponent: { name: 'cil-puzzle' },
     children: [
       {
         name: 'Alerts',

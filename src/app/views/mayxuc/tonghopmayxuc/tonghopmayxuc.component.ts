@@ -40,7 +40,6 @@ import {
   TabsListComponent,
 } from '@coreui/angular';
 
-import { IconDirective } from '@coreui/icons-angular';
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
@@ -105,7 +104,6 @@ export interface TonghopMayxucDetail {
     TabsComponent,
     TabsContentComponent,
     TabsListComponent,
-    IconDirective,
     NhatkymayxucTabComponent,
     ThongsomayxucTabComponent,
   ],
@@ -270,7 +268,7 @@ export class TonghopmayxucComponent implements OnInit {
   }
 
   onThemmoi() {
-    this.title = 'Thêm mới thiết bị';
+    this.title = 'Thêm máy xúc';
     this.themoi = true;
     this.Id = 0;
     this.addNewTonghopMayxucDetail();
@@ -286,7 +284,7 @@ export class TonghopmayxucComponent implements OnInit {
     this.themoi = false;
     this.Id = id;
     this.loadTonghopMayxucDetail();
-    this.title = 'Cập nhật thiết bị';
+    this.title = 'Sửa máy xúc';
     this.liveDemoVisible = !this.liveDemoVisible;
   }
 

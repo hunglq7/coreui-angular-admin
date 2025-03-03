@@ -43,7 +43,7 @@ import {
   TabsContentComponent,
   TabsListComponent,
 } from '@coreui/angular';
-import { IconDirective } from '@coreui/icons-angular';
+
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
@@ -109,7 +109,6 @@ export interface TonghoptoitrucDetail {
     TabsComponent,
     TabsContentComponent,
     TabsListComponent,
-    IconDirective,
     NhatkytoidienTabComponent,
     ThongsotoidienTabComponent,
   ],
@@ -191,7 +190,17 @@ export class CapnhattoidienComponent implements OnInit {
   themoiTonghoptoitrucDetail() {
     this.dataService.getById('/api/Tonghoptoitruc/' + 0).subscribe({
       next: (data) => {
-        this.loadFormData(data);
+        this.toitrucDetail = data;
+        var myDate = new Date(this.toitrucDetail.ngayLap);
+        var myDateString;
+        myDateString =
+          myDate.getFullYear() +
+          '-' +
+          ('0' + (myDate.getMonth() + 1)).slice(-2) +
+          '-' +
+          ('0' + myDate.getDate()).slice(-2);
+        this.toitrucDetail.ngayLap = myDateString;
+        this.loadFormData(this.toitrucDetail);
       },
     });
   }
@@ -249,7 +258,7 @@ export class CapnhattoidienComponent implements OnInit {
     this.loadTonghoptoitruc();
   }
   onThemmoi() {
-    this.title = 'Thêm mới thiết bị';
+    this.title = 'Thêm tời điện';
     this.themoi = true;
     this.Id = 0;
     this.themoiTonghoptoitrucDetail();
@@ -265,7 +274,7 @@ export class CapnhattoidienComponent implements OnInit {
     this.themoi = false;
     this.Id = id;
     this.loadTonghoptoitrucDetail();
-    this.title = 'Sửa thiết bị';
+    this.title = 'Sửa tời điện';
     this.liveDemoVisible = !this.liveDemoVisible;
   }
 

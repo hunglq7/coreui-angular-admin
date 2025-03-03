@@ -115,7 +115,7 @@ export class NhatkytoidienTabComponent implements OnChanges {
       cellEditor: 'agLargeTextCellEditor',
       cellEditorParams: { maxLength: 10000 },
     },
-    { field: 'ghiChu', headerName: 'Ghi trú' },
+    { field: 'ghiChu', headerName: 'Ghi chú' },
   ];
 
   getDataDetailById() {
