@@ -14,7 +14,6 @@ import {
   ButtonDirective,
   ModalBodyComponent,
   ModalComponent,
-  ModalFooterComponent,
   ModalHeaderComponent,
   ModalTitleDirective,
   ThemeDirective,
@@ -47,7 +46,7 @@ import {
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
-
+import * as XLSX from 'xlsx';
 export interface Tonghoptoitruc {
   id: number;
   maQuanLy: string;
@@ -92,7 +91,6 @@ export interface TonghoptoitrucDetail {
     ThemeDirective,
     ButtonCloseDirective,
     ModalBodyComponent,
-    ModalFooterComponent,
     NgTemplateOutlet,
     RowComponent,
     ColComponent,
@@ -127,6 +125,8 @@ export class CapnhattoidienComponent implements OnInit {
   pageSize = 10;
   pageDisplay = 10;
   filterKeyword = '';
+  keywordThietbi: number = 0;
+  keywordDonvi: number = 0;
   toitrucs: Tonghoptoitruc[] = [];
   toitrucDetail!: TonghoptoitrucDetail;
   dsToitruc: any[] = [];
@@ -239,8 +239,10 @@ export class CapnhattoidienComponent implements OnInit {
   loadTonghoptoitruc() {
     this.dataService
       .get(
-        '/api/Tonghoptoitruc/paging?Keyword=' +
-          this.filterKeyword +
+        '/api/Tonghoptoitruc/paging?thietbiId=' +
+          this.keywordThietbi +
+          '&donviId=' +
+          this.keywordDonvi +
           '&PageIndex=' +
           this.pageIndex +
           '&PageSize=' +
@@ -337,5 +339,12 @@ export class CapnhattoidienComponent implements OnInit {
 
   handleActiveItemChange(value: string | number | undefined) {
     this.activeItem.set(<number>value);
+  }
+
+  exportexcel() {
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.toitrucs);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, 'Tonghoptoidien.xlsx');
   }
 }

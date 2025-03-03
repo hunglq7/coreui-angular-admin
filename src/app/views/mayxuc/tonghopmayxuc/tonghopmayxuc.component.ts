@@ -43,6 +43,7 @@ import {
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
+import * as XLSX from 'xlsx';
 export interface TongHopMayXuc {
   id: number;
   maQuanLy: string;
@@ -120,7 +121,8 @@ export class TonghopmayxucComponent implements OnInit {
   pageIndex = 1;
   pageSize = 10;
   pageDisplay = 10;
-  filterKeyword = '';
+  keywordThietbi: number = 0;
+  keywordDonvi: number = 0;
   dataMayxucDetail: TongHopMayXuc[] = [];
   tonghopmayxucDetail!: TonghopMayxucDetail;
   dsMayxuc: any[] = [];
@@ -247,8 +249,10 @@ export class TonghopmayxucComponent implements OnInit {
   loadTonghopMayxuc() {
     this.dataService
       .get(
-        '/api/Tonghopmayxuc/paging?Keyword=' +
-          this.filterKeyword +
+        '/api/Tonghopmayxuc/paging?thietbiId=' +
+          this.keywordThietbi +
+          '&donviId=' +
+          this.keywordDonvi +
           '&PageIndex=' +
           this.pageIndex +
           '&PageSize=' +
@@ -359,5 +363,12 @@ export class TonghopmayxucComponent implements OnInit {
 
   handleActiveItemChange(value: string | number | undefined) {
     this.activeItem.set(<number>value);
+  }
+
+  exportexcel() {
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.dataMayxucDetail);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, 'Tonghopmayxuc.xlsx');
   }
 }
