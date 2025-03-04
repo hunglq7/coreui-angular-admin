@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { CommonModule, NgTemplateOutlet } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { NhatkytoidienTabComponent } from '../nhatkytoidien-tab/nhatkytoidien-tab.component';
 import { ThongsotoidienTabComponent } from '../thongsotoidien-tab/thongsotoidien-tab.component';
 import {
@@ -91,7 +91,7 @@ export interface TonghoptoitrucDetail {
     ThemeDirective,
     ButtonCloseDirective,
     ModalBodyComponent,
-    NgTemplateOutlet,
+
     RowComponent,
     ColComponent,
     TextColorDirective,
