@@ -38,6 +38,8 @@ import {
   TabsComponent,
   TabsContentComponent,
   TabsListComponent,
+  GutterDirective,
+  FormModule,
 } from '@coreui/angular';
 
 import { DataService } from '../../../core/services/data.service';
@@ -89,7 +91,6 @@ export interface TonghopMayxucDetail {
     ThemeDirective,
     ButtonCloseDirective,
     ModalBodyComponent,
-    NgTemplateOutlet,
     RowComponent,
     ColComponent,
     TextColorDirective,
@@ -107,6 +108,8 @@ export interface TonghopMayxucDetail {
     TabsListComponent,
     NhatkymayxucTabComponent,
     ThongsomayxucTabComponent,
+    GutterDirective,
+    FormsModule,
   ],
   templateUrl: './tonghopmayxuc.component.html',
   styleUrl: './tonghopmayxuc.component.scss',

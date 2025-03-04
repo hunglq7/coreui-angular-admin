@@ -29,10 +29,11 @@ import {
   FormLabelDirective,
   FormControlDirective,
   FormFeedbackComponent,
-  InputGroupComponent,
   FormSelectDirective,
   DropdownModule,
   SharedModule,
+  GutterDirective,
+  FormModule,
 } from '@coreui/angular';
 
 // Tab
@@ -82,7 +83,6 @@ export interface TonghoptoitrucDetail {
     FormLabelDirective,
     FormControlDirective,
     FormFeedbackComponent,
-    InputGroupComponent,
     FormSelectDirective,
     ButtonDirective,
     ModalComponent,
@@ -109,6 +109,8 @@ export interface TonghoptoitrucDetail {
     TabsListComponent,
     NhatkytoidienTabComponent,
     ThongsotoidienTabComponent,
+    GutterDirective,
+    FormModule,
   ],
 
   templateUrl: './capnhattoidien.component.html',
