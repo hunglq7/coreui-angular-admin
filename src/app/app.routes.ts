@@ -11,7 +11,7 @@ export const routes: Routes = [
     path: '',
     component: DefaultLayoutComponent,
     data: {
-      title: 'dashboard',
+      title: 'Trang chủ',
     },
     children: [
       {
@@ -29,6 +29,11 @@ export const routes: Routes = [
         path: 'mayxuc',
         loadChildren: () =>
           import('./views/mayxuc/routes').then((m) => m.routes),
+      },
+      {
+        path: 'quatgio',
+        loadChildren: () =>
+          import('./views/quatgio/routes').then((m) => m.routes),
       },
     ],
   },

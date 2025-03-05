@@ -98,7 +98,7 @@ export class ThongsomayxucComponent implements OnInit {
   pageIndex = 1;
   pageSize = 10;
   pageDisplay = 10;
-  filterKeyword = '';
+  keywordThietbi: number = 0;
   dataSource: Thongsokythuatmayxuc[] = [];
   entity!: ThongsokythuatmayxucEdit;
   dsDanhmucMayxuc: any[] = [];
@@ -169,11 +169,24 @@ export class ThongsomayxucComponent implements OnInit {
   }
 
   loadData() {
-    this.dataService.get('/api/Thongsokythuatmayxuc').subscribe({
-      next: (data: any) => {
-        this.dataSource = data;
-      },
-    });
+    debugger;
+    this.dataService
+      .get(
+        '/api/Thongsokythuatmayxuc/paging?thietbiId=' +
+          this.keywordThietbi +
+          '&PageIndex=' +
+          this.pageIndex +
+          '&PageSize=' +
+          this.pageSize
+      )
+      .subscribe({
+        next: (data: any) => {
+          this.dataSource = data.items;
+          this.pageSize = data.pageSize;
+          this.pageIndex = data.pageIndex;
+          this.totalRow = data.totalRecords;
+        },
+      });
   }
 
   handleLiveDemoChange(event: boolean) {

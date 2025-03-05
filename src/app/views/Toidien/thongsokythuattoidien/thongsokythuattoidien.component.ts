@@ -101,9 +101,9 @@ export class ThongsokythuattoidienComponent implements OnInit {
   tooltipValidated = false;
   totalRow!: number;
   pageIndex = 1;
-  pageSize = 10;
+  pageSize = 20;
   pageDisplay = 10;
-  filterKeyword = '';
+  keywordThietbi: number = 0;
   dataSource: Thongsokythuattoitruc[] = [];
   entity!: ThongsokythuattoitrucDetail;
   dsDanhmucToidien: any[] = [];
@@ -258,14 +258,23 @@ export class ThongsokythuattoidienComponent implements OnInit {
     });
   }
   loadData() {
-    this.dataService.get('/api/Thongsokythuattoitruc').subscribe({
-      next: (data: any) => {
-        this.dataSource = data;
-      },
-      error: () => {
-        this.toastr.error('Lấy dữ liệu thất bại', 'Error');
-      },
-    });
+    this.dataService
+      .get(
+        '/api/Thongsokythuattoitruc/paging?thietbiId=' +
+          this.keywordThietbi +
+          '&PageIndex=' +
+          this.pageIndex +
+          '&PageSize=' +
+          this.pageSize
+      )
+      .subscribe({
+        next: (data: any) => {
+          this.dataSource = data.items;
+          this.pageSize = data.pageSize;
+          this.pageIndex = data.pageIndex;
+          this.totalRow = data.totalRecords;
+        },
+      });
   }
 
   handleLiveDemoChange(event: boolean) {

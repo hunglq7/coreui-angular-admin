@@ -10,14 +10,19 @@
             <c-row>
               <c-col sm="4">
                 <c-input-group>
-                  <input
-                    [(ngModel)]="filterKeyword"
-                    placeholder="Nhập từ cần tìm..."
-                    aria-describedby="inputGroupPrepend"
-                    cFormControl
-                    id="validationCustomUsername"
-                    type="text"
-                  />
+                  <select
+                    [(ngModel)]="keywordThietbi"
+                    cSelect
+                    id="keywordThietbi"
+                    required
+                  >
+                    <option value="">Chọn hết...</option>
+                    @for (item of dsDanhmucToidien; track $index) {
+                    <option value="{{ item.id }}">
+                      {{ item.tenThietBi }}
+                    </option>
+                    }
+                  </select>
                   <span>
                     <button cButton (click)="loadData()">Tìm</button></span
                   >
@@ -33,7 +38,6 @@
                 <table [hover]="true" cTable>
                   <thead>
                     <tr>
-                      <th>STT</th>
                       <th scope="col">Thiết bị</th>
                       <th scope="col">Nội dung</th>
                       <th scope="col">Đơn vị tính</th>
@@ -43,7 +47,6 @@
                   <tbody>
                     @for (item of dataSource ; track $index) {
                     <tr>
-                      <th scope="row">{{ $index + 1 }}</th>
                       <td>{{ item.tenToiTruc }}</td>
                       <td>{{ item.noiDung }}</td>
                       <td>{{ item.donViTinh }}</td>

@@ -2,7 +2,7 @@ import { INavData } from '@coreui/angular';
 
 export const navItems: INavData[] = [
   {
-    name: 'Dashboard',
+    name: 'Trang chủ',
     url: '/dashboard',
     iconComponent: { name: 'cil-speedometer' },
     badge: {
@@ -38,13 +38,23 @@ export const navItems: INavData[] = [
     ],
   },
   {
-    name: 'Bơm nước',
-    url: '/base',
+    name: 'Quạt gió',
+    url: '/quatgio',
     iconComponent: { name: 'cil-puzzle' },
     children: [
       {
-        name: 'Accordion',
-        url: '/base/accordion',
+        name: 'Danh mục quạt gió',
+        url: '/quatgio/danhmucquatgio',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Thông số quạt gió',
+        url: '/quatgio/thongsoquatgio',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Cập nhật quạt gió',
+        url: '/quatgio/tonghopquatgio',
         icon: 'nav-icon-bullet',
       },
     ],

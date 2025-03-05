@@ -68,7 +68,6 @@
                 <table [hover]="true" cTable>
                   <thead>
                     <tr>
-                      <th>STT</th>
                       <th scope="col">Mã QL</th>
                       <th scope="col">Thiết bị</th>
                       <th scope="col">Đơn vị</th>
@@ -80,7 +79,6 @@
                   <tbody>
                     @for (item of dataMayxucDetail ; track $index) {
                     <tr>
-                      <th scope="row">{{ $index + 1 }}</th>
                       <td>{{ item.maQuanLy }}</td>
                       <td>{{ item.tenMayXuc }}</td>
                       <td>{{ item.tenPhongBan }}</td>
