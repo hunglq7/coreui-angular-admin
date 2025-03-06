@@ -1,5 +1,5 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { CommonModule, NgTemplateOutlet } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/utils/dialogs/confirm-dialog/confirm-dialog.component';
 import {
@@ -73,7 +73,6 @@ export interface ThongsokythuatmayxucEdit {
     ButtonCloseDirective,
     ModalBodyComponent,
     ModalFooterComponent,
-    NgTemplateOutlet,
     RowComponent,
     ColComponent,
     TextColorDirective,

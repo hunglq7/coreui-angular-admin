@@ -29,7 +29,7 @@
                 </c-input-group>
               </c-col>
               <c-col sm="8">
-                <ng-container *ngTemplateOutlet="liveDemo" />
+                <button (click)="onThemmoi()" cButton>Thêm mới</button>
               </c-col>
             </c-row>
             <hr />
@@ -42,6 +42,7 @@
                       <th scope="col">Nội dung</th>
                       <th scope="col">Đơn vị tính</th>
                       <th scope="col">Thông số</th>
+                      <th scope="col">Hành động</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -97,103 +98,102 @@
 </c-col>
 
 <!-- Model -->
-<ng-template #liveDemo>
-  <button (click)="onThemmoi()" cButton>Thêm mới</button>
-  <c-modal
-    id="liveDemoModal"
-    size="xl"
-    [visible]="liveDemoVisible"
-    (visibleChange)="handleLiveDemoChange($event)"
-  >
-    <c-modal-header>
-      <h5 cModalTitle>{{ title }}</h5>
-      <button (click)="onClode()" cButtonClose></button>
-    </c-modal-header>
-    <c-modal-body>
-      <form
-        [formGroup]="Form"
-        #customStylesForm="ngForm"
-        (ngSubmit)="save()"
-        [validated]="customStylesValidated"
-        cForm
-        class="row g-3 needs-validation"
-      >
-        <div>
-          <input
-            hidden="true"
-            [(ngModel)]="entity.id"
-            formControlName="id"
-            cFormControl
-            id="validationCustom01"
-            type="number"
-            value="Mark"
-          />
-        </div>
 
-        <c-col md="12">
-          <label cLabel for="validationCustom04">Thiết bị</label>
-          <select
-            [(ngModel)]="entity.danhmuctoitrucId"
-            formControlName="danhmuctoitrucId"
-            cSelect
-            id="validationCustom04"
-            required
-          >
-            <option value="">Chọn thiết bị...</option>
-            @for (item of dsDanhmucToidien; track $index) {
-            <option value="{{ item.id }}">{{ item.tenThietBi }}</option>
-            }
-          </select>
-          <c-form-feedback [valid]="false">Thiết bị phải chọn.</c-form-feedback>
-        </c-col>
+<c-modal
+  id="liveDemoModal"
+  backdrop="static"
+  size="xl"
+  [visible]="liveDemoVisible"
+  (visibleChange)="handleLiveDemoChange($event)"
+>
+  <c-modal-header>
+    <h5 cModalTitle>{{ title }}</h5>
+    <button (click)="onClode()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <form
+      [formGroup]="Form"
+      #customStylesForm="ngForm"
+      (ngSubmit)="save()"
+      [validated]="customStylesValidated"
+      cForm
+      class="row g-3 needs-validation"
+    >
+      <div>
+        <input
+          hidden="true"
+          [(ngModel)]="entity.id"
+          formControlName="id"
+          cFormControl
+          id="validationCustom01"
+          type="number"
+          value="Mark"
+        />
+      </div>
 
-        <c-col md="12">
-          <label cLabel for="validationCustom03">Thông số kỹ thuật</label>
-          <input
-            [(ngModel)]="entity.noiDung"
-            formControlName="noiDung"
-            cFormControl
-            id="validationCustom03"
-            required
-            type="text"
-          />
-          <c-form-feedback [valid]="false">Nội dung phải nhập.</c-form-feedback>
-        </c-col>
+      <c-col md="12">
+        <label cLabel for="validationCustom04">Thiết bị</label>
+        <select
+          [(ngModel)]="entity.danhmuctoitrucId"
+          formControlName="danhmuctoitrucId"
+          cSelect
+          id="validationCustom04"
+          required
+        >
+          <option value="">Chọn thiết bị...</option>
+          @for (item of dsDanhmucToidien; track $index) {
+          <option value="{{ item.id }}">{{ item.tenThietBi }}</option>
+          }
+        </select>
+        <c-form-feedback [valid]="false">Thiết bị phải chọn.</c-form-feedback>
+      </c-col>
 
-        <c-col md="12">
-          <label cLabel for="validationCustom03">Đơn vị </label>
-          <input
-            [(ngModel)]="entity.donViTinh"
-            formControlName="donViTinh"
-            cFormControl
-            id="validationCustom03"
-            required
-            type="text"
-          />
-          <c-form-feedback [valid]="false">Đơn vị phải nhập.</c-form-feedback>
-        </c-col>
+      <c-col md="12">
+        <label cLabel for="validationCustom03">Thông số kỹ thuật</label>
+        <input
+          [(ngModel)]="entity.noiDung"
+          formControlName="noiDung"
+          cFormControl
+          id="validationCustom03"
+          required
+          type="text"
+        />
+        <c-form-feedback [valid]="false">Nội dung phải nhập.</c-form-feedback>
+      </c-col>
 
-        <c-col md="12">
-          <label cLabel for="validationCustom05">Thông số</label>
-          <input
-            [(ngModel)]="entity.thongSo"
-            formControlName="thongSo"
-            cFormControl
-            id="validationCustom05"
-            required
-            type="text"
-          />
-          <c-form-feedback [valid]="false">Thông số phải nhập.</c-form-feedback>
-        </c-col>
+      <c-col md="12">
+        <label cLabel for="validationCustom03">Đơn vị </label>
+        <input
+          [(ngModel)]="entity.donViTinh"
+          formControlName="donViTinh"
+          cFormControl
+          id="validationCustom03"
+          required
+          type="text"
+        />
+        <c-form-feedback [valid]="false">Đơn vị phải nhập.</c-form-feedback>
+      </c-col>
 
-        <c-col md="12">
-          <button cButton class="me-1" color="primary" type="submit">
-            Lưu lại
-          </button>
-          <button cButton color="danger" (click)="onClode()">Đóng</button>
-        </c-col>
-      </form>
-    </c-modal-body>
-    <c-modal-footer> </c-modal-footer>
-  </c-modal>
-</ng-template>
+      <c-col md="12">
+        <label cLabel for="validationCustom05">Thông số</label>
+        <input
+          [(ngModel)]="entity.thongSo"
+          formControlName="thongSo"
+          cFormControl
+          id="validationCustom05"
+          required
+          type="text"
+        />
+        <c-form-feedback [valid]="false">Thông số phải nhập.</c-form-feedback>
+      </c-col>
+
+      <c-col md="12">
+        <button cButton class="me-1" color="primary" type="submit">
+          Lưu lại
+        </button>
+        <button cButton color="danger" (click)="onClode()">Đóng</button>
+      </c-col>
+    </form>
+  </c-modal-body>
+  <c-modal-footer> </c-modal-footer>
+</c-modal>
