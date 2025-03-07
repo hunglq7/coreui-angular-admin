@@ -2,7 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/utils/dialogs/confirm-dialog/confirm-dialog.component';
-
+import { NhatkyquatgioTabComponent } from '../nhatkyquatgio-tab/nhatkyquatgio-tab.component';
 import {
   ReactiveFormsModule,
   FormsModule,
@@ -103,6 +103,7 @@ export interface TonghopquatgioDetail {
     TabsListComponent,
     GutterDirective,
     FormsModule,
+    NhatkyquatgioTabComponent,
   ],
   templateUrl: './tonghopquatgio.component.html',
   styleUrl: './tonghopquatgio.component.scss',
