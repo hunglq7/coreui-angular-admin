@@ -24,9 +24,136 @@ export interface NhatkyquatgioDetail {
   ghiChu: string;
 }
 @Component({
-  selector: 'app-nhatkymayxuc-tab',
-  imports: [],
-  templateUrl: './nhatkymayxuc-tab.component.html',
-  styleUrl: './nhatkymayxuc-tab.component.scss',
+  selector: 'app-nhatkyquatgio-tab',
+  imports: [RowComponent, ColComponent, ButtonDirective, AgGridAngular],
+  templateUrl: './nhatkyquatgio-tab.component.html',
+  styleUrl: './nhatkyquatgio-tab.component.scss',
 })
-export class NhatkyquatgioTabComponent {}
+export class NhatkyquatgioTabComponent implements OnChanges {
+  @Input('TonghopquatgioDetail') TonghopquatgioDetail: any;
+  private gridApi!: GridApi<NhatkyquatgioDetail>;
+  rowData: NhatkyquatgioDetail[] = [];
+  tonghopquatgioId!: number;
+  entity: any;
+  constructor(
+    private dataService: DataService,
+    private toastr: ToastrService
+  ) {}
+  ngOnChanges(changes: SimpleChanges): void {
+    this.entity = changes['TonghopquatgioDetail'].currentValue;
+    this.tonghopquatgioId = this.entity.id;
+    if (this.tonghopquatgioId > 0) {
+      this.getDataDetailById();
+    }
+  }
+
+  rowSelection: RowSelectionOptions | 'single' | 'multiple' = {
+    mode: 'multiRow',
+  };
+  defaulColDef = {
+    flex: 1,
+    minWith: 100,
+    minHight: 50,
+  };
+  onGridReady(params: GridReadyEvent<NhatkyquatgioDetail>) {
+    this.gridApi = params.api;
+  }
+  onAddRow() {
+    this.gridApi.applyTransaction({
+      add: [
+        {
+          id: 0,
+          tonghopquatgioId: this.tonghopquatgioId,
+          ngayLap: '',
+          donVi: '',
+          viTri: '',
+          trangThai: '',
+          ghiChu: '',
+        },
+      ],
+      addIndex: 0,
+    });
+  }
+
+  colDefs: ColDef[] = [
+    {
+      field: 'id',
+      headerName: 'Id',
+      hide: true,
+    },
+    {
+      field: 'tonghopquatgioId',
+      hide: true,
+    },
+    {
+      field: 'ngaythang',
+      headerName: 'Ngày sử dụng',
+      editable: true,
+      cellEditorPopup: true,
+    },
+    {
+      field: 'donVi',
+      headerName: 'Đơn vị',
+      editable: true,
+      cellEditorPopup: true,
+    },
+
+    {
+      field: 'viTri',
+      headerName: 'Vị trí',
+      editable: true,
+      cellEditorPopup: true,
+    },
+    {
+      field: 'trangThai',
+      headerName: 'Tình trạng',
+      editable: true,
+      cellEditor: 'agLargeTextCellEditor',
+      cellEditorParams: { maxLength: 10000 },
+    },
+    { field: 'ghiChu', headerName: 'Ghi chú' },
+  ];
+
+  getDataDetailById() {
+    this.dataService
+      .getById('/api/Nhatkyquatgio/DatailById/' + this.tonghopquatgioId)
+      .subscribe({
+        next: (response) => {
+          this.rowData = response;
+        },
+      });
+  }
+
+  onDelete() {
+    const selectedRows = this.gridApi.getSelectedRows();
+    this.dataService
+      .post('/api/Nhatkyquatgio/DeleteMultipale', selectedRows)
+      .subscribe({
+        next: () => {
+          this.getDataDetailById();
+          this.toastr.success('Xóa dữ liệu thành công', 'Success');
+        },
+        error: () => {
+          this.toastr.error('Xóa dữ liệu thất bại', 'Error');
+        },
+      });
+  }
+
+  save() {
+    const selectedRows = this.gridApi.getSelectedRows();
+    this.dataService
+      .put('/api/Nhatkyquatgio/UpdateMultiple', selectedRows)
+      .subscribe({
+        next: (data: any) => {
+          this.getDataDetailById();
+          this.toastr.success(
+            'Thêm thành công ' + data + ' bản ghi',
+            'Success'
+          );
+        },
+        error: () => {
+          this.toastr.warning('Phải chọn danh sách cần lưu ', 'Warning');
+        },
+      });
+  }
+}

@@ -1,1 +1,22 @@
-<p>nhatkymayxuc-tab works!</p>
+<c-row ngPreserveWhitespaces>
+    <c-col xs="12">
+        <div class="mt-2" style="width: 100%; height: 600px">
+            <div class="mb-2">
+                <button cButton size="sm" style="width: 70px" color="primary" (click)="onAddRow()">
+                    Thêm
+                </button>
+                <button cButton style="width: 70px" size="sm" color="primary" (click)="onDelete()">
+                    Xóa
+                </button>
+                <button cButton style="width: 70px" size="sm" color="primary" (click)="save()">
+                    Lưu
+                </button>
+            </div>
+
+            <ag-grid-angular class="ag-theme-quartz" style="height: 95%; width: 100%" [rowData]="rowData" #agGrid
+                [columnDefs]="colDefs" [defaultColDef]="defaulColDef" (gridReady)="onGridReady($event)"
+                [rowSelection]="rowSelection" [pagination]="true" [animateRows]="true" [paginationPageSize]="20">
+            </ag-grid-angular>
+        </div>
+    </c-col>
+</c-row>
