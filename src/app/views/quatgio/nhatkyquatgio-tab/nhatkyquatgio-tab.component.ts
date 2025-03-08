@@ -42,8 +42,8 @@ export class NhatkyquatgioTabComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.TonghopquatgioDetail = 1;
-    console.log(changes);
+    this.TonghopquatgioDetail = changes['TonghopquatgioDetail'].currentValue;
+    console.log(JSON.stringify(this.TonghopquatgioDetail));
   }
 
   rowSelection: RowSelectionOptions | 'single' | 'multiple' = {
