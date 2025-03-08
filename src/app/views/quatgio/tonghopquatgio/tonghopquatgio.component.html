@@ -42,16 +42,21 @@
                   </c-row>
                 </c-col>
                 <c-col md="6">
-                  <button (click)="onThemmoi()" cButton>Thêm mới</button>
-                  <button (click)="exportexcel()" cButton>Xuất Excel</button>
+                  <div class="d-grid gap-2 d-md-block">
+                    <button cButton color="primary" (click)="onThemmoi()">Thêm mới</button>
+                    <button cButton color="primary" (click)="exportexcel()">Xuất Excel</button>
+                  </div>
                 </c-col>
+
               </c-row>
+
             </Form>
 
             <hr />
             <c-row>
               <c-col sm="12">
                 <table [hover]="true" cTable>
+
                   <thead>
                     <tr>
                       <th scope="col">Mã QL</th>
@@ -212,9 +217,10 @@
                   }
                 </c-tab-panel>
                 <c-tab-panel [itemKey]="1" class="p-3">
+
                   <app-nhatkyquatgio-tab>
-                    [TonghopquatgioDetail]="TonghopquathioDetail"
                   </app-nhatkyquatgio-tab>
+
                 </c-tab-panel>
                 <c-tab-panel [itemKey]="2" class="p-3"> </c-tab-panel>
               </c-tabs-content>

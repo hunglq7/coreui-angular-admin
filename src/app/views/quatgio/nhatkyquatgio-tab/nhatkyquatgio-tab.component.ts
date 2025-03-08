@@ -35,16 +35,14 @@ export class NhatkyquatgioTabComponent implements OnChanges {
   rowData: NhatkyquatgioDetail[] = [];
   tonghopquatgioId!: number;
   entity: any;
+
   constructor(
     private dataService: DataService,
     private toastr: ToastrService
   ) {}
+
   ngOnChanges(changes: SimpleChanges): void {
-    this.entity = changes['TonghopquatgioDetail'].currentValue;
-    this.tonghopquatgioId = this.entity.id;
-    if (this.tonghopquatgioId > 0) {
-      this.getDataDetailById();
-    }
+    console.log(changes);
   }
 
   rowSelection: RowSelectionOptions | 'single' | 'multiple' = {

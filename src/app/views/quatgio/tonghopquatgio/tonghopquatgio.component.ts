@@ -3,11 +3,14 @@ import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/utils/dialogs/confirm-dialog/confirm-dialog.component';
 import { NhatkyquatgioTabComponent } from '../nhatkyquatgio-tab/nhatkyquatgio-tab.component';
+
 import {
   ReactiveFormsModule,
   FormsModule,
   FormGroup,
   FormControl,
+  FormBuilder,
+  Validators,
 } from '@angular/forms';
 import {
   ButtonCloseDirective,
@@ -37,9 +40,7 @@ import {
   TabsContentComponent,
   TabsListComponent,
   GutterDirective,
-  FormModule,
 } from '@coreui/angular';
-
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
@@ -142,20 +143,21 @@ export class TonghopquatgioComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private toastr: ToastrService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private fb: FormBuilder
   ) {}
 
   private initFormBuilder() {
-    this.Form = new FormGroup({
-      id: new FormControl({ value: null, disabled: false }),
-      maQuanLy: new FormControl({ value: null, disabled: false }),
-      quatGioId: new FormControl({ value: null, disabled: false }),
-      donViId: new FormControl({ value: null, disabled: false }),
-      viTriLapDat: new FormControl({ value: null, disabled: false }),
-      ngayLap: new FormControl({ value: null, disabled: false }),
-      soLuong: new FormControl({ value: null, disabled: false }),
-      tinhTrangThietBi: new FormControl({ value: null, disabled: false }),
-      ghiChu: new FormControl({ value: null, disabled: false }),
+    this.Form = this.fb.group({
+      id: [''],
+      maQuanLy: [''],
+      quatGioId: [''],
+      donViId: [''],
+      viTriLapDat: ['', Validators.required],
+      ngayLap: new Date(),
+      soLuong: 1,
+      tinhTrangThietBi: [''],
+      ghiChu: [],
     });
   }
 

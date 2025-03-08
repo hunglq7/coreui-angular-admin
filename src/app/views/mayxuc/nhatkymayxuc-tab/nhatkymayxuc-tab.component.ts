@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { ButtonDirective } from '@coreui/angular';
 import { ToastrService } from 'ngx-toastr';
 import {
@@ -43,6 +49,7 @@ export class NhatkymayxucTabComponent implements OnChanges {
     private dataService: DataService,
     private toastr: ToastrService
   ) {}
+
   ngOnChanges(changes: SimpleChanges): void {
     this.entity = changes['TonghopmayxucDetail'].currentValue;
     this.tonghopmayxucId = this.entity.id;
