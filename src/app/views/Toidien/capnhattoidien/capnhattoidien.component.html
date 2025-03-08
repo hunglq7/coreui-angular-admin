@@ -178,18 +178,18 @@
                         [(ngModel)]="toitrucDetail.id"
                         formControlName="id"
                         cFormControl
-                        id="validationCustom01"
+                        id="id"
                         type="number"
                         value="Mark"
                       />
                     </div>
                     <c-col md="4">
-                      <label cLabel for="validationCustom01">Mã quản lý</label>
+                      <label cLabel for="maQuanLy">Mã quản lý</label>
                       <input
                         [(ngModel)]="toitrucDetail.maQuanLy"
                         formControlName="maQuanLy"
                         cFormControl
-                        id="validationCustom01"
+                        id="maQuanLy"
                         required
                         type="text"
                         value="Mark"
@@ -199,12 +199,12 @@
                       >
                     </c-col>
                     <c-col md="4">
-                      <label cLabel for="validationCustom04">Thiết bị</label>
+                      <label cLabel for="thietbiId">Thiết bị</label>
                       <select
                         [(ngModel)]="toitrucDetail.thietbiId"
                         formControlName="thietbiId"
                         cSelect
-                        id="validationCustom04"
+                        id="thietbiId"
                         required
                       >
                         <option value="">Chọn thiết bị...</option>
@@ -219,12 +219,12 @@
                       >
                     </c-col>
                     <c-col md="4">
-                      <label cLabel for="validationCustom04">Đơn vị</label>
+                      <label cLabel for="donViSuDung">Đơn vị</label>
                       <select
                         [(ngModel)]="toitrucDetail.donViSuDungId"
                         formControlName="donViSuDungId"
                         cSelect
-                        id="validationCustom04"
+                        id="donViSuDung"
                         required
                       >
                         <option value="">Chọn đơn vị...</option>
@@ -239,14 +239,12 @@
                       >
                     </c-col>
                     <c-col md="6">
-                      <label cLabel for="validationCustom03"
-                        >Vị trí lắp đặt</label
-                      >
+                      <label cLabel for="viTriLapDat">Vị trí lắp đặt</label>
                       <input
                         [(ngModel)]="toitrucDetail.viTriLapDat"
                         formControlName="viTriLapDat"
                         cFormControl
-                        id="validationCustom03"
+                        id="viTriLapDat"
                         required
                         type="text"
                       />
@@ -255,12 +253,12 @@
                       >
                     </c-col>
                     <c-col md="3">
-                      <label cLabel for="validationCustom05">Ngày lắp</label>
+                      <label cLabel for="ngayLap">Ngày lắp</label>
                       <input
                         [(ngModel)]="toitrucDetail.ngayLap"
                         formControlName="ngayLap"
                         cFormControl
-                        id="validationCustom05"
+                        id="ngayLap"
                         required
                         type="date"
                       />
@@ -269,12 +267,12 @@
                       >
                     </c-col>
                     <c-col md="3">
-                      <label cLabel for="validationCustom05">Số lượng</label>
+                      <label cLabel for="soLuong">Số lượng</label>
                       <input
                         [(ngModel)]="toitrucDetail.soLuong"
                         formControlName="soLuong"
                         cFormControl
-                        id="validationCustom05"
+                        id="soLuong"
                         required
                         type="number"
                       />
@@ -283,38 +281,36 @@
                       >
                     </c-col>
                     <c-col xs="6">
-                      <label cLabel for="validationCustom05"
+                      <label cLabel for="tinhTrangThietBi"
                         >Tình trạng thiết bị</label
                       >
                       <input
                         [(ngModel)]="toitrucDetail.tinhTrangThietBi"
                         formControlName="tinhTrangThietBi"
                         cFormControl
-                        id="validationCustom05"
+                        id="tinhTrangThietBi"
                         required
                         type="text"
                       />
                     </c-col>
                     <c-col xs="6">
-                      <label cLabel for="validationCustom05"
-                        >Mục đích sử dụng</label
-                      >
+                      <label cLabel for="mucDichSuDung">Mục đích sử dụng</label>
                       <input
                         [(ngModel)]="toitrucDetail.mucDichSuDung"
                         formControlName="mucDichSuDung"
                         cFormControl
-                        id="validationCustom05"
+                        id="mucDichSuDung"
                         required
                         type="text"
                       />
                     </c-col>
                     <c-col xs="12">
-                      <label cLabel for="validationCustom05">Ghi chú</label>
+                      <label cLabel for="ghiChu">Ghi chú</label>
                       <input
                         [(ngModel)]="toitrucDetail.ghiChu"
                         formControlName="ghiChu"
                         cFormControl
-                        id="validationCustom05"
+                        id="ghiChu"
                         required
                         type="text"
                       />

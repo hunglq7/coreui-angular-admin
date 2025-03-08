@@ -38,7 +38,6 @@ import {
   TabsContentComponent,
   TabsListComponent,
   GutterDirective,
-  FormModule,
 } from '@coreui/angular';
 
 import { DataService } from '../../../core/services/data.service';
@@ -131,7 +130,7 @@ export class TonghopmayxucComponent implements OnInit {
   dsDonvi: any[] = [];
   dsLoai: any[] = [];
   Form!: FormGroup;
-  Id!: Number;
+  Id: Number = 0;
   public themoi: boolean = false;
 
   ngOnInit(): void {

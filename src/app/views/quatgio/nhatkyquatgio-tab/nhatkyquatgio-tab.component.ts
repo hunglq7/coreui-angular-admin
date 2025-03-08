@@ -30,7 +30,7 @@ export interface NhatkyquatgioDetail {
   styleUrl: './nhatkyquatgio-tab.component.scss',
 })
 export class NhatkyquatgioTabComponent implements OnChanges {
-  @Input('TonghopquatgioDetail') TonghopquatgioDetail: any;
+  @Input() TonghopquatgioDetail: any;
   private gridApi!: GridApi<NhatkyquatgioDetail>;
   rowData: NhatkyquatgioDetail[] = [];
   tonghopquatgioId!: number;
@@ -42,6 +42,7 @@ export class NhatkyquatgioTabComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.TonghopquatgioDetail = 1;
     console.log(changes);
   }
 

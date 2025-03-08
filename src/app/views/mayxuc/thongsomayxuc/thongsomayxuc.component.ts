@@ -168,7 +168,6 @@ export class ThongsomayxucComponent implements OnInit {
   }
 
   loadData() {
-    debugger;
     this.dataService
       .get(
         '/api/Thongsokythuatmayxuc/paging?thietbiId=' +

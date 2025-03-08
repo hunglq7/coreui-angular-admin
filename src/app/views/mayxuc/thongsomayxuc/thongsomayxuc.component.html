@@ -126,19 +126,19 @@
           [(ngModel)]="entity.id"
           formControlName="id"
           cFormControl
-          id="validationCustom01"
+          id="id"
           type="number"
           value="Mark"
         />
       </div>
 
       <c-col md="12">
-        <label cLabel for="validationCustom04">Thiết bị</label>
+        <label cLabel for="mayxucId">Thiết bị</label>
         <select
           [(ngModel)]="entity.mayXucId"
           formControlName="mayXucId"
           cSelect
-          id="validationCustom04"
+          id="mayxucId"
           required
         >
           <option value="">Chọn thiết bị...</option>
@@ -150,12 +150,12 @@
       </c-col>
 
       <c-col md="12">
-        <label cLabel for="validationCustom03">Thông số kỹ thuật</label>
+        <label cLabel for="noiDung">Thông số kỹ thuật</label>
         <input
           [(ngModel)]="entity.noiDung"
           formControlName="noiDung"
           cFormControl
-          id="validationCustom03"
+          id="noiDung"
           required
           type="text"
         />
@@ -163,12 +163,12 @@
       </c-col>
 
       <c-col md="12">
-        <label cLabel for="validationCustom03">Đơn vị </label>
+        <label cLabel for="donVi">Đơn vị </label>
         <input
           [(ngModel)]="entity.donViTinh"
           formControlName="donViTinh"
           cFormControl
-          id="validationCustom03"
+          id="donVi"
           required
           type="text"
         />
@@ -176,12 +176,12 @@
       </c-col>
 
       <c-col md="12">
-        <label cLabel for="validationCustom05">Thông số</label>
+        <label cLabel for="thongSo">Thông số</label>
         <input
           [(ngModel)]="entity.thongSo"
           formControlName="thongSo"
           cFormControl
-          id="validationCustom05"
+          id="thongSo"
           required
           type="text"
         />
