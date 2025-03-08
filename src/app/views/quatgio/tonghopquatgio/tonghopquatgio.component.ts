@@ -352,4 +352,7 @@ export class TonghopquatgioComponent implements OnInit {
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     XLSX.writeFile(wb, 'Tonghopquatgio.xlsx');
   }
+  duan1() {
+    console.log('Du an 1');
+  }
 }
