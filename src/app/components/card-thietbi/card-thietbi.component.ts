@@ -27,10 +27,12 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class CardThietbiComponent implements OnInit {
   sumTonghopmayxuc!: number;
   sumTonghoptoitruc!: number;
+  sumTonghopquatgio!: number;
   constructor(private dataService: DataService) {}
   ngOnInit(): void {
     this.GetSumTonghopmayxuc();
     this.GetSumTonghoptoitruc();
+    this.GetSumTonghopquatgio();
   }
   GetSumTonghopmayxuc() {
     this.dataService.get('/api/Tonghopmayxuc/sumTonghopmayxuc').subscribe({
@@ -44,6 +46,14 @@ export class CardThietbiComponent implements OnInit {
     this.dataService.get('/api/Tonghoptoitruc/sumTonghoptoitruc').subscribe({
       next: (data: any) => {
         this.sumTonghoptoitruc = data;
+      },
+    });
+  }
+
+  GetSumTonghopquatgio() {
+    this.dataService.get('/api/Tonghopquatgio/sumTonghopquatgio').subscribe({
+      next: (data: any) => {
+        this.sumTonghopquatgio = data;
       },
     });
   }

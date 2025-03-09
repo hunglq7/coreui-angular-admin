@@ -344,7 +344,9 @@
                   </app-nhatkyquatgio-tab>
                 </c-tab-panel>
                 <c-tab-panel [itemKey]="2" class="p-3">
-                  <app-thongsoquatgio-tab> </app-thongsoquatgio-tab>
+                  <app-thongsoquatgio-tab
+                    [TonghopquatgioDetail]="tonghopquatgioDetail"
+                  />
                 </c-tab-panel>
               </c-tabs-content>
             </c-tabs>
