@@ -4,7 +4,7 @@ import { NgScrollbar } from 'ngx-scrollbar';
 
 import { IconDirective } from '@coreui/icons-angular';
 import {
-  ContainerComponent,
+  // ContainerComponent,
   ShadowOnScrollDirective,
   SidebarBrandComponent,
   SidebarComponent,
@@ -37,7 +37,7 @@ function isOverflown(element: HTMLElement) {
     SidebarFooterComponent,
     SidebarToggleDirective,
     SidebarTogglerDirective,
-    ContainerComponent,
+    // ContainerComponent,
     DefaultFooterComponent,
     DefaultHeaderComponent,
     NgScrollbar,

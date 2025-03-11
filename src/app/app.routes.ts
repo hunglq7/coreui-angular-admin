@@ -35,6 +35,11 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./views/quatgio/routes').then((m) => m.routes),
       },
+      {
+        path: 'bomnuoc',
+        loadChildren: () =>
+          import('./views/bomnuoc/routes').then((m) => m.routes),
+      },
     ],
   },
   {

@@ -109,8 +109,7 @@ export class DanhmucquatgioComponent implements OnInit {
   loadDataQuatgio() {
     this.dataService.get('/api/Danhmucquatgio').subscribe({
       next: (response: any) => {
-        this.dataQuatgio = response;
-        console.log(this.dataQuatgio);
+        this.dataQuatgio = response;        
       },
       error: () => {
         this.toastr.error('Lấy dữ liệu thất bại', 'Error');

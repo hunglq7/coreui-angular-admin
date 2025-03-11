@@ -82,6 +82,28 @@ export const navItems: INavData[] = [
     ],
   },
   {
+    name: 'Bơm nước',
+    url: '/bomnuoc',
+    iconComponent: { name: 'cil-puzzle' },
+    children: [
+      {
+        name: 'Danh mục bơm nước',
+        url: '/bomnuoc/danhmucbomnuoc',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Thông số bơm nước',
+        url: '/bomnuoc/thongsobomnuoc',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Cập nhật bơm nước',
+        url: '/bomnuoc/tonghopbomnuoc',
+        icon: 'nav-icon-bullet',
+      },
+    ],
+  },
+  {
     name: 'Biến áp',
     url: '/forms',
     iconComponent: { name: 'cil-puzzle' },
