@@ -102,9 +102,10 @@
         <button routerLink="/bomnuoc/tonghopbomnuoc" color="primary" cButton size="sm">Cập nhật</button>
       </c-card-body>
       <c-card-footer>
-        <small class="text-medium-emphasis"
-          >Tổng số bản ghi <strong>3</strong></small
-        >
+        <div class="d-flex justify-content-between">
+          <small class="text-medium-emphasis">Tổng số thiết bị </small>
+          <span class="badge bg-danger">{{ sumTonghopbomnuoc }}</span>
+        </div>
       </c-card-footer>
     </c-card>
   </c-col>
