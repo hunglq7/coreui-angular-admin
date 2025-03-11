@@ -37,7 +37,7 @@ export interface NhatKyBomNuocDetail {
 })
 export class NhatkybomnuocTabComponent implements OnChanges {
 
-@Input() TonghopquatgioDetail: any;
+@Input() TonghopbomnuocDetail: any;
   private gridApi!: GridApi<NhatKyBomNuocDetail>;
   rowData: NhatKyBomNuocDetail[] = [];
   tonghopbomnuocId!: number;
