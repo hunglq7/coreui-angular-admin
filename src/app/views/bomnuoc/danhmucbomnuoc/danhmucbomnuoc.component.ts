@@ -53,7 +53,7 @@ private gridApi!: GridApi<BomNuoc>;
     private dialog: MatDialog
   ) {}
   ngOnInit(): void {
-    
+    this.loadData();
   }
 
   rowSelection: RowSelectionOptions | 'single' | 'multiple' = {
