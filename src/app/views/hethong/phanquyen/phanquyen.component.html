@@ -1,0 +1,95 @@
+<c-row ngPreserveWhitespaces>
+    <c-col xs="12">
+      <c-card class="mb-4" style="width: 100%; height: 800px">
+        <c-card-header>
+          <button
+            cButton
+            size="sm"
+            style="width: 70px"
+            color="primary"
+            (click)="toggleLive()"
+          >
+            Sửa
+          </button>
+          <button
+            cButton
+            style="width: 70px"
+            size="sm"
+            color="primary"
+            (click)="confirmDelete()"
+          >
+            Xóa
+          </button>
+         
+        </c-card-header>
+        <c-card-body style="height: 100%; width: 100%">
+          <ag-grid-angular
+            class="ag-theme-quartz"
+            style="height: 100%; width: 100%"
+            [rowData]="data"
+            #agGrid
+            [columnDefs]="colDefs"
+            [defaultColDef]="defaulColDef"
+            (gridReady)="onGridReady($event)"
+            [rowSelection]="rowSelection"
+            [pagination]="true"
+            [animateRows]="true"
+            [paginationPageSize]="20"
+          >
+          </ag-grid-angular
+        ></c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
+  
+
+  <!-- Modal -->
+
+  <c-modal  backdrop="static" id="liveDemoModal" [visible]="visible" (visibleChange)="handleLiveDemoChange($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Cập nhật phân quyền</h5>
+      <button (click)="toggleLive()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <form [formGroup]="Form" (ngSubmit)="Form.valid && saveForm() ">
+            <c-row class="mb-3">
+              <label cLabel="col" cCol [sm]="2" for="inputEmail3">
+                Email
+              </label>
+              <c-col [sm]="10">
+                <select cSelect id="userId" [ngModel]="userId" formControlName="userId">
+                    <option>Chọn...</option>
+                   
+                    @for (item of dsUser ; track $index) {
+                        <option value="{{ item.id }}">
+                          {{ item.email }}
+                        </option>
+                        }
+                   
+                  </select>
+              </c-col>
+            </c-row>
+            <c-row class="mb-3">
+              <label cLabel="col" cCol [sm]="2" for="inputPassword3">
+                Quyền
+              </label>
+              <c-col [sm]="10">
+                <select cSelect id="roles" formControlName="roleId">               
+
+                    <option>Chọn...</option>
+                    @for (item of dsRole ; track $index) {
+                        <option value="{{ item.id }}">
+                          {{ item.name }}
+                        </option>
+                        }
+                   
+                  </select>
+              </c-col>
+            </c-row>        
+            
+            <button cButton type="submit">Save</button>
+          </form>
+    </c-modal-body>
+    
+  </c-modal>
+  

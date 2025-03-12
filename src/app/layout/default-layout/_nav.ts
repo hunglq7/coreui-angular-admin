@@ -137,27 +137,74 @@ export const navItems: INavData[] = [
     ],
   },
   {
-    name: 'Cột thủy lực',
-    url: '/notifications',
+    name: 'Cập nhật danh mục',
+    title: true,
+  },
+  {
+    name: 'Danh mục',
+    url: '/danhmuc',
     iconComponent: { name: 'cil-puzzle' },
     children: [
       {
-        name: 'Alerts',
-        url: '/notifications/alerts',
+        name: 'Đơn vị tính',
+        url: '/danhmuc/donvitinh',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Loại thiết bị',
+        url: '/danhmuc/loaithietbi',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Đơn vị',
+        url: '/danhmuc/donvi',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Chức vụ',
+        url: '/danhmuc/chucvu',
         icon: 'nav-icon-bullet',
       },
     ],
   },
-
+ 
+  {
+    title: true,
+    name: 'Hệ thống',
+  },
+  {
+    name: 'Tài khoản',
+    url: '/hethong',
+    iconComponent: { name: 'cil-puzzle' },
+    children: [
+      {
+        name: 'Tài khoản đăng nhập',
+        url: '/hethong/taikhoan',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Quyền',
+        url: '/hethong/quyen',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Phân quyền',
+        url: '/hethong/phanquyen',
+        icon: 'nav-icon-bullet',
+      },
+      
+    ],
+  },
   {
     title: true,
     name: 'Cài đặt',
   },
   {
-    name: 'Hệ thống',
+    name: 'Đăng nhập',
     url: '/login',
     iconComponent: { name: 'cil-star' },
     children: [
+     
       {
         name: 'Login',
         url: '/login',

@@ -40,6 +40,16 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./views/bomnuoc/routes').then((m) => m.routes),
       },
+      {
+        path: 'danhmuc',
+        loadChildren: () =>
+          import('./views/danhmuc/routes').then((m) => m.routes),
+      },
+      {
+        path: 'hethong',
+        loadChildren: () =>
+          import('./views/hethong/routes').then((m) => m.routes),
+      },
     ],
   },
   {
