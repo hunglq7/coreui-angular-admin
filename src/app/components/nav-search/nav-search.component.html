@@ -1,0 +1,24 @@
+<c-row>
+  <c-col sm="4">
+    <c-input-group>
+      <select
+        class="form-select form-select-md mb-3"
+        [(ngModel)]="keywordThietbi"
+        cSelect
+        id="keywordThietbi"
+        required
+      >
+        <option selected value="">--Chọn hết--</option>
+        @for (item of items; track $index) {
+        <option value="{{ item.id }}">
+          {{ item.tenThietBi }}
+        </option>
+        }
+      </select>
+      <span> <button cButton (click)="handClickSearch()">Tìm</button></span>
+    </c-input-group>
+  </c-col>
+  <c-col sm="8">
+    <button cButton (click)="handClickAdd()">Thêm mới</button>
+  </c-col>
+</c-row>
