@@ -1,123 +1,130 @@
 <!-- Model -->
 <c-col sm="12">
-    <c-card class="mb-3">
-      <c-card-header ngPreserveWhitespaces>
-        <strong>Cập nhật thiết bị bơm nước</strong>
-      </c-card-header>
-      <c-card-body>
-        <c-col sm="12">
-          <c-card class="mb-4">
-            <c-card-body class="table-responsive">
-              <Form cForm>
-                <c-row
-                  [gutter]="2"
-                  class="justify-content-start align-items-center"
-                >
-                  <c-col md="6">
-                    <c-row>
-                      <c-col xs="auto">
-                        <label cLable><strong>Tìm kiếm :</strong></label>
-                      </c-col>
-                      <c-col xs="auto" class="d-flex">
-                        <select
-                          [(ngModel)]="keywordThietbi"
-                          cSelect
-                          id="keywordThietbi"
-                          required
-                        >
-                          <option value="">Chọn hết</option>
-                          @for (item of danhSach; track $index) {
-                          <option value="{{ item.id }}">
-                            {{ item.tenThietBi }}
-                          </option>
-                          }
-                        </select>
-  
-                        <select
-                          aria-placeholder="Chọn đơn vị"
-                          [(ngModel)]="keywordDonvi"
-                          cSelect
-                          id="kywordDonvi"
-                          required
-                        >
-                          <option value="">Chọn hết</option>
-                          @for (item of dsDonvi ; track $index) {
-                          <option value="{{ item.id }}">
-                            {{ item.tenPhong }}
-                          </option>
-                          }
-                        </select>
-                        <span>
-                          <button cButton (click)="loadTonghopBomnuoc()">
-                            Tìm
-                          </button></span
-                        >
-                      </c-col>
-                    </c-row>
-                  </c-col>
-                  <c-col md="6">
-                    <div class="d-row gap-2">
-                      <button cButton color="primary" (click)="onThemmoi()">
-                        Thêm mới
-                      </button>
-                      <button cButton color="primary" (click)="exportexcel()">
-                        Xuất Excel
-                      </button>
-                    </div>
-                  </c-col>
-                </c-row>
-              </Form>
-  
-              <hr />
-              <c-row>
-                <c-col sm="12">
-                  <table [hover]="true" cTable>
-                    <thead>
-                      <tr>
-                        <th scope="col">Mã QL</th>
-                        <th scope="col">Thiết bị</th>
-                        <th scope="col">Đơn vị</th>
-                        <th scope="col">Ngày lắp</th>
-                        <th scope="col">Vị trí</th>
-                        <th scope="col">Số lượng</th>
-                        <th scope="col">Hành động</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @for (item of data; track $index) {
-                      <tr>
-                        <td>{{ item.maQuanLy }}</td>
-                        <td>{{ item.tenThietBi }}</td>
-                        <td>{{ item.tenDonVi }}</td>
-                        <td>{{ item.ngayLap | date : "dd/MM/yyyy" }}</td>
-                        <td>{{ item.viTriLapDat }}</td>
-                        <td>{{ item.soLuong }}</td>
-                        <td>
-                          <button
-                            class="mb-1 mb-lg-0"
-                            (click)="onEdit(item.id)"
-                            style="margin-right: 5px"
-                            cButton
-                            size="sm"
-                          >
-                            Sửa
-                          </button>
-                          <button
-                            (click)="onDelete(item.id)"
-                            cButton
-                            color="danger"
-                            size="sm"
-                          >
-                            Xóa
-                          </button>
-                        </td>
-                      </tr>
-                      }
-                    </tbody>
-                  </table>
+  <c-card class="mb-3">
+    <c-card-header ngPreserveWhitespaces>
+      <strong>Cập nhật thiết bị bơm nước</strong>
+    </c-card-header>
+    <c-card-body>
+      <c-col sm="12">
+        <c-card class="mb-4">
+          <c-card-body class="table-responsive">
+            <Form cForm>
+              <c-row
+                [gutter]="2"
+                class="justify-content-start align-items-center"
+              >
+                <c-col md="6">
+                  <c-row>
+                    <c-col xs="auto">
+                      <label cLable><strong>Tìm kiếm :</strong></label>
+                    </c-col>
+                    <c-col xs="auto" class="d-flex">
+                      <select
+                        [(ngModel)]="keywordThietbi"
+                        cSelect
+                        id="keywordThietbi"
+                        required
+                      >
+                        <option value="">Chọn hết</option>
+                        @for (item of danhSach; track $index) {
+                        <option value="{{ item.id }}">
+                          {{ item.tenThietBi }}
+                        </option>
+                        }
+                      </select>
+
+                      <select
+                        aria-placeholder="Chọn đơn vị"
+                        [(ngModel)]="keywordDonvi"
+                        cSelect
+                        id="kywordDonvi"
+                        required
+                      >
+                        <option value="">Chọn hết</option>
+                        @for (item of dsDonvi ; track $index) {
+                        <option value="{{ item.id }}">
+                          {{ item.tenPhong }}
+                        </option>
+                        }
+                      </select>
+                      <span>
+                        <button cButton (click)="loadTonghopBomnuoc()">
+                          Tìm
+                        </button></span
+                      >
+                    </c-col>
+                  </c-row>
+                </c-col>
+                <c-col md="6">
+                  <div class="d-row gap-2">
+                    <button cButton color="primary" (click)="onThemmoi()">
+                      Thêm mới
+                    </button>
+                    <button cButton color="primary" (click)="exportexcel()">
+                      Xuất Excel
+                    </button>
+                  </div>
                 </c-col>
               </c-row>
-              <div class="d-flex justify-content-center">
+            </Form>
+
+            <hr />
+            <c-row>
+              <c-col sm="12">
+                <table [hover]="true" cTable>
+                  <thead>
+                    <tr>
+                      <th scope="col">Mã QL</th>
+                      <th scope="col">Thiết bị</th>
+                      <th scope="col">Đơn vị</th>
+                      <th scope="col">Ngày lắp</th>
+                      <th scope="col">Vị trí</th>
+                      <th scope="col">Số lượng</th>
+                      <th scope="col">Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (item of data; track $index) {
+                    <tr>
+                      <td>{{ item.maQuanLy }}</td>
+                      <td>{{ item.tenThietBi }}</td>
+                      <td>{{ item.tenDonVi }}</td>
+                      <td>{{ item.ngayLap | date : "dd/MM/yyyy" }}</td>
+                      <td>{{ item.viTriLapDat }}</td>
+                      <td>{{ item.soLuong }}</td>
+                      <td>
+                        <button
+                          class="mb-1 mb-lg-0"
+                          (click)="onEdit(item.id)"
+                          style="margin-right: 5px"
+                          cButton
+                          size="sm"
+                        >
+                          Sửa
+                        </button>
+                        <button
+                          (click)="onDelete(item.id)"
+                          cButton
+                          color="danger"
+                          size="sm"
+                        >
+                          Xóa
+                        </button>
+                      </td>
+                    </tr>
+                    }
+                  </tbody>
+                </table>
+              </c-col>
+            </c-row>
+            <div class="d-flex justify-content-between">
+              <div>
+                <strong
+                  >Tổng số thiết bị:
+                  <span class="text-primary">{{ totalRow }}</span></strong
+                >
+              </div>
+              <div>
                 <pagination
                   [boundaryLinks]="true"
                   [itemsPerPage]="pageSize"
@@ -131,229 +138,224 @@
                   lastText="&raquo;"
                 ></pagination>
               </div>
-            </c-card-body>
-          </c-card>
-        </c-col>
-      </c-card-body>
-    </c-card>
-  </c-col>
-  
-  <c-modal
-    id="liveDemoModal"
-    backdrop="static"
-    size="xl"
-    [visible]="liveDemoVisible"
-    (visibleChange)="handleLiveDemoChange($event)"
-  >
-    <c-modal-header>
-      <h5 cModalTitle>{{ title }}</h5>
-      <button (click)="onClode()" cButtonClose></button>
-    </c-modal-header>
-    <c-modal-body>
-      <c-row>
-        <c-col xs="12">
-          <c-card class="mb-3">
-            <c-card-body>
-              <c-tabs
-                [activeItemKey]="0"
-                (activeItemKeyChange)="handleActiveItemChange($event)"
-              >
-                <c-tabs-list variant="underline-border">
-                  <button cTab [itemKey]="0">Cập nhật quạt gió</button>
-                  <button [hidden]="themoi" cTab [itemKey]="1">
-                    Nhật ký bơm nước
-                  </button>
-                  <button [hidden]="themoi" cTab [itemKey]="2">
-                    Thông số kỹ thuật
-                  </button>
-                </c-tabs-list>
-                <c-tabs-content>
-                  <c-tab-panel [itemKey]="0" class="p-3">
-                    @if(dataDetail){
-                    <form
-                      [formGroup]="Form"
-                      #customStylesForm="ngForm"
-                      (ngSubmit)="save()"
-                      [validated]="customStylesValidated"
-                      cForm
-                      class="row g-3 needs-validation"
-                    >
-                      <div>
-                        <input
-                          hidden="true"
-                          [(ngModel)]="dataDetail.id"
-                          formControlName="id"
-                          cFormControl
-                          id="id"
-                          type="number"
-                          value="Mark"
-                        />
-                      </div>
-                      <!-- Mã quản lý -->
-                      <c-col md="4">
-                        <label cLabel for="maQuanLy">Mã quản lý</label>
-                        <input
-                          [(ngModel)]="dataDetail.maQuanLy"
-                          formControlName="maQuanLy"
-                          cFormControl
-                          id="maQuanLy"
-                          required
-                          type="text"
-                          value="Mark"
-                        />
-                        <c-form-feedback [valid]="true"
-                          >Dữ liệu hợp lệ</c-form-feedback
-                        >
-                      </c-col>
-                      <!-- Thiết bị -->
-                      <c-col md="4">
-                        <label cLabel for="bomNuocId">Thiết bị</label>
-                        <select
-                          [(ngModel)]="dataDetail.bomNuocId"
-                          formControlName="bomNuocId"
-                          cSelect
-                          id="bomNuocId"
-                          required
-                        >
-                          <option value="">Chọn hết</option>
-                          @for (item of danhSach ; track $index) {
-                          <option value="{{ item.id }}">
-                            {{ item.tenThietBi }}
-                          </option>
-                          }
-                        </select>
-                        <c-form-feedback [valid]="false"
-                          >Thiết bị phải chọn.</c-form-feedback
-                        >
-                      </c-col>
-                      <!-- Đơn vị -->
-                      <c-col md="4">
-                        <label cLabel for="dinViId">Đơn vị</label>
-                        <select
-                          [(ngModel)]="dataDetail.donViId"
-                          formControlName="donViId"
-                          cSelect
-                          id="dinViId"
-                          required
-                        >
-                          <option value="">Chọn hết</option>
-                          @for (item of dsDonvi ; track $index) {
-                          <option value="{{ item.id }}">
-                            {{ item.tenPhong }}
-                          </option>
-                          }
-                        </select>
-                        <c-form-feedback [valid]="false"
-                          >Đơn vị phải chọn.</c-form-feedback
-                        >
-                      </c-col>
-                      <!-- Vị trí lắp đặt -->
-                      <c-col md="4">
-                        <label cLabel for="viTriLapDat">Vị trí lắp đặt</label>
-                        <input
-                          [(ngModel)]="dataDetail.viTriLapDat"
-                          formControlName="viTriLapDat"
-                          cFormControl
-                          id="viTriLapDat"
-                          required
-                          type="text"
-                        />
-  
-                        <c-form-feedback [valid]="false"
-                          >Vị trí lắp đặt phải nhập.</c-form-feedback
-                        >
-                      </c-col>
-                      <!-- Ngày lắp -->
-                      <c-col md="4">
-                        <label cLabel for="ngayLap">Ngày lắp</label>
-                        <input
-                          [(ngModel)]="dataDetail.ngayLap"
-                          formControlName="ngayLap"
-                          cFormControl
-                          id="ngayLap"
-                          required
-                          type="date"
-                        />
-                        <c-form-feedback [valid]="false"
-                          >Ngày lắp đặt.</c-form-feedback
-                        >
-                      </c-col>
-                      <!-- Số lượng -->
-                      <c-col md="4">
-                        <label cLabel for="soLuong">Số lượng</label>
-                        <input
-                          [(ngModel)]="dataDetail.soLuong"
-                          formControlName="soLuong"
-                          cFormControl
-                          id="soLuong"
-                          required
-                          type="number"
-                        />
-                        <c-form-feedback [valid]="false"
-                          >Số lượng phải nhập.</c-form-feedback
-                        >
-                      </c-col>
-                      <!-- Tình trạng -->
-                      <c-col xs="4">
-                        <label cLabel for="tinhTrangThietBi"
-                          >Tình trạng thiết bị</label
-                        >
-                        <input
-                          [(ngModel)]="dataDetail.tinhTrangThietBi"
-                          formControlName="tinhTrangThietBi"
-                          cFormControl
-                          id="tinhTrangThietBi"
-                          required
-                          type="text"
-                        />
-                      </c-col>
-  
-                      <!-- Ghi chú -->
-                      <c-col xs="4">
-                        <label cLabel for="ghiChu">Ghi chú</label>
-                        <input
-                          [(ngModel)]="dataDetail.ghiChu"
-                          formControlName="ghiChu"
-                          cFormControl
-                          id="ghiChu"
-                          required
-                          type="text"
-                        />
-                      </c-col>
-                      <c-col xs="12">
-                        <button
-                          [disabled]="customStylesForm.form.valid"
-                          cButton
-                          class="me-1"
-                          color="primary"
-                          type="submit"
-                        >
-                          Lưu lại
-                        </button>
-                        <button cButton color="danger" (click)="onClode()">
-                          Đóng
-                        </button>
-                      </c-col>
-                    </form>
-                    }
-                  </c-tab-panel>
-                  <c-tab-panel [itemKey]="1" class="p-3">
-                    <app-nhatkybomnuoc-tab
-                      [TonghopbomnuocDetail]="dataDetail"
-                    >
-                    </app-nhatkybomnuoc-tab>
-                  </c-tab-panel>
-                  <c-tab-panel [itemKey]="2" class="p-3">
-                    <app-thongsobomnuoc-tab
-                      [TonghopbomnuocDetail]="dataDetail"
-                    />
-                  </c-tab-panel>
-                </c-tabs-content>
-              </c-tabs>
-            </c-card-body>
-          </c-card>
-        </c-col>
-      </c-row>
-    </c-modal-body>
-  </c-modal>
-  
+            </div>
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-card-body>
+  </c-card>
+</c-col>
+
+<c-modal
+  id="liveDemoModal"
+  backdrop="static"
+  size="xl"
+  [visible]="liveDemoVisible"
+  (visibleChange)="handleLiveDemoChange($event)"
+>
+  <c-modal-header>
+    <h5 cModalTitle>{{ title }}</h5>
+    <button (click)="onClode()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <c-row>
+      <c-col xs="12">
+        <c-card class="mb-3">
+          <c-card-body>
+            <c-tabs
+              [activeItemKey]="0"
+              (activeItemKeyChange)="handleActiveItemChange($event)"
+            >
+              <c-tabs-list variant="underline-border">
+                <button cTab [itemKey]="0">Cập nhật quạt gió</button>
+                <button [hidden]="themoi" cTab [itemKey]="1">
+                  Nhật ký bơm nước
+                </button>
+                <button [hidden]="themoi" cTab [itemKey]="2">
+                  Thông số kỹ thuật
+                </button>
+              </c-tabs-list>
+              <c-tabs-content>
+                <c-tab-panel [itemKey]="0" class="p-3">
+                  @if(dataDetail){
+                  <form
+                    [formGroup]="Form"
+                    #customStylesForm="ngForm"
+                    (ngSubmit)="save()"
+                    [validated]="customStylesValidated"
+                    cForm
+                    class="row g-3 needs-validation"
+                  >
+                    <div>
+                      <input
+                        hidden="true"
+                        formControlName="id"
+                        cFormControl
+                        id="id"
+                        type="number"
+                        value="Mark"
+                      />
+                    </div>
+                    <!-- Mã quản lý -->
+                    <c-col md="4">
+                      <label cLabel for="maQuanLy">Mã quản lý</label>
+                      <input
+                        [(ngModel)]="dataDetail.maQuanLy"
+                        formControlName="maQuanLy"
+                        cFormControl
+                        id="maQuanLy"
+                        required
+                        type="text"
+                        value="Mark"
+                      />
+                      <c-form-feedback [valid]="true"
+                        >Dữ liệu hợp lệ</c-form-feedback
+                      >
+                    </c-col>
+                    <!-- Thiết bị -->
+                    <c-col md="4">
+                      <label cLabel for="bomNuocId">Thiết bị</label>
+                      <select
+                        [(ngModel)]="dataDetail.bomNuocId"
+                        formControlName="bomNuocId"
+                        cSelect
+                        id="bomNuocId"
+                        required
+                      >
+                        <option value="">Chọn hết</option>
+                        @for (item of danhSach ; track $index) {
+                        <option value="{{ item.id }}">
+                          {{ item.tenThietBi }}
+                        </option>
+                        }
+                      </select>
+                      <c-form-feedback [valid]="false"
+                        >Thiết bị phải chọn.</c-form-feedback
+                      >
+                    </c-col>
+                    <!-- Đơn vị -->
+                    <c-col md="4">
+                      <label cLabel for="dinViId">Đơn vị</label>
+                      <select
+                        [(ngModel)]="dataDetail.donViId"
+                        formControlName="donViId"
+                        cSelect
+                        id="dinViId"
+                        required
+                      >
+                        <option value="">Chọn hết</option>
+                        @for (item of dsDonvi ; track $index) {
+                        <option value="{{ item.id }}">
+                          {{ item.tenPhong }}
+                        </option>
+                        }
+                      </select>
+                      <c-form-feedback [valid]="false"
+                        >Đơn vị phải chọn.</c-form-feedback
+                      >
+                    </c-col>
+                    <!-- Vị trí lắp đặt -->
+                    <c-col md="4">
+                      <label cLabel for="viTriLapDat">Vị trí lắp đặt</label>
+                      <input
+                        [(ngModel)]="dataDetail.viTriLapDat"
+                        formControlName="viTriLapDat"
+                        cFormControl
+                        id="viTriLapDat"
+                        required
+                        type="text"
+                      />
+
+                      <c-form-feedback [valid]="false"
+                        >Vị trí lắp đặt phải nhập.</c-form-feedback
+                      >
+                    </c-col>
+                    <!-- Ngày lắp -->
+                    <c-col md="4">
+                      <label cLabel for="ngayLap">Ngày lắp</label>
+                      <input
+                        [(ngModel)]="dataDetail.ngayLap"
+                        formControlName="ngayLap"
+                        cFormControl
+                        id="ngayLap"
+                        required
+                        type="date"
+                      />
+                      <c-form-feedback [valid]="false"
+                        >Ngày lắp đặt.</c-form-feedback
+                      >
+                    </c-col>
+                    <!-- Số lượng -->
+                    <c-col md="4">
+                      <label cLabel for="soLuong">Số lượng</label>
+                      <input
+                        [(ngModel)]="dataDetail.soLuong"
+                        formControlName="soLuong"
+                        cFormControl
+                        id="soLuong"
+                        required
+                        type="number"
+                      />
+                      <c-form-feedback [valid]="false"
+                        >Số lượng phải nhập.</c-form-feedback
+                      >
+                    </c-col>
+                    <!-- Tình trạng -->
+                    <c-col xs="4">
+                      <label cLabel for="tinhTrangThietBi"
+                        >Tình trạng thiết bị</label
+                      >
+                      <input
+                        [(ngModel)]="dataDetail.tinhTrangThietBi"
+                        formControlName="tinhTrangThietBi"
+                        cFormControl
+                        id="tinhTrangThietBi"
+                        required
+                        type="text"
+                      />
+                    </c-col>
+
+                    <!-- Ghi chú -->
+                    <c-col xs="4">
+                      <label cLabel for="ghiChu">Ghi chú</label>
+                      <input
+                        [(ngModel)]="dataDetail.ghiChu"
+                        formControlName="ghiChu"
+                        cFormControl
+                        id="ghiChu"
+                        required
+                        type="text"
+                      />
+                    </c-col>
+                    <c-col xs="12">
+                      <button
+                        [disabled]="customStylesForm.form.valid"
+                        cButton
+                        class="me-1"
+                        color="primary"
+                        type="submit"
+                      >
+                        Lưu lại
+                      </button>
+                      <button cButton color="danger" (click)="onClode()">
+                        Đóng
+                      </button>
+                    </c-col>
+                  </form>
+                  }
+                </c-tab-panel>
+                <c-tab-panel [itemKey]="1" class="p-3">
+                  <app-nhatkybomnuoc-tab [TonghopbomnuocDetail]="dataDetail">
+                  </app-nhatkybomnuoc-tab>
+                </c-tab-panel>
+                <c-tab-panel [itemKey]="2" class="p-3">
+                  <app-thongsobomnuoc-tab [TonghopbomnuocDetail]="dataDetail" />
+                </c-tab-panel>
+              </c-tabs-content>
+            </c-tabs>
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-row>
+  </c-modal-body>
+</c-modal>

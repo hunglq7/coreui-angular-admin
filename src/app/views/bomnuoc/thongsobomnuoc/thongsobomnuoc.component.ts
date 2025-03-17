@@ -7,6 +7,8 @@ import {
   FormsModule,
   FormGroup,
   FormControl,
+  FormBuilder,
+  Validators,
 } from '@angular/forms';
 import {
   ButtonCloseDirective,
@@ -36,6 +38,7 @@ import { NavSearchComponent } from '../../../components/nav-search/nav-search.co
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
+import * as XLSX from 'xlsx';
 export interface ThongSoBomNuoc {
   id: number;
   tenThietBi: number;
@@ -105,7 +108,8 @@ export class ThongsobomnuocComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private toastr: ToastrService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private fb: FormBuilder
   ) {}
   ngOnInit(): void {
     this.initFormBuilder();
@@ -119,12 +123,12 @@ export class ThongsobomnuocComponent implements OnInit {
   }
 
   private initFormBuilder() {
-    this.Form = new FormGroup({
-      id: new FormControl({ value: null, disabled: false }),
-      bomNuocId: new FormControl({ value: null, disabled: false }),
-      noiDung: new FormControl({ value: null, disabled: false }),
-      donViTinh: new FormControl({ value: null, disabled: false }),
-      thongSo: new FormControl({ value: null, disabled: false }),
+    this.Form = this.fb.group({
+      id: [''],
+      bomNuocId: ['', Validators.required],
+      noiDung: ['', Validators.required],
+      donViTinh: [''],
+      thongSo: [''],
     });
   }
 
@@ -151,7 +155,6 @@ export class ThongsobomnuocComponent implements OnInit {
     this.dataService.getById('/api/Thongsobomnuoc/' + this.Id).subscribe({
       next: (data: any) => {
         this.loadFormData(data);
-        console.log(data);
       },
     });
   }
@@ -176,6 +179,7 @@ export class ThongsobomnuocComponent implements OnInit {
       )
       .subscribe({
         next: (data: any) => {
+          console.log(data);
           this.dataSource = data.items;
           this.pageSize = data.pageSize;
           this.pageIndex = data.pageIndex;
@@ -276,5 +280,15 @@ export class ThongsobomnuocComponent implements OnInit {
     if (eventBoolean) {
       this.onThemmoi();
     }
+  }
+  datte = new Date().getDate();
+  month = new Date().getMonth();
+  year = new Date().getFullYear();
+  newDate = (this.datte + '-' + this.month + '-' + this.year).toString();
+  exportexcel() {
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.dataSource);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, 'Thongsobomnuoc' + this.newDate + '.xlsx');
   }
 }

@@ -2,13 +2,12 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/utils/dialogs/confirm-dialog/confirm-dialog.component';
-import { NhatkybomnuocTabComponent} from '../../bomnuoc/nhatkybomnuoc-tab/nhatkybomnuoc-tab.component';
-import { ThongsobomnuocTabComponent} from '../../bomnuoc/thongsobomnuoc-tab/thongsobomnuoc-tab.component';
+import { NhatkybomnuocTabComponent } from '../../bomnuoc/nhatkybomnuoc-tab/nhatkybomnuoc-tab.component';
+import { ThongsobomnuocTabComponent } from '../../bomnuoc/thongsobomnuoc-tab/thongsobomnuoc-tab.component';
 import {
   ReactiveFormsModule,
   FormsModule,
   FormGroup,
-  FormControl,
   FormBuilder,
   Validators,
 } from '@angular/forms';
@@ -104,39 +103,38 @@ export interface TongHopBomNuocDetail {
     GutterDirective,
     FormsModule,
     NhatkybomnuocTabComponent,
-    ThongsobomnuocTabComponent
+    ThongsobomnuocTabComponent,
   ],
   templateUrl: './tonghopbomnuoc.component.html',
-  styleUrl: './tonghopbomnuoc.component.scss'
+  styleUrl: './tonghopbomnuoc.component.scss',
 })
 export class TonghopbomnuocComponent implements OnInit {
-
   public liveDemoVisible = false;
-    title: string = '';
-    customStylesValidated = false;
-    browserDefaultsValidated = false;
-    tooltipValidated = false;
-    totalRow!: number;
-    pageIndex = 1;
-    pageSize = 10;
-    pageDisplay = 10;
-    keywordThietbi: number = 0;
-    keywordDonvi: number = 0;
-    data: TongHopBomNuoc[] = [];
-    dataDetail!: TongHopBomNuocDetail;
-    danhSach: any[] = [];
-    dsDonvi: any[] = [];
-    Form!: FormGroup;
-    Id!: Number;
-    public themoi: boolean = false;
+  title: string = '';
+  customStylesValidated = false;
+  browserDefaultsValidated = false;
+  tooltipValidated = false;
+  totalRow!: number;
+  pageIndex = 1;
+  pageSize = 10;
+  pageDisplay = 10;
+  keywordThietbi: number = 0;
+  keywordDonvi: number = 0;
+  data: TongHopBomNuoc[] = [];
+  dataDetail!: TongHopBomNuocDetail;
+  danhSach: any[] = [];
+  dsDonvi: any[] = [];
+  Form!: FormGroup;
+  Id!: Number;
+  public themoi: boolean = false;
 
-    constructor(
-      private dataService: DataService,
-      private toastr: ToastrService,
-      private dialog: MatDialog,
-      private fb: FormBuilder
-    ) {}
-  
+  constructor(
+    private dataService: DataService,
+    private toastr: ToastrService,
+    private dialog: MatDialog,
+    private fb: FormBuilder
+  ) {}
+
   ngOnInit(): void {
     this.initFormBuilder();
     this.loadTonghopBomnuoc();
@@ -158,10 +156,10 @@ export class TonghopbomnuocComponent implements OnInit {
       ngayLap: new Date(),
       soLuong: 1,
       tinhTrangThietBi: [''],
-      ghiChu: [],
+      ghiChu: [''],
     });
   }
-loadDataDetail() {
+  loadDataDetail() {
     this.dataService.getById('/api/Tonghopbomnuoc/' + this.Id).subscribe({
       next: (data: TongHopBomNuocDetail) => {
         this.dataDetail = data;
@@ -196,160 +194,159 @@ loadDataDetail() {
     });
   }
 
-   private loadFormData(entity: TongHopBomNuocDetail) {
-      this.dataDetail = entity;
-      this.Form.setValue({
-        id: entity.id,
-        maQuanLy: entity.maQuanLy,
-        bomNuocId: entity.bomNuocId,
-        donViId: entity.donViId,
-        viTriLapDat: entity.viTriLapDat,
-        ngayLap: entity.ngayLap,
-        soLuong: entity.soLuong,
-        tinhTrang: entity.tinhTrangThietBi,
-        ghiChu: entity.ghiChu,
-      });
-    }
+  private loadFormData(entity: TongHopBomNuocDetail) {
+    this.dataDetail = entity;
+    this.Form.setValue({
+      id: entity.id,
+      maQuanLy: entity.maQuanLy,
+      bomNuocId: entity.bomNuocId,
+      donViId: entity.donViId,
+      viTriLapDat: entity.viTriLapDat,
+      ngayLap: entity.ngayLap,
+      soLuong: entity.soLuong,
+      tinhTrang: entity.tinhTrangThietBi,
+      ghiChu: entity.ghiChu,
+    });
+  }
 
-    getDataDonvi() {
-      this.dataService.get('/api/Phongban').subscribe({
-        next: (data: any) => {
-          this.dsDonvi = data;
+  getDataDonvi() {
+    this.dataService.get('/api/Phongban').subscribe({
+      next: (data: any) => {
+        this.dsDonvi = data;
+      },
+    });
+  }
+
+  getDataBomnuoc() {
+    this.dataService.get('/api/Danhmucbomnuoc').subscribe({
+      next: (data: any) => {
+        this.danhSach = data;
+      },
+    });
+  }
+
+  loadTonghopBomnuoc() {
+    this.dataService
+      .get(
+        '/api/Tonghopbomnuoc/paging?thietbiId=' +
+          this.keywordThietbi +
+          '&donviId=' +
+          this.keywordDonvi +
+          '&PageIndex=' +
+          this.pageIndex +
+          '&PageSize=' +
+          this.pageSize
+      )
+      .subscribe((data: any) => {
+        this.data = data.items;
+        this.pageSize = data.pageSize;
+        this.pageIndex = data.pageIndex;
+        this.totalRow = data.totalRecords;
+      });
+  }
+
+  public pageChanged(event: any): void {
+    this.pageIndex = event.page;
+    this.loadTonghopBomnuoc();
+  }
+  onThemmoi() {
+    this.title = 'Thêm quạt gió';
+    this.themoi = true;
+    this.Id = 0;
+    this.addNew();
+    this.liveDemoVisible = !this.liveDemoVisible;
+  }
+
+  onClode() {
+    this.Form.reset();
+    this.liveDemoVisible = !this.liveDemoVisible;
+  }
+
+  onEdit(id: number) {
+    this.themoi = false;
+    this.Id = id;
+    this.loadDataDetail();
+    this.title = 'Sửa bảng quạt gió';
+    this.liveDemoVisible = !this.liveDemoVisible;
+  }
+
+  onDelete(id: number) {
+    this.Id = id;
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        name: 'Bán có muốn xóa bản ghi này?',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.dataService.delete('/api/Tonghopbomnuoc/' + this.Id).subscribe({
+          next: () => {
+            this.loadTonghopBomnuoc();
+            this.toastr.success('Xóa dữ liệu thành công', 'Success');
+          },
+          error: () => {
+            this.toastr.error('Xóa dữ liệu thất bại', 'Error');
+          },
+        });
+      }
+    });
+  }
+
+  handleLiveDemoChange(event: boolean) {
+    this.liveDemoVisible = event;
+  }
+
+  save() {
+    if (this.themoi) {
+      this.dataService.post('/api/Tonghopbomnuoc', this.Form.value).subscribe({
+        next: () => {
+          this.loadTonghopBomnuoc();
+          this.toastr.success('Lưu dữ liệu thành công', 'Success');
+          this.liveDemoVisible = !this.liveDemoVisible;
+          this.Form.reset();
+        },
+        error: () => {
+          this.toastr.error('Lưu dữ liệu thất bại', 'Error');
         },
       });
-    }
-  
-    getDataBomnuoc() {
-      this.dataService.get('/api/Danhmucbomnuoc').subscribe({
-        next: (data: any) => {
-          this.danhSach = data;
-        },
-      });
-    }
-
-    loadTonghopBomnuoc() {
+    } else {
       this.dataService
-        .get(
-          '/api/Tonghopbomnuoc/paging?thietbiId=' +
-            this.keywordThietbi +
-            '&donviId=' +
-            this.keywordDonvi +
-            '&PageIndex=' +
-            this.pageIndex +
-            '&PageSize=' +
-            this.pageSize
-        )
-        .subscribe((data: any) => {
-          this.data = data.items;
-          this.pageSize = data.pageSize;
-          this.pageIndex = data.pageIndex;
-          this.totalRow = data.totalRecords;
+        .put('/api/Tonghopbomnuoc/update', this.Form.value)
+        .subscribe({
+          next: () => {
+            this.loadTonghopBomnuoc();
+            this.toastr.success('Lưu dữ liệu thành công', 'Success');
+            this.liveDemoVisible = !this.liveDemoVisible;
+            this.Form.reset();
+          },
+          error: () => {
+            this.toastr.error('Lưu dữ liệu thất bại', 'Error');
+          },
         });
     }
-  
-    public pageChanged(event: any): void {
-      this.pageIndex = event.page;
-      this.loadTonghopBomnuoc();
-    }
-    onThemmoi() {
-      this.title = 'Thêm quạt gió';
-      this.themoi = true;
-      this.Id = 0;
-      this.addNew();
-      this.liveDemoVisible = !this.liveDemoVisible;
-    }
-  
-    onClode() {
-      this.Form.reset();
-      this.liveDemoVisible = !this.liveDemoVisible;
-    }
-  
-    onEdit(id: number) {
-      this.themoi = false;
-      this.Id = id;
-      this.loadDataDetail();
-      this.title = 'Sửa bảng quạt gió';
-      this.liveDemoVisible = !this.liveDemoVisible;
-    }
+  }
 
-    onDelete(id: number) {
-      this.Id = id;
-      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-        data: {
-          name: 'Bán có muốn xóa bản ghi này?',
-        },
-      });
-  
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result) {
-          this.dataService.delete('/api/Tonghopbomnuoc/' + this.Id).subscribe({
-            next: () => {
-              this.loadTonghopBomnuoc();
-              this.toastr.success('Xóa dữ liệu thành công', 'Success');
-            },
-            error: () => {
-              this.toastr.error('Xóa dữ liệu thất bại', 'Error');
-            },
-          });
-        }
-      });
-    }
-  
-    handleLiveDemoChange(event: boolean) {
-      this.liveDemoVisible = event;
-    }
+  onReset() {
+    this.Form.reset();
+  }
 
-     save() {
-        if (this.themoi) {
-          this.dataService.post('/api/Tonghopbomnuoc', this.Form.value).subscribe({
-            next: () => {
-              this.loadTonghopBomnuoc();
-              this.toastr.success('Lưu dữ liệu thành công', 'Success');
-              this.liveDemoVisible = !this.liveDemoVisible;
-              this.Form.reset();
-            },
-            error: () => {
-              this.toastr.error('Lưu dữ liệu thất bại', 'Error');
-            },
-          });
-        } else {
-          this.dataService
-            .put('/api/Tonghopbomnuoc/update', this.Form.value)
-            .subscribe({
-              next: () => {
-                this.loadTonghopBomnuoc();
-                this.toastr.success('Lưu dữ liệu thành công', 'Success');
-                this.liveDemoVisible = !this.liveDemoVisible;
-                this.Form.reset();
-              },
-              error: () => {
-                this.toastr.error('Lưu dữ liệu thất bại', 'Error');
-              },
-            });
-        }
-      }
-    
-      onReset() {
-        this.Form.reset();
-      }
-    
-      public panes = [
-        { name: 'Home 01', id: 'tab-01', icon: 'cilHome' },
-        { name: 'Profile 02', id: 'tab-02', icon: 'cilUser' },
-        { name: 'Contact 03', id: 'tab-03', icon: 'cilCode' },
-      ];
-    
-      readonly activeItem = signal(0);
-    
-      handleActiveItemChange(value: string | number | undefined) {
-        this.activeItem.set(<number>value);
-      }
-    
-      exportexcel() {
-        const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.data);
-        const wb: XLSX.WorkBook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-        XLSX.writeFile(wb, 'Tonghopbomnuoc.xlsx');
-      }
+  public panes = [
+    { name: 'Home 01', id: 'tab-01', icon: 'cilHome' },
+    { name: 'Profile 02', id: 'tab-02', icon: 'cilUser' },
+    { name: 'Contact 03', id: 'tab-03', icon: 'cilCode' },
+  ];
 
+  readonly activeItem = signal(0);
+
+  handleActiveItemChange(value: string | number | undefined) {
+    this.activeItem.set(<number>value);
+  }
+
+  exportexcel() {
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.data);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, 'Tonghopbomnuoc.xlsx');
+  }
 }

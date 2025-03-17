@@ -119,6 +119,7 @@ export class TonghopmayxucComponent implements OnInit {
   browserDefaultsValidated = false;
   tooltipValidated = false;
   totalRow!: number;
+  sumSoluong!: number;
   pageIndex = 1;
   pageSize = 10;
   pageDisplay = 10;
@@ -264,6 +265,7 @@ export class TonghopmayxucComponent implements OnInit {
         this.pageSize = data.pageSize;
         this.pageIndex = data.pageIndex;
         this.totalRow = data.totalRecords;
+        this.sumSoluong = data.sumRecords;
       });
   }
 

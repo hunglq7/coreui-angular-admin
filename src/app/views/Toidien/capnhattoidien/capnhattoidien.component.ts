@@ -123,6 +123,7 @@ export class CapnhattoidienComponent implements OnInit {
   browserDefaultsValidated = false;
   tooltipValidated = false;
   totalRow!: number;
+  sumSoluong!: number;
   pageIndex = 1;
   pageSize = 10;
   pageDisplay = 10;

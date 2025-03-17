@@ -14,6 +14,14 @@
                   (eventSearch)="eventSearch($event)"
                   (eventAdd)="eventAdd($event)"
                 ></app-nav-search>
+                <button
+                  cButton
+                  size="sm"
+                  color="success"
+                  (click)="exportexcel()"
+                >
+                  Export Excel
+                </button>
               </c-col>
             </c-row>
             <hr />
@@ -106,7 +114,6 @@
       <div>
         <input
           hidden="true"
-          [(ngModel)]="entity.id"
           formControlName="id"
           cFormControl
           id="id"
@@ -117,13 +124,7 @@
 
       <c-col md="12">
         <label cLabel for="bomNuocId">Thiết bị</label>
-        <select
-          [(ngModel)]="entity.bomNuocId"
-          formControlName="bomNuocId"
-          cSelect
-          id="bomNuocId"
-          required
-        >
+        <select formControlName="bomNuocId" cSelect id="bomNuocId" required>
           <option selected="true" value="">Chọn hết</option>
           @for (item of dsDanhmuc; track $index) {
           <option value="{{ item.id }}">{{ item.tenThietBi }}</option>
@@ -135,7 +136,6 @@
       <c-col md="12">
         <label cLabel for="noiDung">Thông số kỹ thuật</label>
         <input
-          [(ngModel)]="entity.noiDung"
           formControlName="noiDung"
           cFormControl
           id="noiDung"
@@ -148,7 +148,6 @@
       <c-col md="12">
         <label cLabel for="donViTinh">Đơn vị </label>
         <input
-          [(ngModel)]="entity.donViTinh"
           formControlName="donViTinh"
           cFormControl
           id="donViTinh"
@@ -161,7 +160,6 @@
       <c-col md="12">
         <label cLabel for="thongSo">Thông số</label>
         <input
-          [(ngModel)]="entity.thongSo"
           formControlName="thongSo"
           cFormControl
           id="thongSo"
@@ -172,7 +170,13 @@
       </c-col>
 
       <c-col md="12">
-        <button cButton class="me-1" color="primary" type="submit">
+        <button
+          [disabled]="Form.invalid"
+          cButton
+          class="me-1"
+          color="primary"
+          type="submit"
+        >
           Lưu lại
         </button>
         <button cButton color="danger" (click)="onClode()">Đóng</button>

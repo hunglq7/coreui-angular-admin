@@ -56,7 +56,7 @@
                   </c-row>
                 </c-col>
                 <c-col md="6">
-                  <div class="d-row gap-2">
+                  <div class="d-col gap-2">
                     <button cButton color="primary" (click)="onThemmoi()">
                       Thêm mới
                     </button>
@@ -117,19 +117,27 @@
                 </table>
               </c-col>
             </c-row>
-            <div class="d-flex justify-content-center">
-              <pagination
-                [boundaryLinks]="true"
-                [itemsPerPage]="pageSize"
-                (pageChanged)="pageChanged($event)"
-                [totalItems]="totalRow"
-                [(ngModel)]="pageIndex"
-                class="pagination-sm"
-                previousText="&lsaquo;"
-                nextText="&rsaquo;"
-                firstText="&laquo;"
-                lastText="&raquo;"
-              ></pagination>
+            <div class="d-flex justify-content-between">
+              <div>
+                <strong
+                  >Tổng số thiết bị:
+                  <span class="text-primary">{{ sumSoluong }}</span></strong
+                >
+              </div>
+              <div>
+                <pagination
+                  [boundaryLinks]="true"
+                  [itemsPerPage]="pageSize"
+                  (pageChanged)="pageChanged($event)"
+                  [totalItems]="totalRow"
+                  [(ngModel)]="pageIndex"
+                  class="pagination-sm"
+                  previousText="&lsaquo;"
+                  nextText="&rsaquo;"
+                  firstText="&laquo;"
+                  lastText="&raquo;"
+                ></pagination>
+              </div>
             </div>
           </c-card-body>
         </c-card>
