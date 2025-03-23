@@ -1,0 +1,296 @@
+<c-col sm="12">
+  <c-card class="mb-3">
+    <c-card-header ngPreserveWhitespaces>
+      <strong>Cập nhật thiết bị cáp điện</strong>
+    </c-card-header>
+    <c-card-body>
+      <c-col sm="12">
+        <c-card class="mb-4">
+          <c-card-body class="table-responsive">
+            <Form cForm>
+              <c-row
+                [gutter]="2"
+                class="justify-content-start align-items-center"
+              >
+                <c-col md="4">
+                  <c-row>
+                    <c-col [md]="3">
+                      <label cLable><strong>Tìm kiếm :</strong></label>
+                    </c-col>
+                    <c-col [md]="9" xs="auto" class="d-flex">
+                      <select
+                        [(ngModel)]="keywordThietbi"
+                        cSelect
+                        id="keywordThietbi"
+                        required
+                      >
+                        <option value="">Tìm kiếp theo thiết bị...</option>
+                        @for (item of dsCapdien ; track $index) {
+                        <option value="{{ item.Id }}">
+                          {{ item.tenthietbi }}
+                        </option>
+                        }
+                      </select>
+
+                      <select
+                        aria-placeholder="Chọn đơn vị"
+                        [(ngModel)]="keywordDonvi"
+                        cSelect
+                        id="kywordDonvi"
+                        required
+                      >
+                        <option value="">Tìm kiếm theo đơn vị...</option>
+                        @for (item of dsDonvi ; track $index) {
+                        <option value="{{ item.id }}">
+                          {{ item.tenPhong }}
+                        </option>
+                        }
+                      </select>
+                      <span>
+                        <button cButton (click)="getDanhsachTonghopcapdien()">
+                          Tìm
+                        </button></span
+                      >
+                    </c-col>
+                  </c-row>
+                </c-col>
+                <c-col md="8">
+                  <button (click)="onThemmoi()" cButton>Thêm mới</button>
+                  <button (click)="exportexcel()" cButton>Xuất Excel</button>
+                </c-col>
+              </c-row>
+            </Form>
+
+            <hr />
+            <c-row>
+              <c-col sm="12">
+                <table [hover]="true" cTable>
+                  <thead>
+                    <tr>
+                      <th scope="col">Mã QL</th>
+                      <th scope="col">Thiết bị</th>
+                      <th scope="col">Đơn vị</th>
+                      <th scope="col">Ngày lắp</th>
+                      <th scope="col">Tồn đầu tháng</th>
+                      <th scope="col">Nhập trong kỳ</th>
+                      <th scope="col">Xuất trong kỳ</th>
+                      <th scope="col">Tồn cuối tháng</th>
+                      <th scope="col">Đang sử dụng</th>
+                      <th scope="col">Dự phòng</th>
+                      <th scope="col">Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (item of dataView ; track $index) {
+                    <tr>
+                      <td>
+                        {{ item.maquanly }}
+                      </td>
+                      <td>{{ item.tenThietBi }}</td>
+                      <td>{{ item.tenDonVi }}</td>
+                      <td>{{ item.ngaythang | date : "dd/MM/yyyy" }}</td>
+                      <td>{{ item.tondauthang }}</td>
+                      <td>{{ item.nhaptrongky }}</td>
+                      <td>{{ item.xuattrongky }}</td>
+                      <td>{{ item.toncuoithang }}</td>
+                      <td>{{ item.dangsudung }}</td>
+                      <td>{{ item.duphong }}</td>
+                      <td>
+                        <button
+                          class="mb-1 mb-lg-0"
+                          (click)="onEdit(item.id)"
+                          style="margin-right: 5px"
+                          cButton
+                          size="sm"
+                        >
+                          Sửa
+                        </button>
+                        <button
+                          (click)="onDelete(item.id)"
+                          cButton
+                          color="danger"
+                          size="sm"
+                        >
+                          Xóa
+                        </button>
+                      </td>
+                    </tr>
+                    }
+                  </tbody>
+                </table>
+              </c-col>
+            </c-row>
+            <div class="d-flex justify-content-between">
+              <div>
+                <strong>
+                  Tổng số thiết bị:
+                  <span class="text-primary">{{ sumSoluong }}</span></strong
+                >
+              </div>
+              <div>
+                <pagination
+                  [boundaryLinks]="true"
+                  [itemsPerPage]="pageSize"
+                  (pageChanged)="pageChanged($event)"
+                  [totalItems]="totalRow"
+                  [(ngModel)]="pageIndex"
+                  class="pagination-sm"
+                  previousText="&lsaquo;"
+                  nextText="&rsaquo;"
+                  firstText="&laquo;"
+                  lastText="&raquo;"
+                ></pagination>
+              </div>
+            </div>
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-card-body>
+  </c-card>
+</c-col>
+
+<!-- Model -->
+
+<c-modal
+  id="capdienModal"
+  backdrop="static"
+  size="xl"
+  [visible]="visible"
+  (visibleChange)="handleChange($event)"
+>
+  <c-modal-header>
+    <h5 cModalTitle>{{ title }}</h5>
+    <button (click)="toggle()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <form [formGroup]="Form" (ngSubmit)="save()" cForm class="row g-3">
+      <div>
+        <input
+          hidden="true"
+          [(ngModel)]="dataDetail.id"
+          formControlName="id"
+          cFormControl
+          type="number"
+          value="Mark"
+        />
+      </div>
+      <c-col [md]="12">
+        <label cLabel>Mã quản lý</label>
+        <input
+          [(ngModel)]="dataDetail.maquanly"
+          formControlName="maquanly"
+          cFormControl
+          type="text"
+        />
+      </c-col>
+      <c-col [md]="6">
+        <label cLabel>Cáp điện</label>
+        <select
+          [(ngModel)]="dataDetail.capdienId"
+          formControlName="capdienId"
+          cSelect
+        >
+          <option>Chọn cáp điện...</option>
+          @for (item of dsCapdien ; track $index) {
+          <option value="{{ item.id }}">
+            {{ item.tenthietbi }}
+          </option>
+          }
+        </select>
+      </c-col>
+      <c-col [md]="6">
+        <label cLabel for="inputState">Đơn vị</label>
+        <select
+          [(ngModel)]="dataDetail.donviId"
+          formControlName="donviId"
+          cSelect
+        >
+          <option>Chọn đơn vị...</option>
+          @for (item of dsDonvi ; track $index) {
+          <option value="{{ item.id }}">
+            {{ item.tenPhong }}
+          </option>
+          }
+        </select>
+      </c-col>
+      <c-col [md]="12">
+        <label cLabel>Ngày tháng</label>
+        <input
+          [(ngModel)]="dataDetail.ngaythang"
+          formControlName="ngaythang"
+          cFormControl
+          type="date"
+        />
+      </c-col>
+      <c-col [md]="4">
+        <label cLabel>Tồn đầu tháng</label>
+        <input
+          [(ngModel)]="dataDetail.tondauthang"
+          formControlName="tondauthang"
+          cFormControl
+          type="number"
+        />
+      </c-col>
+      <c-col [md]="4">
+        <label cLabel>Nhập trong kỳ</label>
+        <input
+          [(ngModel)]="dataDetail.nhaptrongky"
+          formControlName="nhaptrongky"
+          cFormControl
+          type="number"
+        />
+      </c-col>
+      <c-col [md]="4">
+        <label cLabel>Xuất trong kỳ</label>
+        <input
+          [(ngModel)]="dataDetail.xuattrongky"
+          formControlName="xuattrongky"
+          cFormControl
+          type="number"
+        />
+      </c-col>
+      <c-col [md]="4">
+        <label cLabel>Tồn cuối tháng</label>
+        <input
+          [(ngModel)]="dataDetail.toncuoithang"
+          formControlName="toncuoithang"
+          cFormControl
+          type="number"
+        />
+      </c-col>
+      <c-col [md]="4">
+        <label cLabel>Đang sử dụng</label>
+        <input
+          [(ngModel)]="dataDetail.dangsudung"
+          formControlName="dangsudung"
+          cFormControl
+          type="number"
+        />
+      </c-col>
+      <c-col [md]="4">
+        <label cLabel>Dự phòng</label>
+        <input
+          [(ngModel)]="dataDetail.duphong"
+          formControlName="duphong"
+          cFormControl
+          type="number"
+        />
+      </c-col>
+      <c-col [md]="12">
+        <label cLabel>Ghi chú</label>
+        <textarea
+          [(ngModel)]="dataDetail.ghichu"
+          formControlName="ghichu"
+          cFormControl
+          rows="3"
+        ></textarea>
+      </c-col>
+      <c-col xs="12">
+        <button cButton class="me-1" color="primary" type="submit">
+          Lưu lại
+        </button>
+        <button cButton color="danger" (click)="onClode()">Đóng</button>
+      </c-col>
+    </form>
+  </c-modal-body>
+</c-modal>

@@ -41,6 +41,11 @@ export const routes: Routes = [
           import('./views/bomnuoc/routes').then((m) => m.routes),
       },
       {
+        path: 'capdien',
+        loadChildren: () =>
+          import('./views/capdien/routes').then((m) => m.routes),
+      },
+      {
         path: 'danhmuc',
         loadChildren: () =>
           import('./views/danhmuc/routes').then((m) => m.routes),

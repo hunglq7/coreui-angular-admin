@@ -104,13 +104,18 @@ export const navItems: INavData[] = [
     ],
   },
   {
-    name: 'Biến áp',
-    url: '/forms',
+    name: 'Cáp điện',
+    url: '/capdien',
     iconComponent: { name: 'cil-puzzle' },
     children: [
       {
-        name: 'Form Control',
-        url: '/forms/form-control',
+        name: 'Danh mục cáp điện',
+        url: '/capdien/danhmuccapdien',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Tổng hợp cáp điện',
+        url: '/capdien/tonghopcapdien',
         icon: 'nav-icon-bullet',
       },
     ],
@@ -167,7 +172,7 @@ export const navItems: INavData[] = [
       },
     ],
   },
- 
+
   {
     title: true,
     name: 'Hệ thống',
@@ -192,7 +197,6 @@ export const navItems: INavData[] = [
         url: '/hethong/phanquyen',
         icon: 'nav-icon-bullet',
       },
-      
     ],
   },
   {
@@ -204,7 +208,6 @@ export const navItems: INavData[] = [
     url: '/login',
     iconComponent: { name: 'cil-star' },
     children: [
-     
       {
         name: 'Login',
         url: '/login',
