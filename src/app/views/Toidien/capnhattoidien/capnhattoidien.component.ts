@@ -32,7 +32,6 @@ import {
   FormSelectDirective,
   DropdownModule,
   SharedModule,
-  GutterDirective,
   FormModule,
 } from '@coreui/angular';
 
@@ -43,7 +42,12 @@ import {
   TabsContentComponent,
   TabsListComponent,
 } from '@coreui/angular';
-
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzCascaderModule } from 'ng-zorro-antd/cascader';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { SelectSearchComponent } from '../../../components/nav-select-search/select-search.component';
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
@@ -91,7 +95,6 @@ export interface TonghoptoitrucDetail {
     ThemeDirective,
     ButtonCloseDirective,
     ModalBodyComponent,
-
     RowComponent,
     ColComponent,
     TextColorDirective,
@@ -109,8 +112,13 @@ export interface TonghoptoitrucDetail {
     TabsListComponent,
     NhatkytoidienTabComponent,
     ThongsotoidienTabComponent,
-    GutterDirective,
     FormModule,
+    NzButtonModule,
+    NzIconModule,
+    NzInputModule,
+    NzSelectModule,
+    NzCascaderModule,
+    SelectSearchComponent,
   ],
 
   templateUrl: './capnhattoidien.component.html',
@@ -150,6 +158,15 @@ export class CapnhattoidienComponent implements OnInit {
     } else {
       this.loadTonghoptoitrucDetail();
     }
+  }
+  eventThietbi($event: number) {
+    this.keywordThietbi = $event;
+    this.loadTonghoptoitruc();
+  }
+
+  eventDonvi($event: number) {
+    this.keywordDonvi = $event;
+    this.loadTonghoptoitruc();
   }
 
   public dateOptions: any = {

@@ -42,6 +42,7 @@
     "chart.js": "^4.4.7",
     "jwt-decode": "^4.0.0",
     "lodash-es": "^4.17.21",
+    "ng-zorro-antd": "^19.1.0",
     "ng2-daterangepicker": "^3.0.1",
     "ngx-bootstrap": "^19.0.2",
     "ngx-scrollbar": "^13.0.3",

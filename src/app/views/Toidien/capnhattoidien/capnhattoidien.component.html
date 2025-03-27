@@ -2,66 +2,24 @@
 <c-col sm="12">
   <c-card class="mb-3">
     <c-card-header ngPreserveWhitespaces>
-      <strong>Cập nhật thiết bị tời điện</strong>
+      <app-select-search
+        [dsThietbi]="dsToitruc"
+        [dsDonvi]="dsDonvi"
+        (eventSearchThietbi)="eventThietbi($event)"
+        (eventSearchDonvi)="eventDonvi($event)"
+      ></app-select-search>
+
+      <button (click)="onThemmoi()" nz-button nzType="primary" nzPrimary>
+        <span>Thêm</span>
+      </button>
+      <button (click)="exportexcel()" nz-button nzType="default" nzPrimary>
+        Xuất Excel
+      </button>
     </c-card-header>
     <c-card-body>
       <c-col sm="12">
         <c-card class="mb-4">
           <c-card-body class="table-responsive">
-            <Form cForm>
-              <c-row
-                [gutter]="2"
-                class="justify-content-start align-items-center"
-              >
-                <c-col md="6">
-                  <c-row>
-                    <c-col xs="auto">
-                      <label cLable><strong>Tìm kiếm :</strong></label>
-                    </c-col>
-                    <c-col xs="auto" class="d-flex">
-                      <select
-                        [(ngModel)]="keywordThietbi"
-                        cSelect
-                        id="keywordThietbi"
-                        required
-                      >
-                        <option value="">Chọn hết...</option>
-                        @for (item of dsToitruc ; track $index) {
-                        <option value="{{ item.id }}">
-                          {{ item.tenThietBi }}
-                        </option>
-                        }
-                      </select>
-
-                      <select
-                        aria-placeholder="Chọn đơn vị"
-                        [(ngModel)]="keywordDonvi"
-                        cSelect
-                        id="kywordDonvi"
-                        required
-                      >
-                        <option value="">Chọn hết...</option>
-                        @for (item of dsDonvi ; track $index) {
-                        <option value="{{ item.id }}">
-                          {{ item.tenPhong }}
-                        </option>
-                        }
-                      </select>
-                      <span>
-                        <button cButton (click)="loadTonghoptoitruc()">
-                          Tìm
-                        </button></span
-                      >
-                    </c-col>
-                  </c-row>
-                </c-col>
-                <c-col md="6">
-                  <button (click)="onThemmoi()" cButton>Thêm mới</button>
-                  <button (click)="exportexcel()" cButton>Xuất Excel</button>
-                </c-col>
-              </c-row>
-            </Form>
-
             <hr />
             <c-row>
               <c-col sm="12">
