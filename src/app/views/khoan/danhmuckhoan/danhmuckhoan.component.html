@@ -1,0 +1,39 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <c-card class="mb-4" style="width: 100%; height: 800px">
+      <c-card-header>
+        <div class="mb-2">
+          <app-nav-import-excel
+            (eventImportExcel)="importexcel($event)"
+          ></app-nav-import-excel>
+        </div>
+        <div>
+          <button nz-button nzType="primary" (click)="onAddRow()">Thêm</button>
+          <button nz-button nzType="primary" (click)="ConfirmDelete()">
+            Xóa
+          </button>
+          <button nz-button nzType="primary" (click)="save()">Lưu</button>
+          <button nz-button nzType="default" (click)="exportexcel()">
+            Export Excel
+          </button>
+        </div>
+      </c-card-header>
+      <c-card-body style="height: 100%; width: 100%">
+        <ag-grid-angular
+          class="ag-theme-quartz"
+          style="height: 100%; width: 100%"
+          [rowData]="data"
+          #agGrid
+          [columnDefs]="colDefs"
+          [defaultColDef]="defaulColDef"
+          (gridReady)="onGridReady($event)"
+          [rowSelection]="rowSelection"
+          [pagination]="true"
+          [animateRows]="true"
+          [paginationPageSize]="20"
+        >
+        </ag-grid-angular
+      ></c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

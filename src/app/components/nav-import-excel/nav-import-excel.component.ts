@@ -5,18 +5,28 @@ import {
   SimpleChanges,
   EventEmitter,
 } from '@angular/core';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'app-nav-import-excel',
-  imports: [],
+  imports: [NzInputModule],
 
-  template: `<input
-    type="file"
-    class="form-control"
-    placeholder="Chọn file"
-    #importExcel
-    (change)="importexcel($event)"
-  /> `,
+  template: `
+    <input
+      nz-input
+      type="file"
+      placeholder="Chọn file excel"
+      #importExcel
+      (change)="importexcel($event)"
+    />
+  `,
+  styles: [
+    `
+      [nz-input] {
+        width: 500px;
+      }
+    `,
+  ],
 })
 export class NavImportExcelComponent implements OnChanges {
   @Output() eventImportExcel = new EventEmitter<any>();

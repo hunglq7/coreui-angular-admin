@@ -121,6 +121,40 @@ export const navItems: INavData[] = [
     ],
   },
   {
+    name: 'Ba lăng',
+    url: '/balang',
+    iconComponent: { name: 'cil-puzzle' },
+    children: [
+      {
+        name: 'Danh mục ba lăng',
+        url: '/balang/danhmucbalang',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Tổng hợp ba lăng',
+        url: '/balang/tonghopbalang',
+        icon: 'nav-icon-bullet',
+      },
+    ],
+  },
+  {
+    name: 'Khoan',
+    url: '/khoan',
+    iconComponent: { name: 'cil-puzzle' },
+    children: [
+      {
+        name: 'Danh mục khoan',
+        url: '/khoan/danhmuckhoan',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Tổng hợp khoan',
+        url: '/khoan/tonghopkhoan',
+        icon: 'nav-icon-bullet',
+      },
+    ],
+  },
+  {
     name: 'Rơ le',
     iconComponent: { name: 'cil-puzzle' },
     url: '/charts',

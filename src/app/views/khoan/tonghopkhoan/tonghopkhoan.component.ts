@@ -1,7 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NhatkytoidienTabComponent } from '../nhatkytoidien-tab/nhatkytoidien-tab.component';
-import { ThongsotoidienTabComponent } from '../thongsotoidien-tab/thongsotoidien-tab.component';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import {
@@ -13,7 +11,6 @@ import {
 } from '@angular/forms';
 import {
   ButtonCloseDirective,
-  ButtonDirective,
   ModalBodyComponent,
   ModalComponent,
   ModalHeaderComponent,
@@ -25,24 +22,12 @@ import {
   CardComponent,
   CardHeaderComponent,
   CardBodyComponent,
-  TabDirective,
-  FormDirective,
-  FormLabelDirective,
-  FormControlDirective,
-  FormFeedbackComponent,
-  FormSelectDirective,
   DropdownModule,
   SharedModule,
   FormModule,
 } from '@coreui/angular';
 
 // Tab
-import {
-  TabPanelComponent,
-  TabsComponent,
-  TabsContentComponent,
-  TabsListComponent,
-} from '@coreui/angular';
 import { NzButtonModule, NzButtonSize } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
@@ -55,43 +40,36 @@ import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
 import * as XLSX from 'xlsx';
-export interface Tonghoptoitruc {
-  id: number;
-  maQuanLy: string;
-  tenThietBi: string;
-  phongBan: string;
-  viTriLapDat: string;
-  ngayLap: string;
-  mucDichSuDung: string;
-  soLuong: number;
-  tinhTrangThietBi: string;
-}
 
-export interface TonghoptoitrucDetail {
+export interface Tonghopkhoan {
   id: number;
-  maQuanLy: string;
-  thietbiId: number;
-  donViSuDungId: number;
-  viTriLapDat: string;
-  ngayLap: string;
-  mucDichSuDung: string;
+  tenThietBi: string;
+  tenDonVi: string;
+  donViTinh: string;
   soLuong: number;
-  tinhTrangThietBi: string;
+  ngayLap: Date;
+  viTriLapDat: string;
+  tinhTrangKyThuat: string;
   ghiChu: string;
 }
 
+export interface TonghopkhoanDetail {
+  id: number;
+  khoanId: number;
+  donViId: number;
+  donViTinh: string;
+  soLuong: number;
+  ngayLap: string;
+  viTriLapDat: string;
+  tinhTrangKyThuat: string;
+  ghiChu: string;
+}
 @Component({
-  selector: 'app-capnhattoidien',
+  selector: 'app-tonghopkhoan',
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    FormDirective,
-    FormLabelDirective,
-    FormControlDirective,
-    FormFeedbackComponent,
-    FormSelectDirective,
-    ButtonDirective,
     ModalComponent,
     ModalHeaderComponent,
     ModalTitleDirective,
@@ -107,13 +85,6 @@ export interface TonghoptoitrucDetail {
     PaginationModule,
     DropdownModule,
     SharedModule,
-    TabDirective,
-    TabPanelComponent,
-    TabsComponent,
-    TabsContentComponent,
-    TabsListComponent,
-    NhatkytoidienTabComponent,
-    ThongsotoidienTabComponent,
     FormModule,
     NzButtonModule,
     NzIconModule,
@@ -126,11 +97,10 @@ export interface TonghoptoitrucDetail {
     NzModalModule,
     NzToolTipModule,
   ],
-
-  templateUrl: './capnhattoidien.component.html',
-  styleUrl: './capnhattoidien.component.scss',
+  templateUrl: './tonghopkhoan.component.html',
+  styleUrl: './tonghopkhoan.component.scss',
 })
-export class CapnhattoidienComponent implements OnInit {
+export class TonghopkhoanComponent implements OnInit {
   public liveDemoVisible = false;
   title: string = '';
   customStylesValidated = false;
@@ -144,9 +114,9 @@ export class CapnhattoidienComponent implements OnInit {
   filterKeyword = '';
   keywordThietbi: number = 0;
   keywordDonvi: number = 0;
-  toitrucs: Tonghoptoitruc[] = [];
-  toitrucDetail!: TonghoptoitrucDetail;
-  dsToitruc: any[] = [];
+  khoans: Tonghopkhoan[] = [];
+  khoanDetail!: TonghopkhoanDetail;
+  dsKhoan: any[] = [];
   dsDonvi: any[] = [];
   Form!: FormGroup;
   Id!: Number;
@@ -156,54 +126,33 @@ export class CapnhattoidienComponent implements OnInit {
     private dataService: DataService,
     private toastr: ToastrService,
     private modal: NzModalService
-  ) {
-    this.initFormBuilder();
-  }
-  ngOnInit(): void {
-    this.loadTonghoptoitruc();
-    this.getDataDonvi();
-    this.getDataToitruc();
-    if ((this.Id = 0)) {
-      this.themoiTonghoptoitrucDetail();
-    } else {
-      this.loadTonghoptoitrucDetail();
-    }
+  ) {}
+  initFormBuilder(): void {
+    this.Form = new FormGroup({
+      id: new FormControl(0, Validators.required),
+      khoanId: new FormControl(null, Validators.required),
+      donViId: new FormControl(null, Validators.required),
+      donViTinh: new FormControl('', Validators.required),
+      soLuong: new FormControl(0, [Validators.required, Validators.min(1)]),
+      ngayLap: new FormControl(null, Validators.required),
+      viTriLapDat: new FormControl(''),
+      tinhTrangKyThuat: new FormControl(''),
+      ghiChu: new FormControl(''),
+    });
   }
   eventThietbi($event: number) {
     this.keywordThietbi = $event;
-    this.loadTonghoptoitruc();
+    this.loadTonghopkhoan();
   }
 
   eventDonvi($event: number) {
     this.keywordDonvi = $event;
-    this.loadTonghoptoitruc();
+    this.loadTonghopkhoan();
   }
-
-  public dateOptions: any = {
-    locale: { format: 'DD/MM/YYYY' },
-    alwaysShowCalendars: false,
-    singleDatePicker: true,
-  };
-
-  initFormBuilder() {
-    this.Form = new FormGroup({
-      id: new FormControl(),
-      maQuanLy: new FormControl('', [Validators.required]),
-      thietbiId: new FormControl('', [Validators.required]),
-      donViSuDungId: new FormControl('', [Validators.required]),
-      viTriLapDat: new FormControl('', [Validators.required]),
-      ngayLap: new FormControl('', [Validators.required]),
-      mucDichSuDung: new FormControl(''),
-      soLuong: new FormControl('', [Validators.required]),
-      tinhTrangThietBi: new FormControl(''),
-      ghiChu: new FormControl(''),
-    });
-  }
-
-  loadTonghoptoitrucDetail() {
-    this.dataService.getById('/api/Tonghoptoitruc/' + this.Id).subscribe({
-      next: (data: TonghoptoitrucDetail) => {
-        this.toitrucDetail = data;
+  loadTonghopkhoanDetail() {
+    this.dataService.getById('/api/Tonghopkhoan/' + this.Id).subscribe({
+      next: (data: TonghopkhoanDetail) => {
+        this.khoanDetail = data;
         var myDate = new Date(data.ngayLap);
         var myDateString;
         myDateString =
@@ -212,16 +161,16 @@ export class CapnhattoidienComponent implements OnInit {
           ('0' + (myDate.getMonth() + 1)).slice(-2) +
           '-' +
           ('0' + myDate.getDate()).slice(-2);
-        this.toitrucDetail.ngayLap = myDateString;
+        this.khoanDetail.ngayLap = myDateString;
       },
     });
   }
 
-  themoiTonghoptoitrucDetail() {
-    this.dataService.getById('/api/Tonghoptoitruc/' + 0).subscribe({
+  themoiTonghopkhoanDetail() {
+    this.dataService.getById('/api/Tonghopkhoan/' + 0).subscribe({
       next: (data) => {
-        this.toitrucDetail = data;
-        var myDate = new Date(this.toitrucDetail.ngayLap);
+        this.khoanDetail = data;
+        var myDate = new Date(this.khoanDetail.ngayLap);
         var myDateString;
         myDateString =
           myDate.getFullYear() +
@@ -229,24 +178,23 @@ export class CapnhattoidienComponent implements OnInit {
           ('0' + (myDate.getMonth() + 1)).slice(-2) +
           '-' +
           ('0' + myDate.getDate()).slice(-2);
-        this.toitrucDetail.ngayLap = myDateString;
-        this.loadFormData(this.toitrucDetail);
+        this.khoanDetail.ngayLap = myDateString;
+        this.loadFormData(this.khoanDetail);
       },
     });
   }
-  loadFormData(items: TonghoptoitrucDetail) {
-    this.toitrucDetail = items;
+
+  loadFormData(data: TonghopkhoanDetail): void {
     this.Form.patchValue({
-      id: items.id,
-      maQuanly: items.maQuanLy,
-      thietbiId: items.thietbiId,
-      donViSuDung: items.donViSuDungId,
-      viTriLapDat: items.viTriLapDat,
-      ngayLap: items.ngayLap,
-      mucDichSuDung: items.mucDichSuDung,
-      soLuong: items.soLuong,
-      tinhTrangThietBi: items.tinhTrangThietBi,
-      ghiChu: items.ghiChu,
+      id: data.id,
+      khoanId: data.khoanId,
+      donViId: data.donViId,
+      donViTinh: data.donViTinh,
+      soLuong: data.soLuong,
+      ngayLap: data.ngayLap,
+      viTriLapDat: data.viTriLapDat,
+      tinhTrangKyThuat: data.tinhTrangKyThuat,
+      ghiChu: data.ghiChu,
     });
   }
 
@@ -258,18 +206,18 @@ export class CapnhattoidienComponent implements OnInit {
     });
   }
 
-  getDataToitruc() {
-    this.dataService.get('/api/Danhmuctoitruc').subscribe({
+  getDataKhoan() {
+    this.dataService.get('/api/Danhmuckhoan').subscribe({
       next: (data: any) => {
-        this.dsToitruc = data;
+        this.dsKhoan = data;
       },
     });
   }
 
-  loadTonghoptoitruc() {
+  loadTonghopkhoan() {
     this.dataService
       .get(
-        '/api/Tonghoptoitruc/paging?thietbiId=' +
+        '/api/Tonghopkhoan/paging?thietbiId=' +
           this.keywordThietbi +
           '&donviId=' +
           this.keywordDonvi +
@@ -279,7 +227,7 @@ export class CapnhattoidienComponent implements OnInit {
           this.pageSize
       )
       .subscribe((data: any) => {
-        this.toitrucs = data.items;
+        this.khoans = data.items;
         this.pageSize = data.pageSize;
         this.pageIndex = data.pageIndex;
         this.totalRow = data.totalRecords;
@@ -288,13 +236,14 @@ export class CapnhattoidienComponent implements OnInit {
   }
   public pageIndexChanged(event: any): void {
     this.pageIndex = event;
-    this.loadTonghoptoitruc();
+    this.loadTonghopkhoan();
   }
+
   onThemmoi() {
-    this.title = 'Thêm tời điện';
+    this.title = 'Thêm khoan';
     this.themoi = true;
     this.Id = 0;
-    this.themoiTonghoptoitrucDetail();
+    this.themoiTonghopkhoanDetail();
     this.liveDemoVisible = !this.liveDemoVisible;
   }
 
@@ -306,8 +255,8 @@ export class CapnhattoidienComponent implements OnInit {
   onEdit(id: number) {
     this.themoi = false;
     this.Id = id;
-    this.loadTonghoptoitrucDetail();
-    this.title = 'Sửa tời điện';
+    this.loadTonghopkhoanDetail();
+    this.title = 'Sửa khoan';
     this.liveDemoVisible = !this.liveDemoVisible;
   }
 
@@ -326,9 +275,9 @@ export class CapnhattoidienComponent implements OnInit {
   }
   onDelete(item: any) {
     this.Id = item.id;
-    this.dataService.delete('/api/Tonghoptoitruc/' + this.Id).subscribe({
+    this.dataService.delete('/api/Tonghopkhoan/' + this.Id).subscribe({
       next: () => {
-        this.loadTonghoptoitruc();
+        this.loadTonghopkhoan();
         this.toastr.success('Xóa dữ liệu thành công', 'Success');
       },
       error: () => {
@@ -336,16 +285,16 @@ export class CapnhattoidienComponent implements OnInit {
       },
     });
   }
-
   handleLiveDemoChange(event: boolean) {
     this.liveDemoVisible = event;
   }
 
   save() {
     if (this.themoi) {
-      this.dataService.post('/api/Tonghoptoitruc', this.Form.value).subscribe({
+      this.dataService.post('/api/Tonghopkhoan', this.Form.value).subscribe({
         next: () => {
-          this.loadTonghoptoitruc();
+          console.log(this.Form.value);
+          this.loadTonghopkhoan();
           this.toastr.success('Lưu dữ liệu thành công', 'Success');
           this.liveDemoVisible = !this.liveDemoVisible;
           this.Form.reset();
@@ -355,9 +304,10 @@ export class CapnhattoidienComponent implements OnInit {
         },
       });
     } else {
-      this.dataService.put('/api/Tonghoptoitruc', this.Form.value).subscribe({
+      this.dataService.put('/api/Tonghopkhoan', this.Form.value).subscribe({
         next: () => {
-          this.loadTonghoptoitruc();
+          console.log(this.Form.value);
+          this.loadTonghopkhoan();
           this.toastr.success('Lưu dữ liệu thành công', 'Success');
           this.liveDemoVisible = !this.liveDemoVisible;
           this.Form.reset();
@@ -373,12 +323,6 @@ export class CapnhattoidienComponent implements OnInit {
     this.Form.reset();
   }
 
-  public panes = [
-    { name: 'Home 01', id: 'tab-01', icon: 'cilHome' },
-    { name: 'Profile 02', id: 'tab-02', icon: 'cilUser' },
-    { name: 'Contact 03', id: 'tab-03', icon: 'cilCode' },
-  ];
-
   readonly activeItem = signal(0);
 
   handleActiveItemChange(value: string | number | undefined) {
@@ -386,13 +330,25 @@ export class CapnhattoidienComponent implements OnInit {
   }
 
   exportexcel() {
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.toitrucs);
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.khoans);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    XLSX.writeFile(wb, 'Tonghoptoidien.xlsx');
+    XLSX.writeFile(wb, 'Tonghopkhoan.xlsx');
   }
   pageSizeChange(event: number): void {
     this.pageSize = event;
-    this.loadTonghoptoitruc();
+    this.loadTonghopkhoan();
+  }
+
+  ngOnInit(): void {
+    this.initFormBuilder();
+    this.loadTonghopkhoan();
+    this.getDataDonvi();
+    this.getDataKhoan();
+    if ((this.Id = 0)) {
+      this.themoiTonghopkhoanDetail();
+    } else {
+      this.loadTonghopkhoanDetail();
+    }
   }
 }

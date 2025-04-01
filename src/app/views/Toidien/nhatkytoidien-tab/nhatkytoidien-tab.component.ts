@@ -12,7 +12,7 @@ import { DataService } from '../../../core/services/data.service';
 import { AgGridAngular } from 'ag-grid-angular';
 import { RowComponent, ColComponent } from '@coreui/angular';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-
+import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 ModuleRegistry.registerModules([AllCommunityModule, RowSelectionModule]);
 
 export interface Nhatkytoitruc {
@@ -27,7 +27,13 @@ export interface Nhatkytoitruc {
 
 @Component({
   selector: 'app-nhatkytoidien-tab',
-  imports: [RowComponent, ColComponent, ButtonDirective, AgGridAngular],
+  imports: [
+    RowComponent,
+    ColComponent,
+    ButtonDirective,
+    AgGridAngular,
+    NzModalModule,
+  ],
   templateUrl: './nhatkytoidien-tab.component.html',
   styleUrl: './nhatkytoidien-tab.component.scss',
 })
@@ -39,7 +45,8 @@ export class NhatkytoidienTabComponent implements OnChanges {
   entity: any;
   constructor(
     private dataService: DataService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private modal: NzModalService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -128,8 +135,20 @@ export class NhatkytoidienTabComponent implements OnChanges {
       });
   }
 
+  showConfirm(): void {
+    let pos = 2;
+    this.modal.confirm({
+      nzTitle: '<i>Bán có muốn xóa bản ghi này?</i>',
+      nzContent: '<b>Thiết bị: </b>',
+      nzStyle: {
+        position: 'relative',
+        top: `${pos * 90}px`,
+        left: `${pos * 70}px`,
+      },
+      nzOnOk: () => this.onDelete(),
+    });
+  }
   onDelete() {
-    debugger;
     const selectedRows = this.gridApi.getSelectedRows();
     this.dataService
       .post('/api/NhatkyTonghoptoitruc/DeleteMultipale', selectedRows)

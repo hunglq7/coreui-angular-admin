@@ -46,6 +46,16 @@ export const routes: Routes = [
           import('./views/capdien/routes').then((m) => m.routes),
       },
       {
+        path: 'balang',
+        loadChildren: () =>
+          import('./views/balang/routes').then((m) => m.routes),
+      },
+      {
+        path: 'khoan',
+        loadChildren: () =>
+          import('./views/khoan/routes').then((m) => m.routes),
+      },
+      {
         path: 'danhmuc',
         loadChildren: () =>
           import('./views/danhmuc/routes').then((m) => m.routes),

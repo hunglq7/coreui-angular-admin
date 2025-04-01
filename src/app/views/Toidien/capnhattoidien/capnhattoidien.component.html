@@ -16,87 +16,114 @@
         Xuất Excel
       </button>
     </c-card-header>
-    <c-card-body>
+    <c-card-body class="table-responsive">
       <c-col sm="12">
         <c-card class="mb-4">
-          <c-card-body class="table-responsive">
-            <hr />
-            <c-row>
-              <c-col sm="12">
-                <table [hover]="true" cTable>
-                  <thead>
-                    <tr>
-                      <th scope="col">Mã QL</th>
-                      <th scope="col">Thiết bị</th>
-                      <th scope="col">Đơn vị</th>
-                      <th scope="col">Vị trí lắp đặt</th>
-                      <th scope="col">Ngày lắp</th>
-                      <th scope="col">Số lượng</th>
-                      <th scope="col">Hành động</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @for (item of toitrucs ; track $index) {
-                    <tr>
-                      <td>{{ item.maQuanLy }}</td>
-                      <td>{{ item.tenThietBi }}</td>
-                      <td>{{ item.phongBan }}</td>
-                      <td>{{ item.viTriLapDat }}</td>
-                      <td>{{ item.ngayLap | date : "dd/MM/yyyy" }}</td>
-                      <td>{{ item.soLuong }}</td>
-                      <td>
-                        <button
-                          class="mb-1 mb-lg-0"
-                          (click)="onEdit(item.id)"
-                          style="margin-right: 5px"
-                          cButton
-                          size="sm"
-                        >
-                          Sửa
-                        </button>
-                        <button
-                          (click)="onDelete(item.id)"
-                          cButton
-                          color="danger"
-                          size="sm"
-                        >
-                          Xóa
-                        </button>
-                      </td>
-                    </tr>
-                    }
-                  </tbody>
-                </table>
-              </c-col>
-            </c-row>
-            <div class="d-flex justify-content-between">
-              <div>
-                <strong>
-                  Tổng số thiết bị:
-                  <span class="text-primary">{{ sumSoluong }}</span></strong
-                >
+          <c-row>
+            <c-col sm="12">
+              <nz-table
+                cTable
+                #columnTable
+                nzShowQuickJumper
+                nzShowSizeChanger
+                [nzData]="toitrucs"
+                [nzScroll]="{ x: '1100px' }"
+                [nzPageIndex]="pageIndex"
+                [nzPageSize]="pageSize"
+                [nzPageSizeOptions]="[3, 5, 10, 20]"
+                [nzTotal]="totalRow"
+                [nzFrontPagination]="false"
+                (nzPageIndexChange)="pageIndexChanged($event)"
+                (nzPageSizeChange)="pageSizeChange($event)"
+              >
+                <thead>
+                  <tr>
+                    <th nzLeft scope="col">Mã QL</th>
+                    <th nzLeft scope="col">Thiết bị</th>
+                    <th scope="col">Đơn vị</th>
+                    <th scope="col">Vị trí lắp đặt</th>
+                    <th scope="col">Ngày lắp</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Hành động</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of toitrucs ; track $index) {
+                  <tr>
+                    <td nzLeft>{{ item.maQuanLy }}</td>
+                    <td nzLeft>{{ item.tenThietBi }}</td>
+                    <td>{{ item.phongBan }}</td>
+                    <td>{{ item.viTriLapDat }}</td>
+                    <td>{{ item.ngayLap | date : "dd/MM/yyyy" }}</td>
+                    <td>{{ item.soLuong }}</td>
+                    <td>
+                      <button
+                        nz-tooltip
+                        [nzTooltipTitle]="titleSua"
+                        [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+                        nz-button
+                        nzType="default"
+                        [nzSize]="size"
+                        (click)="onEdit(item.id)"
+                      >
+                        <nz-icon
+                          nzType="edit"
+                          style="color: rgb(16, 142, 233)"
+                        />
+                      </button>
+                      <ng-template #titleSua let-thing>
+                        <nz-icon nzType="edit" />
+                        <span>Sửa bản ghi</span>
+                      </ng-template>
+                      <ng-template #titleXoa let-thing>
+                        <nz-icon nzType="delete" />
+                        <span>Xóa bản ghi</span>
+                      </ng-template>
+
+                      <button
+                        nz-tooltip
+                        [nzTooltipTitle]="titleXoa"
+                        [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+                        nz-button
+                        nzType="default"
+                        [nzSize]="size"
+                        (click)="showConfirm(item)"
+                      >
+                        <nz-icon
+                          nzType="delete"
+                          style="color: rgb(255, 0, 0)"
+                        />
+                      </button>
+                    </td>
+                  </tr>
+                  }
+                </tbody>
+              </nz-table>
+              <div
+                class="d-flex justify-content-between"
+                style="margin-left: 30px; margin-bottom: 10px"
+              >
+                <div>
+                  <strong>
+                    Tổng số thiết bị:
+                    <span class="text-primary">{{ sumSoluong }}</span></strong
+                  >
+                </div>
               </div>
-              <div>
-                <pagination
-                  [boundaryLinks]="true"
-                  [itemsPerPage]="pageSize"
-                  (pageChanged)="pageChanged($event)"
-                  [totalItems]="totalRow"
-                  [(ngModel)]="pageIndex"
-                  class="pagination-sm"
-                  previousText="&lsaquo;"
-                  nextText="&rsaquo;"
-                  firstText="&laquo;"
-                  lastText="&raquo;"
-                ></pagination>
-              </div>
-            </div>
-          </c-card-body>
+            </c-col>
+          </c-row>
         </c-card>
       </c-col>
     </c-card-body>
   </c-card>
 </c-col>
+
+<ng-template #icon>
+  <nz-icon nzType="question-circle" nzTheme="outline"></nz-icon>
+</ng-template>
+<ng-template #customer>
+  <nz-icon nzType="customer-service" nzTheme="outline"></nz-icon>
+</ng-template>
 
 <c-modal
   id="liveDemoModal"
