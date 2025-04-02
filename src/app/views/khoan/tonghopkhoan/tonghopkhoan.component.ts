@@ -129,7 +129,7 @@ export class TonghopkhoanComponent implements OnInit {
   ) {}
   initFormBuilder(): void {
     this.Form = new FormGroup({
-      id: new FormControl(0, Validators.required),
+      id: new FormControl(0),
       khoanId: new FormControl(null, Validators.required),
       donViId: new FormControl(null, Validators.required),
       donViTinh: new FormControl('', Validators.required),
@@ -304,18 +304,20 @@ export class TonghopkhoanComponent implements OnInit {
         },
       });
     } else {
-      this.dataService.put('/api/Tonghopkhoan', this.Form.value).subscribe({
-        next: () => {
-          console.log(this.Form.value);
-          this.loadTonghopkhoan();
-          this.toastr.success('Lưu dữ liệu thành công', 'Success');
-          this.liveDemoVisible = !this.liveDemoVisible;
-          this.Form.reset();
-        },
-        error: () => {
-          this.toastr.error('Lưu dữ liệu thất bại', 'Error');
-        },
-      });
+      this.dataService
+        .put('/api/Tonghopkhoan/update', this.Form.value)
+        .subscribe({
+          next: () => {
+            console.log(this.Form.value);
+            this.loadTonghopkhoan();
+            this.toastr.success('Lưu dữ liệu thành công', 'Success');
+            this.liveDemoVisible = !this.liveDemoVisible;
+            this.Form.reset();
+          },
+          error: () => {
+            this.toastr.error('Lưu dữ liệu thất bại', 'Error');
+          },
+        });
     }
   }
 

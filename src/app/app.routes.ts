@@ -56,6 +56,11 @@ export const routes: Routes = [
           import('./views/khoan/routes').then((m) => m.routes),
       },
       {
+        path: 'maycao',
+        loadChildren: () =>
+          import('./views/maycao/routes').then((m) => m.routes),
+      },
+      {
         path: 'danhmuc',
         loadChildren: () =>
           import('./views/danhmuc/routes').then((m) => m.routes),

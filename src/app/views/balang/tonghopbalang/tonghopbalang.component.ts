@@ -1,32 +1,45 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { DataService } from '../../../core/services/data.service';
-import { SelectSearchComponent } from '../../../components/nav-select-search/select-search.component';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import * as XLSX from 'xlsx';
+import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import {
+  ReactiveFormsModule,
+  FormsModule,
+  FormGroup,
+  Validators,
+  FormControl,
+} from '@angular/forms';
+import {
+  ButtonCloseDirective,
+  ModalBodyComponent,
+  ModalComponent,
+  ModalHeaderComponent,
+  ModalTitleDirective,
+  ThemeDirective,
+  RowComponent,
+  ColComponent,
+  TextColorDirective,
   CardComponent,
   CardHeaderComponent,
   CardBodyComponent,
-  ModalBodyComponent,
-  ModalHeaderComponent,
+  DropdownModule,
+  SharedModule,
+  FormModule,
 } from '@coreui/angular';
 
-import {
-  ButtonCloseDirective,
-  ButtonDirective,
-  ModalComponent,
-  ModalFooterComponent,
-  ModalTitleDirective,
-  ThemeDirective,
-} from '@coreui/angular';
-
+// Tab
 import { NzButtonModule, NzButtonSize } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzTableComponent } from 'ng-zorro-antd/table';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
+import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzCascaderModule } from 'ng-zorro-antd/cascader';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { SelectSearchComponent } from '../../../components/nav-select-search/select-search.component';
+import { DataService } from '../../../core/services/data.service';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ToastrService } from 'ngx-toastr';
+import * as XLSX from 'xlsx';
 export interface TongHopBaLang {
   id: number;
   tenThietBi: string;
@@ -54,31 +67,42 @@ export interface TongHopBaLangDetail {
 @Component({
   selector: 'app-tonghopbalang',
   imports: [
-    FormsModule,
     CommonModule,
-    CardComponent,
-    CardHeaderComponent,
-    CardBodyComponent,
-    NzModalModule,
-    SelectSearchComponent,
-    NzButtonModule,
-    NzIconModule,
-    NzTableComponent,
-    NzToolTipModule,
-    ModalBodyComponent,
-    ModalHeaderComponent,
-    ButtonDirective,
+    ReactiveFormsModule,
+    FormsModule,
     ModalComponent,
+    ModalHeaderComponent,
     ModalTitleDirective,
     ThemeDirective,
     ButtonCloseDirective,
-    ModalFooterComponent,
+    ModalBodyComponent,
+    RowComponent,
+    ColComponent,
+    TextColorDirective,
+    CardComponent,
+    CardHeaderComponent,
+    CardBodyComponent,
+    PaginationModule,
+    DropdownModule,
+    SharedModule,
+    FormModule,
+    NzButtonModule,
+    NzIconModule,
+    NzInputModule,
+    NzSelectModule,
+    NzCascaderModule,
+    NzTableModule,
+    SelectSearchComponent,
+    NzFloatButtonModule,
+    NzModalModule,
+    NzToolTipModule,
   ],
 
   templateUrl: './tonghopbalang.component.html',
   styleUrl: './tonghopbalang.component.scss',
 })
 export class TonghopbalangComponent implements OnInit {
+  public liveDemoVisible = false;
   title: string = '';
   customStylesValidated = false;
   browserDefaultsValidated = false;
@@ -91,9 +115,9 @@ export class TonghopbalangComponent implements OnInit {
   filterKeyword = '';
   keywordThietbi: number = 0;
   keywordDonvi: number = 0;
-  listOfBalang: TongHopBaLang[] = [];
-  dataDetailOfBalang!: TongHopBaLangDetail;
-  dsBalang: any[] = [];
+  BaLangs: TongHopBaLang[] = [];
+  baLangDetail!: TongHopBaLangDetail;
+  dsBaLang: any[] = [];
   dsDonvi: any[] = [];
   Form!: FormGroup;
   Id!: Number;
@@ -102,52 +126,97 @@ export class TonghopbalangComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private toastr: ToastrService,
-    private modal: NzModalService,
-    private fb: FormBuilder
+    private modal: NzModalService
   ) {}
-
-  initFormBuilder() {
-    this.Form = this.fb.group({
-      id: [''],
-      baLangId: [''],
-      donViId: [''],
-      viTriLapDat: [''],
-      donViTinh: [''],
-      soLuong: [''],
-      ngayLap: [''],
-      tinhTrangThietBi: [''],
-      ghiChu: [''],
+  initFormBuilder(): void {
+    this.Form = new FormGroup({
+      id: new FormControl(0),
+      baLangId: new FormControl(null, Validators.required),
+      donViId: new FormControl(null, Validators.required),
+      donViTinh: new FormControl('', Validators.required),
+      soLuong: new FormControl(0, [Validators.required, Validators.min(1)]),
+      ngayLap: new FormControl(null, Validators.required),
+      viTriLapDat: new FormControl(''),
+      tinhTrangKyThuat: new FormControl(''),
+      ghiChu: new FormControl(''),
     });
   }
 
-  public visible = false;
-
-  toggleLiveDemo() {
-    this.visible = !this.visible;
+  eventThietbi($event: number) {
+    this.keywordThietbi = $event;
+    this.loadTonghopbalang();
   }
 
-  handleLiveDemoChange(event: any) {
-    this.visible = event;
+  eventDonvi($event: number) {
+    this.keywordDonvi = $event;
+    this.loadTonghopbalang();
+  }
+  loadTonghopbalangDetail() {
+    this.dataService.getById('/api/Tonghopbalang/' + this.Id).subscribe({
+      next: (data: TongHopBaLangDetail) => {
+        this.baLangDetail = data;
+        var myDate = new Date(data.ngayLap);
+        var myDateString;
+        myDateString =
+          myDate.getFullYear() +
+          '-' +
+          ('0' + (myDate.getMonth() + 1)).slice(-2) +
+          '-' +
+          ('0' + myDate.getDate()).slice(-2);
+        this.baLangDetail.ngayLap = myDateString;
+      },
+    });
   }
 
-  //Lấy danh sách phòng ban
-  getDanhmucPhongban() {
+  themoiTonghopbalangDetail() {
+    this.dataService.getById('/api/Tonghopbalang/' + 0).subscribe({
+      next: (data) => {
+        this.baLangDetail = data;
+        var myDate = new Date(this.baLangDetail.ngayLap);
+        var myDateString;
+        myDateString =
+          myDate.getFullYear() +
+          '-' +
+          ('0' + (myDate.getMonth() + 1)).slice(-2) +
+          '-' +
+          ('0' + myDate.getDate()).slice(-2);
+        this.baLangDetail.ngayLap = myDateString;
+        this.loadFormData(this.baLangDetail);
+      },
+    });
+  }
+
+  loadFormData(data: TongHopBaLangDetail): void {
+    this.Form.patchValue({
+      id: data.id,
+      baLangId: data.baLangId,
+      donViId: data.donViId,
+      donViTinh: data.donViTinh,
+      soLuong: data.soLuong,
+      ngayLap: data.ngayLap,
+      viTriLapDat: data.viTriLapDat,
+      tinhTrangKyThuat: data.tinhTrangKyThuat,
+      ghiChu: data.ghiChu,
+    });
+  }
+
+  getDataDonvi() {
     this.dataService.get('/api/Phongban').subscribe({
       next: (data: any) => {
         this.dsDonvi = data;
       },
     });
   }
-  //Lấy danh dách danh mục ba lăng
-  getDanhmucBalang() {
+
+  getDataBalang() {
     this.dataService.get('/api/Danhmucbalang').subscribe({
       next: (data: any) => {
-        this.dsBalang = data;
+        this.dsBaLang = data;
       },
     });
   }
-  // Lấy danh sách tổng hợp cáp điện
-  getListTonghopbalang() {
+
+  loadTonghopbalang() {
     this.dataService
       .get(
         '/api/Tonghopbalang/paging?thietbiId=' +
@@ -160,96 +229,37 @@ export class TonghopbalangComponent implements OnInit {
           this.pageSize
       )
       .subscribe((data: any) => {
-        this.listOfBalang = data.items;
+        this.BaLangs = data.items;
         this.pageSize = data.pageSize;
         this.pageIndex = data.pageIndex;
         this.totalRow = data.totalRecords;
         this.sumSoluong = data.sumRecords;
       });
   }
-
-  // Lấy chi tiết tổng hợp ba lang theo Id
-  getTonghopbalangDetailById() {
-    this.dataService.getById('/api/Tonghopbalang/' + this.Id).subscribe({
-      next: (data: TongHopBaLangDetail) => {
-        this.dataDetailOfBalang = data;
-        var myDate = new Date(data.ngayLap);
-        var myDateString;
-        myDateString =
-          myDate.getFullYear() +
-          '-' +
-          ('0' + (myDate.getMonth() + 1)).slice(-2) +
-          '-' +
-          ('0' + myDate.getDate()).slice(-2);
-        this.dataDetailOfBalang.ngayLap = myDateString;
-      },
-    });
-  }
-
-  //Thêm mới
-  addNewTonghopBalangDetail() {
-    this.dataService.getById('/api/Tonghopbalang/' + 0).subscribe({
-      next: (data) => {
-        this.dataDetailOfBalang = data;
-        var myDate = new Date(data.ngaylap);
-        var myDateString;
-        myDateString =
-          myDate.getFullYear() +
-          '-' +
-          ('0' + (myDate.getMonth() + 1)).slice(-2) +
-          '-' +
-          ('0' + myDate.getDate()).slice(-2);
-        this.dataDetailOfBalang.ngayLap = myDateString;
-        this.loadFormData(this.dataDetailOfBalang);
-      },
-    });
-  }
-
-  // Gán dữ liệu cho form khi truyền dữ liệu vào
-  private loadFormData(data: TongHopBaLangDetail) {
-    this.dataDetailOfBalang = data;
-    this.Form.setValue({
-      id: data.id,
-      donViId: data.donViId,
-      baLangId: data.baLangId,
-      ngayLap: data.ngayLap,
-      donvitinh: data.donViTinh,
-      viTriLapDat: data.viTriLapDat,
-      tinhTrangKyThuat: data.tinhTrangKyThuat,
-      ghichu: data.ghiChu,
-    });
-  }
   public pageIndexChanged(event: any): void {
     this.pageIndex = event;
-    this.getListTonghopbalang();
+    this.loadTonghopbalang();
   }
 
-  pageSizeChange(event: number): void {
-    this.pageSize = event;
-    this.getListTonghopbalang();
-  }
-  eventThietbi($event: number) {
-    this.keywordThietbi = $event;
-    this.getListTonghopbalang();
-  }
-
-  eventDonvi($event: number) {
-    this.keywordDonvi = $event;
-    this.getListTonghopbalang();
-  }
   onThemmoi() {
-    this.title = 'Thêm ba lăng';
+    this.title = 'Thêm mới ba lăng';
     this.themoi = true;
     this.Id = 0;
-    this.addNewTonghopBalangDetail();
-    this.visible = true;
+    this.themoiTonghopbalangDetail();
+    this.liveDemoVisible = !this.liveDemoVisible;
   }
+
+  onClode() {
+    this.Form.reset();
+    this.liveDemoVisible = !this.liveDemoVisible;
+  }
+
   onEdit(id: number) {
     this.themoi = false;
     this.Id = id;
-    this.getTonghopbalangDetailById();
-    this.title = 'Sửa tời điện';
-    this.visible = !this.visible;
+    this.loadTonghopbalangDetail();
+    this.title = 'Sửa bảng ba lăng';
+    this.liveDemoVisible = !this.liveDemoVisible;
   }
 
   showConfirm(item: any): void {
@@ -269,7 +279,7 @@ export class TonghopbalangComponent implements OnInit {
     this.Id = item.id;
     this.dataService.delete('/api/Tonghopbalang/' + this.Id).subscribe({
       next: () => {
-        this.getListTonghopbalang();
+        this.loadTonghopbalang();
         this.toastr.success('Xóa dữ liệu thành công', 'Success');
       },
       error: () => {
@@ -277,17 +287,72 @@ export class TonghopbalangComponent implements OnInit {
       },
     });
   }
+  handleLiveDemoChange(event: boolean) {
+    this.liveDemoVisible = event;
+  }
+
+  save() {
+    if (this.themoi) {
+      this.dataService.post('/api/Tonghopbalang', this.Form.value).subscribe({
+        next: () => {
+          console.log(this.Form.value);
+          this.loadTonghopbalang();
+          this.toastr.success('Lưu dữ liệu thành công', 'Success');
+          this.liveDemoVisible = !this.liveDemoVisible;
+          this.Form.reset();
+        },
+        error: () => {
+          this.toastr.error('Lưu dữ liệu thất bại', 'Error');
+        },
+      });
+    } else {
+      this.dataService
+        .put('/api/Tonghopbalang/update', this.Form.value)
+        .subscribe({
+          next: () => {
+            console.log(this.Form.value);
+            this.loadTonghopbalang();
+            this.toastr.success('Lưu dữ liệu thành công', 'Success');
+            this.liveDemoVisible = !this.liveDemoVisible;
+            this.Form.reset();
+          },
+          error: () => {
+            this.toastr.error('Lưu dữ liệu thất bại', 'Error');
+          },
+        });
+    }
+  }
+
+  onReset() {
+    this.Form.reset();
+  }
+
+  readonly activeItem = signal(0);
+
+  handleActiveItemChange(value: string | number | undefined) {
+    this.activeItem.set(<number>value);
+  }
 
   exportexcel() {
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.listOfBalang);
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.BaLangs);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     XLSX.writeFile(wb, 'Tonghopbalang.xlsx');
   }
+  pageSizeChange(event: number): void {
+    this.pageSize = event;
+    this.loadTonghopbalang();
+  }
+
   ngOnInit(): void {
-    this.getListTonghopbalang();
-    this.getDanhmucBalang();
-    this.getDanhmucPhongban();
     this.initFormBuilder();
+    this.loadTonghopbalang();
+    this.getDataDonvi();
+    this.getDataBalang();
+    if ((this.Id = 0)) {
+      this.themoiTonghopbalangDetail();
+    } else {
+      this.loadTonghopbalangDetail();
+    }
   }
 }

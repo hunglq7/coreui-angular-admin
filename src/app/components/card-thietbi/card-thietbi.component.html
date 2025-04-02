@@ -22,7 +22,7 @@
   <c-col>
     <c-card class="hCard">
       <img class="p-3" style="width: 100%; height: 200px" cCardImg="top"
-        src="../../../assets/images/thietbi/Maykhoan.jpg" />
+        src="../../../assets/images/thietbi/ZCY-60.jpg" />
       <c-card-body>
         <h6 cCardTitle>MÁY XÚC</h6>
         <p cCardText>Cập nhật thiết bị máy xúc</p>
@@ -117,6 +117,40 @@
       </c-card-body>
       <c-card-footer>
         <small class="text-medium-emphasis">Tổng số bản ghi <strong>3</strong></small>
+      </c-card-footer>
+    </c-card>
+  </c-col>
+  <c-col>
+    <c-card class="hCard">
+      <img class="p-3" style="width: 100%; height: 200px" cCardImg="top"
+        src="../../../assets/images/thietbi/khoan-yt27.jpg" />
+      <c-card-body>
+        <h6 cCardTitle>Máy KHOAN</h6>
+        <p cCardText>Cập nhật máy khoan</p>
+        <button routerLink="/khoan/tonghopkhoan" color="primary" cButton size="sm">Cập nhật</button>
+      </c-card-body>
+      <c-card-footer>
+        <div class="d-flex justify-content-between">
+          <small class="text-medium-emphasis">Tổng số thiết bị </small>
+          <span class="badge bg-danger">{{ sumTonghopkhoan }}</span>
+        </div>
+      </c-card-footer>
+    </c-card>
+  </c-col>
+  <c-col>
+    <c-card class="hCard">
+      <img class="p-3" style="width: 100%; height: 200px" cCardImg="top"
+        src="../../../assets/images/thietbi/pa-lang.png" />
+      <c-card-body>
+        <h6 cCardTitle>PA LANG</h6>
+        <p cCardText>Cập nhật pa lang</p>
+        <button routerLink="/balang/tonghopbalang" color="primary" cButton size="sm">Cập nhật</button>
+      </c-card-body>
+      <c-card-footer>
+        <div class="d-flex justify-content-between">
+          <small class="text-medium-emphasis">Tổng số thiết bị </small>
+          <span class="badge bg-danger">{{ sumTonghopbalang }}</span>
+        </div>
       </c-card-footer>
     </c-card>
   </c-col>

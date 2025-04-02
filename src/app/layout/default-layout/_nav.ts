@@ -155,6 +155,18 @@ export const navItems: INavData[] = [
     ],
   },
   {
+    name: 'Máy cào',
+    url: '/maycao',
+    iconComponent: { name: 'cil-puzzle' },
+    children: [
+      {
+        name: 'Danh mục máy cào',
+        url: '/maycao/danhmucmaycao',
+        icon: 'nav-icon-bullet',
+      },
+    ],
+  },
+  {
     name: 'Rơ le',
     iconComponent: { name: 'cil-puzzle' },
     url: '/charts',
