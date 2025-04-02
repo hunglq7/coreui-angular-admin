@@ -164,6 +164,16 @@ export const navItems: INavData[] = [
         url: '/maycao/danhmucmaycao',
         icon: 'nav-icon-bullet',
       },
+      {
+        name: 'Thông số máy cào',
+        url: '/maycao/thongsomaycao',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Tổng hợp máy cào',
+        url: '/maycao/tonghopmaycao',
+        icon: 'nav-icon-bullet',
+      },
     ],
   },
   {

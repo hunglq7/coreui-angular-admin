@@ -1,0 +1,403 @@
+<c-col sm="12">
+  <c-card class="mb-3">
+    <c-card-header ngPreserveWhitespaces>
+      <app-select-search
+        [dsThietbi]="dsMaycao"
+        [dsDonvi]="dsDonvi"
+        (eventSearchThietbi)="eventThietbi($event)"
+        (eventSearchDonvi)="eventDonvi($event)"
+      ></app-select-search>
+      <button (click)="onThemmoi()" nz-button nzType="primary" nzPrimary>
+        <span>Thêm</span>
+      </button>
+      <button (click)="exportexcel()" nz-button nzType="default" nzPrimary>
+        Xuất Excel
+      </button>
+    </c-card-header>
+    <c-card-body>
+      <c-col sm="12">
+        <c-card class="mb-4">
+          <c-card-body class="table-responsive">
+            <c-row>
+              <c-col sm="12">
+                <nz-table
+                  cTable
+                  #columnTable
+                  nzShowQuickJumper
+                  nzShowSizeChanger
+                  [nzData]="dataMaycao"
+                  [nzScroll]="{ x: '1100px' }"
+                  [nzPageIndex]="pageIndex"
+                  [nzPageSize]="pageSize"
+                  [nzPageSizeOptions]="[3, 5, 10, 20]"
+                  [nzTotal]="totalRow"
+                  [nzFrontPagination]="false"
+                  (nzPageIndexChange)="pageIndexChanged($event)"
+                  (nzPageSizeChange)="pageSizeChange($event)"
+                >
+                  <thead>
+                    <tr>
+                      <th nzLeft scope="col">Mã quản lý</th>
+                      <th nzLeft scope="col">Thiết bị</th>
+                      <th nzLeft scope="col">Đơn vị</th>
+                      <th scope="col">Ngày lắp</th>
+                      <th scope="col">Số lượng</th>
+                      <th scope="col">Vị trí lắp đặt</th>
+                      <th scope="col">Chiều dài máy</th>
+                      <th scope="col">SL Xích</th>
+                      <th scope="col">SL cầu máng</th>
+                      <th scope="col">Tình trạng TB</th>
+                      <th scope="col">Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (item of dataMaycao; track $index) {
+                    <tr>
+                      <td nzLeft>{{ item.maQuanLy }}</td>
+                      <td nzLeft>{{ item.tenThietBi }}</td>
+                      <td nzLeft>{{ item.tenDonVi }}</td>
+                      <td>{{ item.ngayLap | date : "dd/MM/yyyy" }}</td>
+                      <td>{{ item.soLuong }}</td>
+                      <td>{{ item.viTriLapDat }}</td>
+                      <td>{{ item.chieuDaiMay }}</td>
+                      <td>{{ item.soLuongXich }}</td>
+                      <td>{{ item.soLuongCauMang }}</td>
+                      <td>{{ item.tinhTrangThietBi }}</td>
+                      <td>
+                        <button
+                          nz-tooltip
+                          [nzTooltipTitle]="titleSua"
+                          [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+                          nz-button
+                          nzType="default"
+                          [nzSize]="size"
+                          (click)="onEdit(item.id)"
+                        >
+                          <nz-icon
+                            nzType="edit"
+                            style="color: rgb(16, 142, 233)"
+                          />
+                        </button>
+                        <ng-template #titleSua let-thing>
+                          <nz-icon nzType="edit" />
+                          <span>Sửa bản ghi</span>
+                        </ng-template>
+                        <ng-template #titleXoa let-thing>
+                          <nz-icon nzType="delete" />
+                          <span>Xóa bản ghi</span>
+                        </ng-template>
+
+                        <button
+                          nz-tooltip
+                          [nzTooltipTitle]="titleXoa"
+                          [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+                          nz-button
+                          nzType="default"
+                          [nzSize]="size"
+                          (click)="onDelete(item)"
+                        >
+                          <nz-icon
+                            nzType="delete"
+                            style="color: rgb(255, 0, 0)"
+                          />
+                        </button>
+                      </td>
+                    </tr>
+                    }
+                  </tbody>
+                </nz-table>
+              </c-col>
+            </c-row>
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-card-body>
+  </c-card>
+</c-col>
+<!-- Icon -->
+<ng-template #titleSua let-thing>
+  <nz-icon nzType="edit" />
+  <span>Sửa bản ghi</span>
+</ng-template>
+<ng-template #titleXoa let-thing>
+  <nz-icon nzType="delete" />
+  <span>Xóa bản ghi</span>
+</ng-template>
+
+<!-- Model -->
+<c-modal
+  id="liveDemoModal"
+  backdrop="static"
+  size="xl"
+  [visible]="liveDemoVisible"
+  (visibleChange)="handleLiveDemoChange($event)"
+>
+  <c-modal-header>
+    <h5 cModalTitle>{{ title }}</h5>
+    <button (click)="onClode()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <c-row>
+      <c-col xs="12">
+        <c-card class="mb-3">
+          <c-card-body>
+            <c-tabs
+              [activeItemKey]="0"
+              (activeItemKeyChange)="handleActiveItemChange($event)"
+            >
+              <c-tabs-list variant="underline-border">
+                <button cTab [itemKey]="0">Cập nhật máy xúc</button>
+                <button [hidden]="themoi" cTab [itemKey]="1">
+                  Nhật ký máy xúc
+                </button>
+                <button [hidden]="themoi" cTab [itemKey]="2">
+                  Thông số kỹ thuật
+                </button>
+              </c-tabs-list>
+              <c-tabs-content>
+                <c-tab-panel [itemKey]="0" class="p-3">
+                  <form [formGroup]="Form" (ngSubmit)="save()">
+                    @if(!themoi){
+                    <input
+                      hidden="true"
+                      [(ngModel)]="dataMaycaoDetail.id"
+                      formControlName="id"
+                      cFormControl
+                      id="id"
+                      type="number"
+                      value="Mark"
+                    />
+                    }
+                    <div class="mb-3 row">
+                      <label for="maQuanLy" class="col-sm-2 col-form-label"
+                        >Mã quản lý</label
+                      >
+                      <div class="col-sm-10">
+                        <input
+                          id="maQuanLy"
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="dataMaycaoDetail.maQuanLy"
+                          formControlName="maQuanLy"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                      <label for="mayCaoId" class="col-sm-2 col-form-label"
+                        >Máy cào</label
+                      >
+                      <div class="col-sm-10">
+                        <select
+                          id="mayCaoId"
+                          class="form-control"
+                          [(ngModel)]="dataMaycaoDetail.mayCaoId"
+                          formControlName="mayCaoId"
+                        >
+                          <option
+                            *ngFor="let mayCao of dsMaycao"
+                            [value]="mayCao.id"
+                          >
+                            {{ mayCao.tenThietBi }}
+                          </option>
+                        </select>
+                        <div
+                          *ngIf="
+                            Form.get('mayCaoId')?.invalid &&
+                            Form.get('mayCaoId')?.touched
+                          "
+                          class="text-danger"
+                        >
+                          Vui lòng chọn máy cào.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                      <label for="donViId" class="col-sm-2 col-form-label"
+                        >Đơn vị</label
+                      >
+                      <div class="col-sm-10">
+                        <select
+                          id="donViId"
+                          class="form-control"
+                          [(ngModel)]="dataMaycaoDetail.donViId"
+                          formControlName="donViId"
+                        >
+                          <option
+                            *ngFor="let donVi of dsDonvi"
+                            [value]="donVi.id"
+                          >
+                            {{ donVi.tenPhong }}
+                          </option>
+                        </select>
+                        <div
+                          *ngIf="
+                            Form.get('donViId')?.invalid &&
+                            Form.get('donViId')?.touched
+                          "
+                          class="text-danger"
+                        >
+                          Vui lòng chọn đơn vị.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                      <label for="viTriLapDat" class="col-sm-2 col-form-label"
+                        >Vị trí lắp đặt</label
+                      >
+                      <div class="col-sm-10">
+                        <input
+                          id="viTriLapDat"
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="dataMaycaoDetail.viTriLapDat"
+                          formControlName="viTriLapDat"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                      <label for="ngayLap" class="col-sm-2 col-form-label"
+                        >Ngày lắp</label
+                      >
+                      <div class="col-sm-10">
+                        <input
+                          id="ngayLap"
+                          type="date"
+                          class="form-control"
+                          [(ngModel)]="dataMaycaoDetail.ngayLap"
+                          formControlName="ngayLap"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                      <label for="soLuong" class="col-sm-2 col-form-label"
+                        >Số lượng</label
+                      >
+                      <div class="col-sm-10">
+                        <input
+                          id="soLuong"
+                          type="number"
+                          class="form-control"
+                          [(ngModel)]="dataMaycaoDetail.soLuong"
+                          formControlName="soLuong"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                      <label for="chieuDaiMay" class="col-sm-2 col-form-label"
+                        >Chiều dài máy</label
+                      >
+                      <div class="col-sm-10">
+                        <input
+                          id="chieuDaiMay"
+                          type="number"
+                          class="form-control"
+                          [(ngModel)]="dataMaycaoDetail.chieuDaiMay"
+                          formControlName="chieuDaiMay"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                      <label for="soLuongXich" class="col-sm-2 col-form-label"
+                        >Số lượng xích</label
+                      >
+                      <div class="col-sm-10">
+                        <input
+                          id="soLuongXich"
+                          type="number"
+                          class="form-control"
+                          [(ngModel)]="dataMaycaoDetail.soLuongXich"
+                          formControlName="soLuongXich"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                      <label
+                        for="soLuongCauMang"
+                        class="col-sm-2 col-form-label"
+                        >Số lượng cầu mang</label
+                      >
+                      <div class="col-sm-10">
+                        <input
+                          id="soLuongCauMang"
+                          type="number"
+                          class="form-control"
+                          [(ngModel)]="dataMaycaoDetail.soLuongCauMang"
+                          formControlName="soLuongCauMang"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                      <label
+                        for="tinhTrangThietBi"
+                        class="col-sm-2 col-form-label"
+                        >Tình trạng thiết bị</label
+                      >
+                      <div class="col-sm-10">
+                        <input
+                          id="tinhTrangThietBi"
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="dataMaycaoDetail.tinhTrangThietBi"
+                          formControlName="tinhTrangThietBi"
+                        />
+                      </div>
+                    </div>
+                    <div class="mb-3 row">
+                      <label for="ghiChu" class="col-sm-2 col-form-label"
+                        >Ghi chú</label
+                      >
+                      <div class="col-sm-10">
+                        <textarea
+                          id="ghiChu"
+                          class="form-control"
+                          [(ngModel)]="dataMaycaoDetail.ghiChu"
+                          formControlName="ghiChu"
+                        ></textarea>
+                      </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                      <div class="col-sm-2 col-form-label"></div>
+                      <div class="col-sm-10">
+                        <button
+                          type="submit"
+                          nz-button
+                          nzType="primary"
+                          [disabled]="Form.invalid"
+                        >
+                          Lưu
+                        </button>
+                        <button nz-button nzType="default" (click)="onReset()">
+                          Hủy
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </c-tab-panel>
+                <c-tab-panel [itemKey]="1" class="p-3">
+                  <app-nhatkymaycao-tab
+                    [TonghopmaycaoDetail]="dataMaycaoDetail"
+                  ></app-nhatkymaycao-tab>
+                </c-tab-panel>
+                <c-tab-panel [itemKey]="2" class="p-3">
+                  <app-thongsomaycao-tab
+                    [TonghopmaycaoDetail]="dataMaycaoDetail"
+                  ></app-thongsomaycao-tab>
+                </c-tab-panel>
+              </c-tabs-content>
+            </c-tabs>
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-row>
+  </c-modal-body>
+</c-modal>

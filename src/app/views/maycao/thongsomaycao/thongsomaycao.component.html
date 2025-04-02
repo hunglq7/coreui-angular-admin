@@ -1,0 +1,205 @@
+<c-col sm="12">
+  <c-card class="mb-3">
+    <c-card-header ngPreserveWhitespaces>
+      <app-thietbi-search
+        [dsThietbi]="dsDanhmucMayCao"
+        (eventSearchThietbi)="eventThietbi($event)"
+      >
+      </app-thietbi-search>
+    </c-card-header>
+    <c-card-body>
+      <c-col sm="12">
+        <c-card class="mb-4">
+          <c-card-body class="table-responsive">
+            <c-row>
+              <c-col sm="12">
+                <nz-table
+                  cTable
+                  #columnTable
+                  nzShowQuickJumper
+                  nzShowSizeChanger
+                  [nzData]="dataSource"
+                  [nzScroll]="{ x: '1100px' }"
+                  [nzPageIndex]="pageIndex"
+                  [nzPageSize]="pageSize"
+                  [nzPageSizeOptions]="[3, 5, 10, 20]"
+                  [nzTotal]="totalRow"
+                  [nzFrontPagination]="false"
+                  (nzPageIndexChange)="pageIndexChanged($event)"
+                  (nzPageSizeChange)="pageSizeChange($event)"
+                >
+                  <thead>
+                    <tr>
+                      <th scope="col">Thiết bị</th>
+                      <th scope="col">Nội dung</th>
+                      <th scope="col">Đơn vị tính</th>
+                      <th scope="col">Thông số</th>
+                      <th scope="col">Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (item of dataSource ; track $index) {
+                    <tr>
+                      <td>{{ item.tenThietBi }}</td>
+                      <td>{{ item.noiDung }}</td>
+                      <td>{{ item.donViTinh }}</td>
+                      <td>{{ item.thongSo }}</td>
+
+                      <td>
+                        <button
+                          nz-tooltip
+                          [nzTooltipTitle]="titleSua"
+                          [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+                          nz-button
+                          nzType="default"
+                          [nzSize]="size"
+                          (click)="onEdit(item.id)"
+                        >
+                          <nz-icon
+                            nzType="edit"
+                            style="color: rgb(16, 142, 233)"
+                          />
+                        </button>
+                        <button
+                          nz-tooltip
+                          [nzTooltipTitle]="titleXoa"
+                          [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+                          nz-button
+                          nzType="default"
+                          [nzSize]="size"
+                          (click)="onDelete(item)"
+                        >
+                          <nz-icon
+                            nzType="delete"
+                            style="color: rgb(255, 0, 0)"
+                          />
+                        </button>
+                      </td>
+                    </tr>
+                    }
+                  </tbody>
+                </nz-table>
+              </c-col>
+            </c-row>
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-card-body>
+  </c-card>
+</c-col>
+<!-- Icon -->
+<ng-template #titleSua let-thing>
+  <nz-icon nzType="edit" />
+  <span>Sửa bản ghi</span>
+</ng-template>
+<ng-template #titleXoa let-thing>
+  <nz-icon nzType="delete" />
+  <span>Xóa bản ghi</span>
+</ng-template>
+
+<!-- Search -->
+<ng-template #suffixIconButton>
+  <button (click)="loadData()" nz-button nzType="primary" nzSearch>
+    <nz-icon nzType="search" />
+  </button> </ng-template
+>`,
+
+<!-- Model -->
+<c-modal
+  id="liveDemoModal"
+  backdrop="static"
+  size="xl"
+  [visible]="liveDemoVisible"
+  (visibleChange)="handleLiveDemoChange($event)"
+>
+  <c-modal-header>
+    <h5 cModalTitle>{{ title }}</h5>
+    <button (click)="onClode()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <form
+      [formGroup]="Form"
+      #customStylesForm="ngForm"
+      (ngSubmit)="save()"
+      [validated]="customStylesValidated"
+      cForm
+      class="row g-3 needs-validation"
+    >
+      <div>
+        <input
+          hidden="true"
+          [(ngModel)]="entity.id"
+          formControlName="id"
+          cFormControl
+          id="id"
+          type="number"
+          value="Mark"
+        />
+      </div>
+
+      <c-col md="12">
+        <label cLabel for="mayCaoId">Thiết bị</label>
+        <select
+          [(ngModel)]="entity.mayCaoId"
+          formControlName="mayCaoId"
+          cSelect
+          id="mayxucId"
+          required
+        >
+          <option value="">Chọn thiết bị...</option>
+          @for (item of dsDanhmucMayCao; track $index) {
+          <option value="{{ item.id }}">{{ item.tenThietBi }}</option>
+          }
+        </select>
+        <c-form-feedback [valid]="false">Thiết bị phải chọn.</c-form-feedback>
+      </c-col>
+
+      <c-col md="12">
+        <label cLabel for="noiDung">Thông số kỹ thuật</label>
+        <input
+          [(ngModel)]="entity.noiDung"
+          formControlName="noiDung"
+          cFormControl
+          id="noiDung"
+          required
+          type="text"
+        />
+        <c-form-feedback [valid]="false">Nội dung phải nhập.</c-form-feedback>
+      </c-col>
+
+      <c-col md="12">
+        <label cLabel for="donVi">Đơn vị </label>
+        <input
+          [(ngModel)]="entity.donViTinh"
+          formControlName="donViTinh"
+          cFormControl
+          id="donVi"
+          required
+          type="text"
+        />
+        <c-form-feedback [valid]="false">Đơn vị phải nhập.</c-form-feedback>
+      </c-col>
+
+      <c-col md="12">
+        <label cLabel for="thongSo">Thông số</label>
+        <input
+          [(ngModel)]="entity.thongSo"
+          formControlName="thongSo"
+          cFormControl
+          id="thongSo"
+          required
+          type="text"
+        />
+        <c-form-feedback [valid]="false">Thông số phải nhập.</c-form-feedback>
+      </c-col>
+
+      <c-col md="12">
+        <button cButton class="me-1" color="primary" type="submit">
+          Lưu lại
+        </button>
+        <button cButton color="danger" (click)="onClode()">Đóng</button>
+      </c-col>
+    </form>
+  </c-modal-body>
+  <c-modal-footer> </c-modal-footer>
+</c-modal>

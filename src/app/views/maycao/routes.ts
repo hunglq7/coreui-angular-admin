@@ -17,6 +17,26 @@ export const routes: Routes = [
           title: 'Danh mục máy cào',
         },
       },
+      {
+        path: 'thongsomaycao',
+        loadComponent: () =>
+          import('./thongsomaycao/thongsomaycao.component').then(
+            (m) => m.ThongsomaycaoComponent
+          ),
+        data: {
+          title: 'Thông số máy cào',
+        },
+      },
+      {
+        path: 'tonghopmaycao',
+        loadComponent: () =>
+          import('./tonghopmaycao/tonghopmaycao.component').then(
+            (m) => m.TonghopmaycaoComponent
+          ),
+        data: {
+          title: 'Tổng hợp máy cào',
+        },
+      },
     ],
   },
 ];
