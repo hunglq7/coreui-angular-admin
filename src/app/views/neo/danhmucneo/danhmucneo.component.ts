@@ -25,7 +25,7 @@ import * as XLSX from 'xlsx';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { NavImportExcelComponent } from '../../../components/nav-import-excel/nav-import-excel.component';
 ModuleRegistry.registerModules([AllCommunityModule, RowSelectionModule]);
-export interface MayCao {
+export interface Neo {
   id: number;
   tenThietBi: string;
   loaiThietBi: string;
@@ -33,7 +33,7 @@ export interface MayCao {
 }
 
 @Component({
-  selector: 'app-danhmucmaycao',
+  selector: 'app-danhmucneo',
   imports: [
     RowComponent,
     ColComponent,
@@ -47,19 +47,18 @@ export interface MayCao {
     NzButtonModule,
     NzIconModule,
   ],
-  templateUrl: './danhmucmaycao.component.html',
-  styleUrl: './danhmucmaycao.component.scss',
+  templateUrl: './danhmucneo.component.html',
+  styleUrl: './danhmucneo.component.scss',
 })
-export class DanhmucmaycaoComponent implements OnInit {
-  private gridApi!: GridApi<MayCao>;
-  data: MayCao[] = [];
+export class DanhmucneoComponent implements OnInit {
+  private gridApi!: GridApi<Neo>;
+  data: Neo[] = [];
   excelData: any;
   constructor(
     private dataService: DataService,
     private toastr: ToastrService,
     private modal: NzModalService
   ) {}
-
   rowSelection: RowSelectionOptions | 'single' | 'multiple' = {
     mode: 'multiRow',
   };
@@ -68,7 +67,7 @@ export class DanhmucmaycaoComponent implements OnInit {
     minWith: 100,
     minHight: 50,
   };
-  onGridReady(params: GridReadyEvent<MayCao>) {
+  onGridReady(params: GridReadyEvent<Neo>) {
     this.gridApi = params.api;
   }
 
@@ -116,8 +115,8 @@ export class DanhmucmaycaoComponent implements OnInit {
       cellEditorPopup: true,
     },
   ];
-  loadDataMaycao() {
-    this.dataService.get('/api/Danhmucmaycao').subscribe({
+  loadDataNeo() {
+    this.dataService.get('/api/Danhmucneo').subscribe({
       next: (response: any) => {
         console.log(response);
         this.data = response; // Nếu bạn có một biến riêng cho dữ liệu Khoan, hãy thay thế `this.data` bằng biến đó.
@@ -145,10 +144,10 @@ export class DanhmucmaycaoComponent implements OnInit {
   Delete() {
     const selectedRows = this.gridApi.getSelectedRows(); // Lấy các dòng được chọn
     this.dataService
-      .post('/api/Danhmucmaycao/DeleteMultipale', selectedRows) // Gửi yêu cầu xóa đến API
+      .post('/api/Danhmucneo/DeleteMultipale', selectedRows) // Gửi yêu cầu xóa đến API
       .subscribe({
         next: (data) => {
-          this.loadDataMaycao(); // Tải lại dữ liệu sau khi xóa thành công
+          this.loadDataNeo(); // Tải lại dữ liệu sau khi xóa thành công
           this.toastr.success('Xóa thành công ' + data + ' bản ghi', 'Success');
         },
         error: () => {
@@ -160,10 +159,10 @@ export class DanhmucmaycaoComponent implements OnInit {
   save() {
     const selectedRows = this.gridApi.getSelectedRows(); // Lấy các dòng được chọn
     this.dataService
-      .put('/api/Danhmucmaycao/UpdateMultiple', selectedRows) // Gửi yêu cầu cập nhật đến API
+      .put('/api/Danhmucneo/UpdateMultiple', selectedRows) // Gửi yêu cầu cập nhật đến API
       .subscribe({
         next: (data) => {
-          this.loadDataMaycao(); // Tải lại dữ liệu sau khi lưu thành công
+          this.loadDataNeo(); // Tải lại dữ liệu sau khi lưu thành công
           this.toastr.success('Lưu thành công ' + data + ' bản ghi', 'Success');
         },
         error: () => {
@@ -176,7 +175,7 @@ export class DanhmucmaycaoComponent implements OnInit {
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.data);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    XLSX.writeFile(wb, 'Danhmucmaycao.xlsx');
+    XLSX.writeFile(wb, 'Danhmucneo.xlsx');
   }
 
   importexcel(event: any) {
@@ -188,10 +187,10 @@ export class DanhmucmaycaoComponent implements OnInit {
       var sheetName = workBook.SheetNames;
       this.excelData = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName[0]]);
       this.dataService
-        .put('/api/Danhmucmaycao/UpdateMultiple', this.excelData)
+        .put('/api/Danhmucneo/UpdateMultiple', this.excelData)
         .subscribe({
           next: (data) => {
-            this.loadDataMaycao();
+            this.loadDataNeo();
             this.toastr.success(
               'Thêm thành công ' + data + ' bản ghi',
               'Success'
@@ -204,6 +203,6 @@ export class DanhmucmaycaoComponent implements OnInit {
     };
   }
   ngOnInit(): void {
-    this.loadDataMaycao();
+    this.loadDataNeo();
   }
 }

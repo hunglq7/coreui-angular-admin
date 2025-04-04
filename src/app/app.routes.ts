@@ -61,6 +61,10 @@ export const routes: Routes = [
           import('./views/maycao/routes').then((m) => m.routes),
       },
       {
+        path: 'neo',
+        loadChildren: () => import('./views/neo/routes').then((m) => m.routes),
+      },
+      {
         path: 'danhmuc',
         loadChildren: () =>
           import('./views/danhmuc/routes').then((m) => m.routes),

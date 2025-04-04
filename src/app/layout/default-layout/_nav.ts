@@ -177,6 +177,23 @@ export const navItems: INavData[] = [
     ],
   },
   {
+    name: 'Thiết bị neo',
+    url: '/neo',
+    iconComponent: { name: 'cil-puzzle' },
+    children: [
+      {
+        name: 'Danh mục neo',
+        url: '/neo/danhmucneo',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Thông số kỹ thuật',
+        url: '/neo/thongsoneo',
+        icon: 'nav-icon-bullet',
+      },
+    ],
+  },
+  {
     name: 'Rơ le',
     iconComponent: { name: 'cil-puzzle' },
     url: '/charts',
