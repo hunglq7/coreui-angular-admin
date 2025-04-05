@@ -27,6 +27,16 @@ export const routes: Routes = [
           title: 'Thông số kỹ thuật ',
         },
       },
+      {
+        path: 'tonghopneo',
+        loadComponent: () =>
+          import('./tonghopneo/tonghopneo.component').then(
+            (m) => m.TonghopneoComponent
+          ),
+        data: {
+          title: 'Tổng hợp neo',
+        },
+      },
     ],
   },
 ];

@@ -2,7 +2,7 @@
   <c-card class="mb-3">
     <c-card-header ngPreserveWhitespaces>
       <app-select-search
-        [dsThietbi]="dsMaycao"
+        [dsThietbi]="dsNeo"
         [dsDonvi]="dsDonvi"
         (eventSearchThietbi)="eventThietbi($event)"
         (eventSearchDonvi)="eventDonvi($event)"
@@ -25,7 +25,7 @@
                   #columnTable
                   nzShowQuickJumper
                   nzShowSizeChanger
-                  [nzData]="dataMaycao"
+                  [nzData]="dataNeo"
                   [nzScroll]="{ x: '1100px' }"
                   [nzPageIndex]="pageIndex"
                   [nzPageSize]="pageSize"
@@ -37,31 +37,23 @@
                 >
                   <thead>
                     <tr>
-                      <th nzLeft scope="col">Mã quản lý</th>
-                      <th nzLeft scope="col">Thiết bị</th>
-                      <th nzLeft scope="col">Đơn vị</th>
+                      <th scope="col">Thiết bị</th>
+                      <th scope="col">Đơn vị</th>
                       <th scope="col">Ngày lắp</th>
                       <th scope="col">Số lượng</th>
                       <th scope="col">Vị trí lắp đặt</th>
-                      <th scope="col">Chiều dài máy</th>
-                      <th scope="col">SL Xích</th>
-                      <th scope="col">SL cầu máng</th>
                       <th scope="col">Tình trạng TB</th>
                       <th scope="col">Hành động</th>
                     </tr>
                   </thead>
                   <tbody>
-                    @for (item of dataMaycao; track $index) {
+                    @for (item of dataNeo; track $index) {
                     <tr>
-                      <td nzLeft>{{ item.maQuanLy }}</td>
-                      <td nzLeft>{{ item.tenThietBi }}</td>
-                      <td nzLeft>{{ item.tenDonVi }}</td>
+                      <td>{{ item.tenThietBi }}</td>
+                      <td>{{ item.tenDonVi }}</td>
                       <td>{{ item.ngayLap | date : "dd/MM/yyyy" }}</td>
                       <td>{{ item.soLuong }}</td>
                       <td>{{ item.viTriLapDat }}</td>
-                      <td>{{ item.chieuDaiMay }}</td>
-                      <td>{{ item.soLuongXich }}</td>
-                      <td>{{ item.soLuongCauMang }}</td>
                       <td>{{ item.tinhTrangThietBi }}</td>
                       <td>
                         <button
@@ -79,15 +71,6 @@
                           />
                         </button>
 
-                        <ng-template #titleSua let-thing>
-                          <nz-icon nzType="edit" />
-                          <span>Sửa bản ghi</span>
-                        </ng-template>
-                        <ng-template #titleXoa let-thing>
-                          <nz-icon nzType="delete" />
-                          <span>Xóa bản ghi</span>
-                        </ng-template>
-
                         <button
                           nz-tooltip
                           [nzTooltipTitle]="titleXoa"
@@ -102,6 +85,15 @@
                             style="color: rgb(255, 0, 0)"
                           />
                         </button>
+
+                        <ng-template #titleSua let-thing>
+                          <nz-icon nzType="edit" />
+                          <span>Sửa bản ghi</span>
+                        </ng-template>
+                        <ng-template #titleXoa let-thing>
+                          <nz-icon nzType="delete" />
+                          <span>Xóa bản ghi</span>
+                        </ng-template>
                       </td>
                     </tr>
                     }
@@ -115,23 +107,14 @@
     </c-card-body>
   </c-card>
 </c-col>
-<!-- Icon -->
-<ng-template #titleSua let-thing>
-  <nz-icon nzType="edit" />
-  <span>Sửa bản ghi</span>
-</ng-template>
-<ng-template #titleXoa let-thing>
-  <nz-icon nzType="delete" />
-  <span>Xóa bản ghi</span>
-</ng-template>
 
-<!-- Model -->
 <c-modal
-  id="liveDemoModal"
-  backdrop="static"
-  size="xl"
-  [visible]="liveDemoVisible"
-  (visibleChange)="handleLiveDemoChange($event)"
+  [(visible)]="liveDemoVisible"
+  centered="true"
+  [size]="'xl'"
+  [backdrop]="'static'"
+  [keyboard]="false"
+  [scrollable]="true"
 >
   <c-modal-header>
     <h5 cModalTitle>{{ title }}</h5>
@@ -147,9 +130,9 @@
               (activeItemKeyChange)="handleActiveItemChange($event)"
             >
               <c-tabs-list variant="underline-border">
-                <button cTab [itemKey]="0">Cập nhật máy xúc</button>
+                <button cTab [itemKey]="0">Cập nhật neo</button>
                 <button [hidden]="themoi" cTab [itemKey]="1">
-                  Nhật ký máy xúc
+                  Nhật ký neo
                 </button>
                 <button [hidden]="themoi" cTab [itemKey]="2">
                   Thông số kỹ thuật
@@ -161,7 +144,7 @@
                     @if(!themoi){
                     <input
                       hidden="true"
-                      [(ngModel)]="dataMaycaoDetail.id"
+                      [(ngModel)]="dataNeoDetail.id"
                       formControlName="id"
                       cFormControl
                       id="id"
@@ -169,47 +152,30 @@
                       value="Mark"
                     />
                     }
-                    <div class="mb-3 row">
-                      <label for="maQuanLy" class="col-sm-2 col-form-label"
-                        >Mã quản lý</label
-                      >
-                      <div class="col-sm-10">
-                        <input
-                          id="maQuanLy"
-                          type="text"
-                          class="form-control"
-                          [(ngModel)]="dataMaycaoDetail.maQuanLy"
-                          formControlName="maQuanLy"
-                        />
-                      </div>
-                    </div>
 
                     <div class="mb-3 row">
-                      <label for="mayCaoId" class="col-sm-2 col-form-label"
-                        >Máy cào</label
+                      <label for="neoId" class="col-sm-2 col-form-label"
+                        >Neo</label
                       >
                       <div class="col-sm-10">
                         <select
-                          id="mayCaoId"
+                          id="neoId"
                           class="form-control"
-                          [(ngModel)]="dataMaycaoDetail.mayCaoId"
-                          formControlName="mayCaoId"
+                          [(ngModel)]="dataNeoDetail.neoId"
+                          formControlName="neoId"
                         >
-                          <option
-                            *ngFor="let mayCao of dsMaycao"
-                            [value]="mayCao.id"
-                          >
-                            {{ mayCao.tenThietBi }}
+                          <option *ngFor="let neo of dsNeo" [value]="neo.id">
+                            {{ neo.tenThietBi }}
                           </option>
                         </select>
                         <div
                           *ngIf="
-                            Form.get('mayCaoId')?.invalid &&
-                            Form.get('mayCaoId')?.touched
+                            Form.get('neoId')?.invalid &&
+                            Form.get('neoId')?.touched
                           "
                           class="text-danger"
                         >
-                          Vui lòng chọn máy cào.
+                          Vui lòng chọn neo.
                         </div>
                       </div>
                     </div>
@@ -222,7 +188,7 @@
                         <select
                           id="donViId"
                           class="form-control"
-                          [(ngModel)]="dataMaycaoDetail.donViId"
+                          [(ngModel)]="dataNeoDetail.donViId"
                           formControlName="donViId"
                         >
                           <option
@@ -253,7 +219,7 @@
                           id="viTriLapDat"
                           type="text"
                           class="form-control"
-                          [(ngModel)]="dataMaycaoDetail.viTriLapDat"
+                          [(ngModel)]="dataNeoDetail.viTriLapDat"
                           formControlName="viTriLapDat"
                         />
                       </div>
@@ -268,7 +234,7 @@
                           id="ngayLap"
                           type="date"
                           class="form-control"
-                          [(ngModel)]="dataMaycaoDetail.ngayLap"
+                          [(ngModel)]="dataNeoDetail.ngayLap"
                           formControlName="ngayLap"
                         />
                       </div>
@@ -283,55 +249,8 @@
                           id="soLuong"
                           type="number"
                           class="form-control"
-                          [(ngModel)]="dataMaycaoDetail.soLuong"
+                          [(ngModel)]="dataNeoDetail.soLuong"
                           formControlName="soLuong"
-                        />
-                      </div>
-                    </div>
-
-                    <div class="mb-3 row">
-                      <label for="chieuDaiMay" class="col-sm-2 col-form-label"
-                        >Chiều dài máy</label
-                      >
-                      <div class="col-sm-10">
-                        <input
-                          id="chieuDaiMay"
-                          type="number"
-                          class="form-control"
-                          [(ngModel)]="dataMaycaoDetail.chieuDaiMay"
-                          formControlName="chieuDaiMay"
-                        />
-                      </div>
-                    </div>
-
-                    <div class="mb-3 row">
-                      <label for="soLuongXich" class="col-sm-2 col-form-label"
-                        >Số lượng xích</label
-                      >
-                      <div class="col-sm-10">
-                        <input
-                          id="soLuongXich"
-                          type="number"
-                          class="form-control"
-                          [(ngModel)]="dataMaycaoDetail.soLuongXich"
-                          formControlName="soLuongXich"
-                        />
-                      </div>
-                    </div>
-
-                    <div class="mb-3 row">
-                      <label
-                        for="soLuongCauMang"
-                        class="col-sm-2 col-form-label"
-                        >Số lượng cầu mang</label
-                      >
-                      <div class="col-sm-10">
-                        <input
-                          id="soLuongCauMang"
-                          type="number"
-                          class="form-control"
-                          [(ngModel)]="dataMaycaoDetail.soLuongCauMang"
-                          formControlName="soLuongCauMang"
                         />
                       </div>
                     </div>
@@ -347,22 +266,24 @@
                           id="tinhTrangThietBi"
                           type="text"
                           class="form-control"
-                          [(ngModel)]="dataMaycaoDetail.tinhTrangThietBi"
+                          [(ngModel)]="dataNeoDetail.tinhTrangThietBi"
                           formControlName="tinhTrangThietBi"
                         />
                       </div>
                     </div>
+
                     <div class="mb-3 row">
                       <label for="ghiChu" class="col-sm-2 col-form-label"
                         >Ghi chú</label
                       >
                       <div class="col-sm-10">
-                        <textarea
+                        <input
                           id="ghiChu"
+                          type="text"
                           class="form-control"
-                          [(ngModel)]="dataMaycaoDetail.ghiChu"
+                          [(ngModel)]="dataNeoDetail.ghiChu"
                           formControlName="ghiChu"
-                        ></textarea>
+                        />
                       </div>
                     </div>
 
@@ -385,14 +306,14 @@
                   </form>
                 </c-tab-panel>
                 <c-tab-panel [itemKey]="1" class="p-3">
-                  <app-nhatkymaycao-tab
-                    [TonghopmaycaoDetail]="dataMaycaoDetail"
-                  ></app-nhatkymaycao-tab>
+                  <app-nhatkyneo-tab
+                    [TonghopneoDetail]="dataNeoDetail"
+                  ></app-nhatkyneo-tab>
                 </c-tab-panel>
                 <c-tab-panel [itemKey]="2" class="p-3">
-                  <app-thongsomaycao-tab
-                    [TonghopmaycaoDetail]="dataMaycaoDetail"
-                  ></app-thongsomaycao-tab>
+                  <app-thongsoneo-tab
+                    [TonghopneoDetail]="dataNeoDetail"
+                  ></app-thongsoneo-tab>
                 </c-tab-panel>
               </c-tabs-content>
             </c-tabs>

@@ -9,7 +9,6 @@ import {
 } from '@angular/forms';
 import {
   ButtonCloseDirective,
-  ButtonDirective,
   ModalBodyComponent,
   ModalComponent,
   ModalFooterComponent,
@@ -68,7 +67,6 @@ export interface ThongsoNeoDetail {
     FormControlDirective,
     FormFeedbackComponent,
     FormSelectDirective,
-    ButtonDirective,
     ModalComponent,
     ModalHeaderComponent,
     ModalTitleDirective,
@@ -174,7 +172,7 @@ export class ThongsoneoComponent implements OnInit {
   loadData() {
     this.dataService
       .get(
-        '/api/Thongsoneo/paging/paging?thietbiId=' +
+        '/api/Thongsoneo/paging?thietbiId=' +
           this.keywordThietbi +
           '&PageIndex=' +
           this.pageIndex +
@@ -183,6 +181,7 @@ export class ThongsoneoComponent implements OnInit {
       )
       .subscribe({
         next: (data: any) => {
+          console.log(data);
           this.dataSource = data.items;
           this.pageSize = data.pageSize;
           this.pageIndex = data.pageIndex;

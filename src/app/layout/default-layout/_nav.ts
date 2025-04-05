@@ -191,6 +191,11 @@ export const navItems: INavData[] = [
         url: '/neo/thongsoneo',
         icon: 'nav-icon-bullet',
       },
+      {
+        name: 'Tổng hợp neo',
+        url: '/neo/tonghopneo',
+        icon: 'nav-icon-bullet',
+      },
     ],
   },
   {

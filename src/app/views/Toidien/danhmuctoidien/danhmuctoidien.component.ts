@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ButtonDirective } from '@coreui/angular';
 import { ToastrService } from 'ngx-toastr';
 
 import {
@@ -22,6 +21,7 @@ import {
   CardBodyComponent,
 } from '@coreui/angular';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 ModuleRegistry.registerModules([AllCommunityModule, RowSelectionModule]);
 
 export interface Danhmuctoitruc {
@@ -43,8 +43,8 @@ export interface Danhmuctoitruc {
     CardComponent,
     CardHeaderComponent,
     CardBodyComponent,
-    ButtonDirective,
     AgGridAngular,
+    NzButtonModule,
   ],
   templateUrl: './danhmuctoidien.component.html',
   styleUrl: './danhmuctoidien.component.scss',
