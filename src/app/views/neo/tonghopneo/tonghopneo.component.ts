@@ -128,7 +128,16 @@ export class TonghopneoComponent implements OnInit {
   keywordThietbi: number = 0;
   keywordDonvi: number = 0;
   dataNeo: TongHopNeo[] = [];
-  dataNeoDetail!: TonghopneoDetail;
+  dataNeoDetail: TonghopneoDetail = {
+    id: 0,
+    neoId: 0,
+    donViId: 0,
+    viTriLapDat: '',
+    ngayLap: '',
+    soLuong: 0,
+    tinhTrangThietBi: '',
+    ghiChu: '',
+  };
   dsNeo: any[] = [];
   dsDonvi: any[] = [];
   dsLoai: any[] = [];
@@ -167,18 +176,22 @@ export class TonghopneoComponent implements OnInit {
   }
 
   loadTonghopNeoDetail() {
+    if (!this.Id) return;
+
     this.dataService.getById('/api/Tonghopneo/' + this.Id).subscribe({
       next: (data: TonghopneoDetail) => {
-        this.dataNeoDetail = data;
-        var myDate = new Date(data.ngayLap);
-        var myDateString;
-        myDateString =
-          myDate.getFullYear() +
-          '-' +
-          ('0' + (myDate.getMonth() + 1)).slice(-2) +
-          '-' +
-          ('0' + myDate.getDate()).slice(-2);
-        this.dataNeoDetail.ngayLap = myDateString;
+        if (data) {
+          this.dataNeoDetail = data;
+          var myDate = new Date(data.ngayLap);
+          var myDateString;
+          myDateString =
+            myDate.getFullYear() +
+            '-' +
+            ('0' + (myDate.getMonth() + 1)).slice(-2) +
+            '-' +
+            ('0' + myDate.getDate()).slice(-2);
+          this.dataNeoDetail.ngayLap = myDateString;
+        }
       },
     });
   }
@@ -186,17 +199,19 @@ export class TonghopneoComponent implements OnInit {
   addNewTonghopNeoDetail() {
     this.dataService.getById('/api/Tonghopneo/' + 0).subscribe({
       next: (data) => {
-        this.dataNeoDetail = data;
-        var myDate = new Date(data.ngayLap);
-        var myDateString;
-        myDateString =
-          myDate.getFullYear() +
-          '-' +
-          ('0' + (myDate.getMonth() + 1)).slice(-2) +
-          '-' +
-          ('0' + myDate.getDate()).slice(-2);
-        this.dataNeoDetail.ngayLap = myDateString;
-        this.loadFormData(this.dataNeoDetail);
+        if (data) {
+          this.dataNeoDetail = data;
+          var myDate = new Date(data.ngayLap);
+          var myDateString;
+          myDateString =
+            myDate.getFullYear() +
+            '-' +
+            ('0' + (myDate.getMonth() + 1)).slice(-2) +
+            '-' +
+            ('0' + myDate.getDate()).slice(-2);
+          this.dataNeoDetail.ngayLap = myDateString;
+          this.loadFormData(this.dataNeoDetail);
+        }
       },
     });
   }
@@ -244,7 +259,6 @@ export class TonghopneoComponent implements OnInit {
           this.pageSize
       )
       .subscribe((data: any) => {
-        console.log(data);
         this.dataNeo = data.items;
         this.pageSize = data.pageSize;
         this.pageIndex = data.pageIndex;
