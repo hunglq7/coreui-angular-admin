@@ -8,39 +8,30 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-
+import { ToastrService } from 'ngx-toastr';
 @Injectable({
   providedIn: 'root',
 })
 export class RoleGuard implements CanActivate {
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean | UrlTree {
-    const requiredRoles = route.data['roles'] as string[];
-    const userRole = this.auth.getroles();
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    const role = route.data['roles'] as string;
+    const roles = this.auth.getroles();
 
-    if (!this.auth.isLogged()) {
+    if (!this.auth.isLogged() || roles !== 'admin') {
+      this.toastr.error(
+        'Bạn không có quyền truy cập vào trức năng này',
+        'Error'
+      );
+      // alert('Bạn không có quyền truy cập vào trức năng này');
       this.router.navigate(['/auth/login'], {
         queryParams: { returnUrl: state.url },
       });
-      return false;
-    }
-
-    if (!userRole) {
-      this.router.navigate(['/auth/login']);
-      return false;
-    }
-
-    if (!requiredRoles || requiredRoles.length === 0) {
-      return true;
-    }
-
-    if (!requiredRoles.includes(userRole)) {
-      alert('Bạn không có quyền truy cập vào chức năng này');
-      this.router.navigate(['/']);
       return false;
     }
 

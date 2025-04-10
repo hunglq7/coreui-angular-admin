@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { RoleGuard } from '../../core/guards/role.guard';
 
 export const routes: Routes = [
   {
@@ -23,8 +24,10 @@ export const routes: Routes = [
           import('./tonghopbalang/tonghopbalang.component').then(
             (m) => m.TonghopbalangComponent
           ),
+        canActivate: [RoleGuard],
         data: {
           title: 'Tổng hợp ba lăng',
+          roles: ['admin'],
         },
       },
     ],

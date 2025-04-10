@@ -18,7 +18,7 @@ export const navItems: INavData[] = [
   {
     name: 'Tời điện',
     url: '/toidien',
-    iconComponent: { name: 'cil-puzzle' },
+    iconComponent: { name: 'cil-description' },
     children: [
       {
         name: 'Danh mục tời điện',
@@ -40,7 +40,7 @@ export const navItems: INavData[] = [
   {
     name: 'Quạt gió',
     url: '/quatgio',
-    iconComponent: { name: 'cil-puzzle' },
+    iconComponent: { name: 'cil-description' },
     children: [
       {
         name: 'Danh mục quạt gió',
@@ -62,7 +62,7 @@ export const navItems: INavData[] = [
   {
     name: 'Máy xuc',
     url: '/mayxuc',
-    iconComponent: { name: 'cil-puzzle' },
+    iconComponent: { name: 'cil-description' },
     children: [
       {
         name: 'Danh mục máy xúc',
@@ -84,7 +84,7 @@ export const navItems: INavData[] = [
   {
     name: 'Bơm nước',
     url: '/bomnuoc',
-    iconComponent: { name: 'cil-puzzle' },
+    iconComponent: { name: 'cil-description' },
     children: [
       {
         name: 'Danh mục bơm nước',
@@ -106,7 +106,7 @@ export const navItems: INavData[] = [
   {
     name: 'Cáp điện',
     url: '/capdien',
-    iconComponent: { name: 'cil-puzzle' },
+    iconComponent: { name: 'cil-description' },
     children: [
       {
         name: 'Danh mục cáp điện',
@@ -123,7 +123,7 @@ export const navItems: INavData[] = [
   {
     name: 'Ba lăng',
     url: '/balang',
-    iconComponent: { name: 'cil-puzzle' },
+    iconComponent: { name: 'cil-description' },
     children: [
       {
         name: 'Danh mục ba lăng',
@@ -140,7 +140,7 @@ export const navItems: INavData[] = [
   {
     name: 'Khoan',
     url: '/khoan',
-    iconComponent: { name: 'cil-puzzle' },
+    iconComponent: { name: 'cil-description' },
     children: [
       {
         name: 'Danh mục khoan',
@@ -157,7 +157,7 @@ export const navItems: INavData[] = [
   {
     name: 'Máy cào',
     url: '/maycao',
-    iconComponent: { name: 'cil-puzzle' },
+    iconComponent: { name: 'cil-description' },
     children: [
       {
         name: 'Danh mục máy cào',
@@ -179,7 +179,7 @@ export const navItems: INavData[] = [
   {
     name: 'Thiết bị neo',
     url: '/neo',
-    iconComponent: { name: 'cil-puzzle' },
+    iconComponent: { name: 'cil-description' },
     children: [
       {
         name: 'Danh mục neo',
@@ -198,27 +198,7 @@ export const navItems: INavData[] = [
       },
     ],
   },
-  {
-    name: 'Rơ le',
-    iconComponent: { name: 'cil-puzzle' },
-    url: '/charts',
-  },
-  {
-    name: 'Khởi động từ',
-    iconComponent: { name: 'cil-puzzle' },
-    url: '/icons',
-    children: [
-      {
-        name: 'CoreUI Free',
-        url: '/icons/coreui-icons',
-        icon: 'nav-icon-bullet',
-        badge: {
-          color: 'success',
-          text: 'FREE',
-        },
-      },
-    ],
-  },
+
   {
     name: 'Cập nhật danh mục',
     title: true,
@@ -226,7 +206,7 @@ export const navItems: INavData[] = [
   {
     name: 'Danh mục',
     url: '/danhmuc',
-    iconComponent: { name: 'cil-puzzle' },
+    iconComponent: { name: 'cil-description' },
     children: [
       {
         name: 'Đơn vị tính',
@@ -258,7 +238,7 @@ export const navItems: INavData[] = [
   {
     name: 'Tài khoản',
     url: '/hethong',
-    iconComponent: { name: 'cil-puzzle' },
+    iconComponent: { name: 'cil-user' },
     children: [
       {
         name: 'Tài khoản đăng nhập',
@@ -284,7 +264,7 @@ export const navItems: INavData[] = [
   {
     name: 'Đăng nhập',
     url: '/login',
-    iconComponent: { name: 'cil-star' },
+    iconComponent: { name: 'cil-settings' },
     children: [
       {
         name: 'Login',

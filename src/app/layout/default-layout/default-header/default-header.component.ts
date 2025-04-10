@@ -1,7 +1,7 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, computed, inject, input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { AuthService } from '../../../../app/core/services/auth.service';
 import { Router } from '@angular/router';
 import {
   AvatarComponent,
@@ -69,7 +69,11 @@ export class DefaultHeaderComponent extends HeaderComponent {
   constructor(private authService: AuthService, private router: Router) {
     super();
   }
+  userDetail: any;
 
+  ngOnInit() {
+    this.userDetail = this.authService.getUsserDetail();
+  }
   onLogout() {
     this.authService.logout();
     this.router.navigate(['login']);
