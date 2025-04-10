@@ -7,35 +7,37 @@
       <c-col sm="12">
         <c-card class="mb-4">
           <c-card-body class="table-responsive">
-            <c-row>
+            <c-row class="mb-3">
               <c-col sm="4">
-                <c-input-group>
-                  <select
-                    [(ngModel)]="keywordThietbi"
-                    cSelect
-                    id="keywordThietbi"
-                    required
-                  >
-                    <option value="">Chọn hết...</option>
-                    @for (item of dsDanhmucToidien; track $index) {
-                    <option value="{{ item.id }}">
-                      {{ item.tenThietBi }}
-                    </option>
-                    }
-                  </select>
-                  <span>
-                    <button cButton (click)="loadData()">Tìm</button></span
-                  >
-                </c-input-group>
+                <app-thietbi-search
+                  [dsThietbi]="dsDanhmucToidien"
+                  (eventSearchThietbi)="eventThietbi($event)"
+                >
+                </app-thietbi-search>
               </c-col>
               <c-col sm="8">
-                <button (click)="onThemmoi()" cButton>Thêm mới</button>
+                <button nz-button nzType="primary" (click)="onThemmoi()">
+                  Thêm mới
+                </button>
               </c-col>
             </c-row>
-            <hr />
             <c-row>
               <c-col sm="12">
-                <table [hover]="true" cTable>
+                <nz-table
+                  cTable
+                  #columnTable
+                  nzShowQuickJumper
+                  nzShowSizeChanger
+                  [nzData]="dataSource"
+                  [nzScroll]="{ x: '1100px' }"
+                  [nzPageIndex]="pageIndex"
+                  [nzPageSize]="pageSize"
+                  [nzPageSizeOptions]="[3, 5, 10, 20]"
+                  [nzTotal]="totalRow"
+                  [nzFrontPagination]="false"
+                  (nzPageIndexChange)="pageIndexChanged($event)"
+                  (nzPageSizeChange)="pageSizeChange($event)"
+                >
                   <thead>
                     <tr>
                       <th scope="col">Thiết bị</th>
@@ -54,48 +56,56 @@
                       <td>{{ item.thongSo }}</td>
                       <td>
                         <button
+                          nz-tooltip
+                          [nzTooltipTitle]="titleSua"
+                          [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+                          nz-button
+                          nzType="default"
+                          [nzSize]="size"
                           (click)="onEdit(item.id)"
-                          style="margin-right: 5px"
-                          cButton
-                          size="sm"
                         >
-                          Sửa
+                          <nz-icon
+                            nzType="edit"
+                            style="color: rgb(16, 142, 233)"
+                          />
                         </button>
                         <button
+                          nz-tooltip
+                          [nzTooltipTitle]="titleXoa"
+                          [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+                          nz-button
+                          nzType="default"
+                          [nzSize]="size"
                           (click)="onDelete(item.id)"
-                          cButton
-                          color="danger"
-                          size="sm"
                         >
-                          Xóa
+                          <nz-icon
+                            nzType="delete"
+                            style="color: rgb(255, 0, 0)"
+                          />
                         </button>
                       </td>
                     </tr>
                     }
                   </tbody>
-                </table>
+                </nz-table>
               </c-col>
             </c-row>
-            <div class="d-flex justify-content-center">
-              <pagination
-                [boundaryLinks]="true"
-                [itemsPerPage]="pageSize"
-                (pageChanged)="pageChanged($event)"
-                [totalItems]="totalRow"
-                [(ngModel)]="pageIndex"
-                class="pagination-sm"
-                previousText="&lsaquo;"
-                nextText="&rsaquo;"
-                firstText="&laquo;"
-                lastText="&raquo;"
-              ></pagination>
-            </div>
           </c-card-body>
         </c-card>
       </c-col>
     </c-card-body>
   </c-card>
 </c-col>
+
+<!-- Icon -->
+<ng-template #titleSua let-thing>
+  <nz-icon nzType="edit" />
+  <span>Sửa bản ghi</span>
+</ng-template>
+<ng-template #titleXoa let-thing>
+  <nz-icon nzType="delete" />
+  <span>Xóa bản ghi</span>
+</ng-template>
 
 <!-- Model -->
 
@@ -188,10 +198,8 @@
       </c-col>
 
       <c-col md="12">
-        <button cButton class="me-1" color="primary" type="submit">
-          Lưu lại
-        </button>
-        <button cButton color="danger" (click)="onClode()">Đóng</button>
+        <button nz-button nzType="primary" type="submit">Lưu lại</button>
+        <button nz-button nzType="default" (click)="onClode()">Đóng</button>
       </c-col>
     </form>
   </c-modal-body>

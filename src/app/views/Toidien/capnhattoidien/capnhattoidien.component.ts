@@ -13,7 +13,6 @@ import {
 } from '@angular/forms';
 import {
   ButtonCloseDirective,
-  ButtonDirective,
   ModalBodyComponent,
   ModalComponent,
   ModalHeaderComponent,
@@ -91,7 +90,6 @@ export interface TonghoptoitrucDetail {
     FormControlDirective,
     FormFeedbackComponent,
     FormSelectDirective,
-    ButtonDirective,
     ModalComponent,
     ModalHeaderComponent,
     ModalTitleDirective,

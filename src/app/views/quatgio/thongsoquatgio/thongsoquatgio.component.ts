@@ -36,7 +36,6 @@ import {
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
-
 export interface ThongsoQuatgio {
   id: number;
   tenThietBi: number;
@@ -129,7 +128,10 @@ export class ThongsoquatgioComponent implements OnInit {
       thongSo: new FormControl({ value: null, disabled: false }),
     });
   }
-
+  eventThietbi($event: number) {
+    this.keywordThietbi = $event;
+    this.loadData();
+  }
   private loadFormData(items: ThongsoQuatgioDetail) {
     this.entity = items;
     this.Form.setValue({

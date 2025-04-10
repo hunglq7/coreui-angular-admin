@@ -26,7 +26,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   ],
   template: `
     <nz-input-group nzSearch>
-      <nz-select [(ngModel)]="keywordThietbi" style="width: 50%">
+      <nz-select [(ngModel)]="keywordThietbi" style="width: 400px">
         <nz-option [nzLabel]="'Chọn thiết bị...'" [nzValue]="''"></nz-option>
         @for (item of dsThietbi ; track $index) {
         <nz-option [nzLabel]="item.tenThietBi" [nzValue]="item.id"></nz-option>

@@ -310,14 +310,19 @@
                     </c-col>
                     <c-col xs="12">
                       <button
-                        cButton
-                        class="me-1"
-                        color="primary"
+                        nz-button
+                        nzType="primary"
+                        nzPrimary
                         type="submit"
                       >
                         Lưu lại
                       </button>
-                      <button cButton color="danger" (click)="onClode()">
+                      <button
+                        nz-button
+                        nzType="default"
+                        nzPrimary
+                        (click)="onClode()"
+                      >
                         Đóng
                       </button>
                     </c-col>

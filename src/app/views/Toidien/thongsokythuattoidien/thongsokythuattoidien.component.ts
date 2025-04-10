@@ -23,12 +23,10 @@ import {
   CardComponent,
   CardHeaderComponent,
   CardBodyComponent,
-  TableDirective,
   FormDirective,
   FormLabelDirective,
   FormControlDirective,
   FormFeedbackComponent,
-  InputGroupComponent,
   FormSelectDirective,
   DropdownModule,
   SharedModule,
@@ -37,6 +35,11 @@ import {
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
+import { NzButtonComponent, NzButtonSize } from 'ng-zorro-antd/button';
+import { ThietbiSearchComponent } from '../../../components/nav-thietbi-search/thietbi-search.component';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 export interface Thongsokythuattoitruc {
   id: number;
   tenToiTruc: string;
@@ -62,9 +65,7 @@ export interface ThongsokythuattoitrucDetail {
     FormLabelDirective,
     FormControlDirective,
     FormFeedbackComponent,
-    InputGroupComponent,
     FormSelectDirective,
-    ButtonDirective,
     ModalComponent,
     ModalHeaderComponent,
     ModalTitleDirective,
@@ -72,7 +73,6 @@ export interface ThongsokythuattoitrucDetail {
     ButtonCloseDirective,
     ModalBodyComponent,
     ModalFooterComponent,
-    ButtonDirective,
     RowComponent,
     ColComponent,
     TextColorDirective,
@@ -81,13 +81,17 @@ export interface ThongsokythuattoitrucDetail {
     CardBodyComponent,
     PaginationModule,
     DropdownModule,
-    TableDirective,
     SharedModule,
 
     // Tab
     CardBodyComponent,
     CardComponent,
     RowComponent,
+    NzButtonComponent,
+    NzTableModule,
+    NzToolTipModule,
+    NzIconModule,
+    ThietbiSearchComponent,
   ],
   templateUrl: './thongsokythuattoidien.component.html',
   styleUrl: './thongsokythuattoidien.component.scss',
@@ -109,7 +113,7 @@ export class ThongsokythuattoidienComponent implements OnInit {
   Form!: FormGroup;
   Id!: Number;
   themoi: boolean = false;
-
+  size: NzButtonSize = 'small';
   ngOnInit(): void {
     this.loadData();
     this.getDanhmuctoitruc();
@@ -135,11 +139,19 @@ export class ThongsokythuattoidienComponent implements OnInit {
       thongSo: new FormControl({ value: null, disabled: false }),
     });
   }
-  public pageChanged(event: any): void {
-    this.pageIndex = event.page;
+
+  eventThietbi($event: number) {
+    this.keywordThietbi = $event;
     this.loadData();
   }
-
+  public pageIndexChanged(event: any): void {
+    this.pageIndex = event;
+    this.loadData();
+  }
+  pageSizeChange(event: any): void {
+    this.pageSize = event;
+    this.loadData();
+  }
   save() {
     if (this.themoi) {
       this.dataService

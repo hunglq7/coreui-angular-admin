@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ButtonDirective } from '@coreui/angular';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmDialogComponent } from '../../../shared/utils/dialogs/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -22,6 +21,7 @@ import {
   CardBodyComponent,
 } from '@coreui/angular';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 ModuleRegistry.registerModules([AllCommunityModule, RowSelectionModule]);
 
 export interface QuatGio {
@@ -39,8 +39,8 @@ export interface QuatGio {
     CardComponent,
     CardHeaderComponent,
     CardBodyComponent,
-    ButtonDirective,
     AgGridAngular,
+    NzButtonModule,
   ],
   templateUrl: './danhmucquatgio.component.html',
   styleUrl: './danhmucquatgio.component.scss',
@@ -109,7 +109,7 @@ export class DanhmucquatgioComponent implements OnInit {
   loadDataQuatgio() {
     this.dataService.get('/api/Danhmucquatgio').subscribe({
       next: (response: any) => {
-        this.dataQuatgio = response;        
+        this.dataQuatgio = response;
       },
       error: () => {
         this.toastr.error('Lấy dữ liệu thất bại', 'Error');
