@@ -198,7 +198,11 @@ export const navItems: INavData[] = [
       },
     ],
   },
-
+  {
+    name: 'Cập nhật máy tính',
+    iconComponent: { name: 'cil-chart-pie' },
+    url: '/tonghopmaytinh',
+  },
   {
     name: 'Cập nhật danh mục',
     title: true,

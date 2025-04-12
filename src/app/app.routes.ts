@@ -74,6 +74,11 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./views/hethong/routes').then((m) => m.routes),
       },
+      {
+        path: 'tonghopmaytinh',
+        loadChildren: () =>
+          import('./views/tonghopmaytinh/routes').then((m) => m.routes),
+      },
     ],
   },
   {

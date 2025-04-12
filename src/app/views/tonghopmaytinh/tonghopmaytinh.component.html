@@ -1,0 +1,94 @@
+<c-row>
+  <c-col sm="12">
+    <app-search-nhanvien-donvi
+      [dsNhanvien]="dsNhanVien"
+      [dsDonvi]="dsPhongban"
+      (eventSearchNhanvien)="eventNhanvien($event)"
+      (eventSearchDonvi)="eventDonvi($event)"
+    ></app-search-nhanvien-donvi>
+    <button (click)="onThemmoi()" nz-button nzType="primary" nzPrimary>
+      <span>Thêm</span>
+    </button>
+    <button (click)="exportexcel()" nz-button nzType="default" nzPrimary>
+      Xuất Excel
+    </button>
+  </c-col>
+</c-row>
+<c-row>
+  <c-col sm="12">
+    <nz-table
+      cTable
+      #columnTable
+      nzShowQuickJumper
+      nzShowSizeChanger
+      [nzData]="dataMaytinh"
+      [nzScroll]="{ x: '1100px' }"
+      [nzPageIndex]="pageIndex"
+      [nzPageSize]="pageSize"
+      [nzPageSizeOptions]="[3, 5, 10, 20, 50, 100, 200, 300, 400, 600]"
+      [nzTotal]="totalRow"
+      [nzFrontPagination]="false"
+      (nzPageIndexChange)="pageIndexChanged($event)"
+      (nzPageSizeChange)="pageSizeChange($event)"
+    >
+      <thead>
+        <tr>
+          <th scope="col" style="width: 100px">Mã QL</th>
+          <th scope="col" style="width: 700px">Tên thiết bị</th>
+          <th scope="col" style="width: 100px">Số lượng</th>
+          <th scope="col" style="width: 200px">Ngày sử dụng</th>
+          <th scope="col" style="width: 200px">Người dùng</th>
+          <th scope="col" style="width: 200px">Phòng ban</th>
+          <th scope="col" style="width: 200px">Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of dataMaytinh; track $index) {
+        <tr>
+          <td>{{ item.maThietBi }}</td>
+          <td>{{ item.tenThietBi }}</td>
+          <td>{{ item.soLuong }}</td>
+          <td>{{ item.ngaySuDung | date : "dd/MM/yyyy" }}</td>
+          <td>{{ item.tenNhanvien }}</td>
+          <td>{{ item.tenPhong }}</td>
+
+          <td>
+            <button
+              nz-tooltip
+              [nzTooltipTitle]="titleSua"
+              [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+              nz-button
+              nzType="default"
+              [nzSize]="size"
+              (click)="onEdit(item.id)"
+            >
+              <nz-icon nzType="edit" style="color: rgb(16, 142, 233)" />
+            </button>
+
+            <button
+              nz-tooltip
+              [nzTooltipTitle]="titleXoa"
+              [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+              nz-button
+              nzType="default"
+              [nzSize]="size"
+              (click)="onDelete(item.id)"
+            >
+              <nz-icon nzType="delete" style="color: rgb(255, 0, 0)" />
+            </button>
+
+            <ng-template #titleSua let-thing>
+              <nz-icon nzType="edit" />
+              <span>Sửa bản ghi</span>
+            </ng-template>
+            <ng-template #titleXoa let-thing>
+              <nz-icon nzType="delete" />
+              <span>Xóa bản ghi</span>
+            </ng-template>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </nz-table>
+  </c-col>
+</c-row>
