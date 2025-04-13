@@ -113,7 +113,6 @@ export class DanhmucbomnuocComponent implements OnInit {
     this.dataService.get('/api/Danhmucbomnuoc').subscribe({
       next: (response: any) => {
         this.data = response;
-        console.log(this.data);
       },
       error: () => {
         this.toastr.error('Lấy dữ liệu thất bại', 'Error');

@@ -134,7 +134,20 @@ export class TonghopmaycaoComponent implements OnInit {
   keywordThietbi: number = 0;
   keywordDonvi: number = 0;
   dataMaycao: TongHopMayCao[] = [];
-  dataMaycaoDetail!: TonghopmaycaoDetail;
+  dataMaycaoDetail: TonghopmaycaoDetail = {
+    id: 0,
+    maQuanLy: '',
+    mayCaoId: 0,
+    donViId: 0,
+    viTriLapDat: '',
+    ngayLap: '',
+    soLuong: 0,
+    chieuDaiMay: 0,
+    soLuongXich: 0,
+    soLuongCauMang: 0,
+    tinhTrangThietBi: '',
+    ghiChu: '',
+  };
   dsMaycao: any[] = [];
   dsDonvi: any[] = [];
   dsLoai: any[] = [];
@@ -252,7 +265,6 @@ export class TonghopmaycaoComponent implements OnInit {
           this.pageSize
       )
       .subscribe((data: any) => {
-        console.log(data);
         this.dataMaycao = data.items;
         this.pageSize = data.pageSize;
         this.pageIndex = data.pageIndex;

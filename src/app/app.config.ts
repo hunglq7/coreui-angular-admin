@@ -54,7 +54,7 @@ export const appConfig: ApplicationConfig = {
       withHashLocation()
     ),
     provideHttpClient(withJsonpSupport()),
-    provideClientHydration(),
+    // provideClientHydration(),
     importProvidersFrom(SidebarModule, DropdownModule),
     IconSetService,
     provideAnimationsAsync(),

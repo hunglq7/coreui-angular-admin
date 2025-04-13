@@ -108,7 +108,13 @@ export class ThongsokythuattoidienComponent implements OnInit {
   pageDisplay = 10;
   keywordThietbi: number = 0;
   dataSource: Thongsokythuattoitruc[] = [];
-  entity!: ThongsokythuattoitrucDetail;
+  entity: ThongsokythuattoitrucDetail = {
+    id: 0,
+    danhmuctoitrucId: 0,
+    noiDung: '',
+    donViTinh: '',
+    thongSo: '',
+  };
   dsDanhmucToidien: any[] = [];
   Form!: FormGroup;
   Id!: Number;

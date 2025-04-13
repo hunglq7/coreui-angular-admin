@@ -126,7 +126,18 @@ export class TonghopmayxucComponent implements OnInit {
   keywordThietbi: number = 0;
   keywordDonvi: number = 0;
   dataMayxucDetail: TongHopMayXuc[] = [];
-  tonghopmayxucDetail!: TonghopMayxucDetail;
+  tonghopmayxucDetail: TonghopMayxucDetail = {
+    id: 0,
+    mayXucId: 0,
+    maQuanLy: '',
+    loaiThietBiId: 0,
+    phongBanId: 0,
+    viTriLapDat: '',
+    ngayLap: '',
+    soLuong: 0,
+    tinhTrang: '',
+    ghiChu: '',
+  };
   dsMayxuc: any[] = [];
   dsDonvi: any[] = [];
   dsLoai: any[] = [];

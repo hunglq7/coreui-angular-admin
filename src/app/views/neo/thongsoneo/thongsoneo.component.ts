@@ -108,7 +108,13 @@ export class ThongsoneoComponent implements OnInit {
   pageDisplay = 10;
   keywordThietbi: number = 0;
   dataSource: ThongsoNeo[] = [];
-  entity!: ThongsoNeoDetail;
+  entity: ThongsoNeoDetail = {
+    id: 0,
+    neoId: 0,
+    noiDung: '',
+    donViTinh: '',
+    thongSo: '',
+  };
   dsDanhmucNeo: any[] = [];
   Form!: FormGroup;
   Id!: Number;
@@ -181,7 +187,6 @@ export class ThongsoneoComponent implements OnInit {
       )
       .subscribe({
         next: (data: any) => {
-          console.log(data);
           this.dataSource = data.items;
           this.pageSize = data.pageSize;
           this.pageIndex = data.pageIndex;

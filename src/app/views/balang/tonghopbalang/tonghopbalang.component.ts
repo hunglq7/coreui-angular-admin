@@ -116,7 +116,17 @@ export class TonghopbalangComponent implements OnInit {
   keywordThietbi: number = 0;
   keywordDonvi: number = 0;
   BaLangs: TongHopBaLang[] = [];
-  baLangDetail!: TongHopBaLangDetail;
+  baLangDetail: TongHopBaLangDetail = {
+    id: 0,
+    baLangId: 0,
+    donViId: 0,
+    donViTinh: '',
+    soLuong: 1,
+    ngayLap: '',
+    viTriLapDat: '',
+    tinhTrangKyThuat: '',
+    ghiChu: '',
+  };
   dsBaLang: any[] = [];
   dsDonvi: any[] = [];
   Form!: FormGroup;
@@ -295,7 +305,6 @@ export class TonghopbalangComponent implements OnInit {
     if (this.themoi) {
       this.dataService.post('/api/Tonghopbalang', this.Form.value).subscribe({
         next: () => {
-          console.log(this.Form.value);
           this.loadTonghopbalang();
           this.toastr.success('Lưu dữ liệu thành công', 'Success');
           this.liveDemoVisible = !this.liveDemoVisible;
@@ -310,7 +319,6 @@ export class TonghopbalangComponent implements OnInit {
         .put('/api/Tonghopbalang/update', this.Form.value)
         .subscribe({
           next: () => {
-            console.log(this.Form.value);
             this.loadTonghopbalang();
             this.toastr.success('Lưu dữ liệu thành công', 'Success');
             this.liveDemoVisible = !this.liveDemoVisible;

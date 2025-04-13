@@ -99,7 +99,13 @@ export class ThongsobomnuocComponent implements OnInit {
   pageDisplay = 10;
   keywordThietbi: number = 0;
   dataSource: ThongSoBomNuoc[] = [];
-  entity!: ThongSoBomNuocDetail;
+  entity: ThongSoBomNuocDetail = {
+    id: 0,
+    bomNuocId: 0,
+    noiDung: '',
+    donViTinh: '',
+    thongSo: '',
+  };
   dsDanhmuc: any[] = [];
   Form!: FormGroup;
   Id!: Number;
@@ -179,7 +185,6 @@ export class ThongsobomnuocComponent implements OnInit {
       )
       .subscribe({
         next: (data: any) => {
-          console.log(data);
           this.dataSource = data.items;
           this.pageSize = data.pageSize;
           this.pageIndex = data.pageIndex;

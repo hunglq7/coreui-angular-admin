@@ -115,7 +115,17 @@ export class TonghopkhoanComponent implements OnInit {
   keywordThietbi: number = 0;
   keywordDonvi: number = 0;
   khoans: Tonghopkhoan[] = [];
-  khoanDetail!: TonghopkhoanDetail;
+  khoanDetail: TonghopkhoanDetail = {
+    id: 0,
+    khoanId: 0,
+    donViId: 0,
+    donViTinh: '',
+    soLuong: 0,
+    ngayLap: '',
+    viTriLapDat: '',
+    tinhTrangKyThuat: '',
+    ghiChu: '',
+  };
   dsKhoan: any[] = [];
   dsDonvi: any[] = [];
   Form!: FormGroup;
@@ -293,7 +303,6 @@ export class TonghopkhoanComponent implements OnInit {
     if (this.themoi) {
       this.dataService.post('/api/Tonghopkhoan', this.Form.value).subscribe({
         next: () => {
-          console.log(this.Form.value);
           this.loadTonghopkhoan();
           this.toastr.success('Lưu dữ liệu thành công', 'Success');
           this.liveDemoVisible = !this.liveDemoVisible;
@@ -308,7 +317,6 @@ export class TonghopkhoanComponent implements OnInit {
         .put('/api/Tonghopkhoan/update', this.Form.value)
         .subscribe({
           next: () => {
-            console.log(this.Form.value);
             this.loadTonghopkhoan();
             this.toastr.success('Lưu dữ liệu thành công', 'Success');
             this.liveDemoVisible = !this.liveDemoVisible;
