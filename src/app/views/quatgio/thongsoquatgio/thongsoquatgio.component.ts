@@ -6,7 +6,6 @@ import {
   ReactiveFormsModule,
   FormsModule,
   FormGroup,
-  FormControl,
   FormBuilder,
   Validators,
 } from '@angular/forms';
@@ -15,6 +14,7 @@ import {
   ColComponent,
   DropdownModule,
   SharedModule,
+  FormSelectDirective,
 } from '@coreui/angular';
 import {
   ButtonCloseDirective,
@@ -37,6 +37,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+
 @Component({
   selector: 'app-thongsoquatgio',
   imports: [
@@ -62,12 +63,14 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     ModalTitleDirective,
     ButtonCloseDirective,
     ModalBodyComponent,
+    FormSelectDirective,
   ],
   templateUrl: './thongsoquatgio.component.html',
   styleUrl: './thongsoquatgio.component.scss',
 })
 export class ThongsoquatgioComponent implements OnInit {
   isVisible = false;
+  isVisible1 = false;
   title: string = '';
   customStylesValidated = false;
   browserDefaultsValidated = false;
@@ -91,6 +94,7 @@ export class ThongsoquatgioComponent implements OnInit {
   themoi: boolean = false;
   size: NzButtonSize = 'small';
   isOkLoading = false;
+  isConfirmLoading = false;
   constructor(
     private dataService: DataService,
     private toastr: ToastrService,
@@ -120,6 +124,7 @@ export class ThongsoquatgioComponent implements OnInit {
   handleCancel(): void {
     this.isVisible = false;
   }
+
   submitForm(): void {
     if (this.Form.valid) {
       this.save();

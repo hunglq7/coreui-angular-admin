@@ -83,6 +83,7 @@ export interface ThongsokythuatmayxucEdit {
     DropdownModule,
     TableDirective,
     SharedModule,
+    
   ],
   templateUrl: './thongsomayxuc.component.html',
   styleUrl: './thongsomayxuc.component.scss',
