@@ -61,8 +61,7 @@
 
 <!-- Model -->
 
-<c-modal id="liveDemoModal" backdrop="static" size="lg" [visible]="isVisible"
-  (visibleChange)="handleLiveDemoChange($event)">
+<c-modal id="liveDemoModal" backdrop="static" size="lg" [visible]="isVisible">
   <c-modal-header>
     <h5 cModalTitle>{{ title }}</h5>
     <button (click)="handleCancel()" cButtonClose></button>
@@ -71,12 +70,13 @@
     <c-row>
       <c-col xs="12">
         <form nz-form [formGroup]="Form" (ngSubmit)=" submitForm()">
+
           <!-- hidden id  -->
           <input [hidden]="true" type="number" formControlName="id" [(ngModel)]="entity.id" />
-          <!-- loại thiết bị -->
+          <!-- thiết bị -->
           <nz-form-item>
             <nz-form-label [nzSpan]="5" nzFor="quatgioId" nzRequired>Thiết bị</nz-form-label>
-            <nz-form-control [nzSpan]="16" nzErrorTip="Loại thiết bị phải chọn">
+            <nz-form-control [nzSpan]="16" nzErrorTip="thiết bị phải chọn">
               <nz-select id="quatgioId" formControlName="quatgioId" [(ngModel)]="entity.quatgioId"
                 nzPlaceHolder="Chọn thiết bị">
                 @for (item of dsDanhmucQuatgio; track item.id) {
@@ -84,6 +84,7 @@
                 }
               </nz-select>
             </nz-form-control>
+
           </nz-form-item>
 
           <!-- Nội dung -->
@@ -121,7 +122,6 @@
               </button>
             </nz-form-control>
           </nz-form-item>
-
 
         </form>
 
