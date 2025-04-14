@@ -124,7 +124,17 @@ export class TonghopquatgioComponent implements OnInit {
   keywordThietbi: number = 0;
   keywordDonvi: number = 0;
   dataQuatgioDetail: Tonghopquatgio[] = [];
-  tonghopquatgioDetail!: TonghopquatgioDetail;
+  tonghopquatgioDetail: TonghopquatgioDetail = {
+    id: 0,
+    maQuanLy: '',
+    quatGioId: 0,
+    donViId: 0,
+    viTriLapDat: '',
+    ngayLap: '',
+    soLuong: 0,
+    tinhTrangThietBi: '',
+    ghiChu: '',
+  };
   dsQuatgio: any[] = [];
   dsDonvi: any[] = [];
   Form!: FormGroup;

@@ -119,7 +119,6 @@ export class DanhmuckhoanComponent implements OnInit {
   loadDataKhoan() {
     this.dataService.get('/api/DanhmucKhoan').subscribe({
       next: (response: any) => {
-        console.log(response);
         this.data = response; // Nếu bạn có một biến riêng cho dữ liệu Khoan, hãy thay thế `this.data` bằng biến đó.
       },
       error: () => {

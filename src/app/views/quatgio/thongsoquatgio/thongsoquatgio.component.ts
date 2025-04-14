@@ -96,7 +96,13 @@ export class ThongsoquatgioComponent implements OnInit {
   pageDisplay = 10;
   keywordThietbi: number = 0;
   dataSource: ThongsoQuatgio[] = [];
-  entity!: ThongsoQuatgioDetail;
+  entity: ThongsoQuatgioDetail = {
+    id: 0,
+    quatgioId: 0,
+    noiDung: '',
+    donViTinh: '',
+    thongSo: '',
+  };
   dsDanhmucQuatgio: any[] = [];
   Form!: FormGroup;
   Id!: Number;
@@ -155,7 +161,6 @@ export class ThongsoquatgioComponent implements OnInit {
     this.dataService.getById('/api/Thongsoquatgio/' + this.Id).subscribe({
       next: (data: any) => {
         this.loadFormData(data);
-        console.log(data);
       },
     });
   }

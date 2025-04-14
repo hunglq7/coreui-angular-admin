@@ -117,7 +117,21 @@ export class TonghopcapdienComponent implements OnInit {
   keywordThietbi: number = 0;
   keywordDonvi: number = 0;
   dataView: TongHopCapDienList[] = [];
-  dataDetail!: TongHopCapDienDetail;
+  dataDetail: TongHopCapDienDetail = {
+    id: 0,
+    maquanly: '',
+    donviId: 0,
+    ngaythang: '',
+    capdienId: 0,
+    donvitinh: '',
+    tondauthang: 0,
+    nhaptrongky: 0,
+    xuattrongky: 0,
+    toncuoithang: 0,
+    dangsudung: 0,
+    duphong: 0,
+    ghichu: '',
+  };
   dsCapdien: any[] = [];
   dsDonvi: any[] = [];
   dsLoai: any[] = [];
@@ -192,7 +206,6 @@ export class TonghopcapdienComponent implements OnInit {
           this.pageSize
       )
       .subscribe((data: any) => {
-        console.log(data);
         this.dataView = data.items;
         this.pageSize = data.pageSize;
         this.pageIndex = data.pageIndex;
@@ -222,7 +235,6 @@ export class TonghopcapdienComponent implements OnInit {
   addNewTonghopcapdienDetail() {
     this.dataService.getById('/api/Tonghopcapdien/' + 0).subscribe({
       next: (data) => {
-        console.log(data);
         this.dataDetail = data;
         var myDate = new Date(data.ngaythang);
         var myDateString;

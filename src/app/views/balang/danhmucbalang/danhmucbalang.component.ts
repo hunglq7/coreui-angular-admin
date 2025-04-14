@@ -120,7 +120,6 @@ export class DanhmucbalangComponent implements OnInit {
   loadData() {
     this.dataService.get('/api/Danhmucbalang').subscribe({
       next: (response: any) => {
-        console.log(response);
         this.data = response;
       },
       error: () => {

@@ -143,7 +143,18 @@ export class CapnhattoidienComponent implements OnInit {
   keywordThietbi: number = 0;
   keywordDonvi: number = 0;
   toitrucs: Tonghoptoitruc[] = [];
-  toitrucDetail!: TonghoptoitrucDetail;
+  toitrucDetail: TonghoptoitrucDetail = {
+    id: 0,
+    maQuanLy: '',
+    thietbiId: 0,
+    donViSuDungId: 0,
+    viTriLapDat: '',
+    ngayLap: '',
+    mucDichSuDung: '',
+    soLuong: 0,
+    tinhTrangThietBi: '',
+    ghiChu: '',
+  };
   dsToitruc: any[] = [];
   dsDonvi: any[] = [];
   Form!: FormGroup;

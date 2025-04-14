@@ -111,7 +111,13 @@ export class ThongsomaycaoComponent implements OnInit {
   pageDisplay = 10;
   keywordThietbi: number = 0;
   dataSource: ThongsokythuatMayCao[] = [];
-  entity!: ThongsokythuatMayCaoDetail;
+  entity: ThongsokythuatMayCaoDetail = {
+    id: 0,
+    mayCaoId: 0,
+    noiDung: '',
+    donViTinh: '',
+    thongSo: '',
+  };
   dsDanhmucMayCao: any[] = [];
   Form!: FormGroup;
   Id!: Number;

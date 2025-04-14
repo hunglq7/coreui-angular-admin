@@ -24,14 +24,22 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     NzButtonModule,
   ],
   template: ` <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-      <nz-select [(ngModel)]="keywordNhanvien" style="width: 50%">
-        <nz-option [nzLabel]="'Chọn thiết bị...'" [nzValue]="''"></nz-option>
+      <nz-select
+        nzPlaceHolder="Chọn người dùng"
+        [(ngModel)]="keywordNhanvien"
+        style="width: 50%"
+      >
+        <nz-option [nzLabel]="'Chọn chết...'" [nzValue]="''"></nz-option>
         @for (item of dsNhanvien ; track $index) {
         <nz-option [nzLabel]="item.tenNhanVien" [nzValue]="item.id"></nz-option>
         }
       </nz-select>
-      <nz-select [(ngModel)]="keywordDonvi" style="width: 50%">
-        <nz-option [nzLabel]="'Chọn đơn vị...'" [nzValue]="''"></nz-option>
+      <nz-select
+        nzPlaceHolder="Chọn đơn vị"
+        [(ngModel)]="keywordDonvi"
+        style="width: 50%"
+      >
+        <nz-option [nzLabel]="'Chọn hết...'" [nzValue]="''"></nz-option>
         @for (item of dsDonvi ; track $index) {
         <nz-option [nzLabel]="item.tenPhong" [nzValue]="item.id"></nz-option>
         }

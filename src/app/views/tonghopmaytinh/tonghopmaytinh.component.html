@@ -17,8 +17,6 @@
 <c-row>
   <c-col sm="12">
     <nz-table
-      cTable
-      #columnTable
       nzShowQuickJumper
       nzShowSizeChanger
       [nzData]="dataMaytinh"
@@ -33,8 +31,9 @@
     >
       <thead>
         <tr>
+          <th scope="col" style="width: 100px">Hình</th>
           <th scope="col" style="width: 100px">Mã QL</th>
-          <th scope="col" style="width: 700px">Tên thiết bị</th>
+          <th scope="col" style="width: 600px">Tên thiết bị</th>
           <th scope="col" style="width: 100px">Số lượng</th>
           <th scope="col" style="width: 200px">Ngày sử dụng</th>
           <th scope="col" style="width: 200px">Người dùng</th>
@@ -45,6 +44,13 @@
       <tbody>
         @for (item of dataMaytinh; track $index) {
         <tr>
+          <td>
+            <img
+              [src]="baseFolder + item.hinhAnh"
+              alt="Đường dẫn file ảnh"
+              style="width: 100%; height: 100%"
+            />
+          </td>
           <td>{{ item.maThietBi }}</td>
           <td>{{ item.tenThietBi }}</td>
           <td>{{ item.soLuong }}</td>
@@ -92,3 +98,214 @@
     </nz-table>
   </c-col>
 </c-row>
+
+<!-- Modal -->
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzStyle]="{ top: '200px' }"
+  [nzWidth]="800"
+  nzTitle="{{ title }}"
+  [nzMaskClosable]="false"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="submitForm()"
+  [nzOkText]="'Lưu'"
+  [nzCancelText]="'Hủy'"
+  [nzOkLoading]="isOkLoading"
+>
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="validateForm">
+      <!-- hidden id  -->
+      <input
+        [hidden]="true"
+        type="number"
+        formControlName="id"
+        [(ngModel)]="dataMaytinhDetail.id"
+      />
+      <!-- ma quản lý -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5" nzRequired nzFor="maThietBi"
+          >Mã quản lý</nz-form-label
+        >
+        <nz-form-control [nzSpan]="16" nzErrorTip="Mã quản lý phải nhập">
+          <input
+            id="maThietBi"
+            nz-input
+            formControlName="maThietBi"
+            [(ngModel)]="dataMaytinhDetail.maThietBi"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <!-- loại thiết bị -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5" nzFor="loaiThietBi" nzRequired
+          >Loại thiết bị</nz-form-label
+        >
+        <nz-form-control [nzSpan]="16" nzErrorTip="Loại thiết bị phải chọn">
+          <nz-select
+            id="loaiThietBiId"
+            [(ngModel)]="dataMaytinhDetail.loaiThietBiId"
+            formControlName="loaiThietBiId"
+            nzPlaceHolder="Chọn loại thiết bị"
+          >
+            @for (item of dsLoaithietbi; track $index) {
+            <nz-option [nzValue]="item.id" [nzLabel]="item.tenLoai"></nz-option>
+            }
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- đơn vị tính -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5" nzFor="donViTinhId" nzRequired
+          >Đơn vị tính</nz-form-label
+        >
+        <nz-form-control [nzSpan]="16" nzErrorTip="Đơn vị tính phải chọn">
+          <nz-select
+            id="donViTinhId"
+            [(ngModel)]="dataMaytinhDetail.donViTinhId"
+            formControlName="donViTinhId"
+            nzPlaceHolder="Chọn đơn vị tính"
+          >
+            @for (item of dsDonvitinh; track $index) {
+            <nz-option
+              [nzValue]="item.id"
+              [nzLabel]="item.tenDonViTinh"
+            ></nz-option>
+            }
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- số lượng -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5" nzRequired nzFor="soLuong"
+          >Số lượng</nz-form-label
+        >
+        <nz-form-control [nzSpan]="16" nzErrorTip="Số lượng phải nhập">
+          <input
+            id="soLuong"
+            nz-input
+            type="number"
+            formControlName="soLuong"
+            [(ngModel)]="dataMaytinhDetail.soLuong"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <!-- ngày sử dụng -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5" nzRequired nzFor="ngaySuDung"
+          >Ngày sử dụng</nz-form-label
+        >
+        <nz-form-control [nzSpan]="16" nzErrorTip="Ngày sử dụng phải chọn">
+          <nz-date-picker
+            [nzFormat]="dateFormat"
+            formControlName="ngaySuDung"
+            [(ngModel)]="dataMaytinhDetail.ngaySuDung"
+          ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- tên thiết bị -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5" nzRequired nzFor="tenThietBi"
+          >Tên thiết bị</nz-form-label
+        >
+        <nz-form-control [nzSpan]="16" nzErrorTip="Tên thiết bị phải nhập">
+          <textarea
+            nz-input
+            placeholder="Nhập tên thiết bị"
+            [nzAutosize]="{ minRows: 3, maxRows: 5 }"
+            [(ngModel)]="dataMaytinhDetail.tenThietBi"
+            formControlName="tenThietBi"
+          ></textarea>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- đơn vị sử dụng -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5" nzFor="phongBanId" nzRequired
+          >Đơn vị sử dụng</nz-form-label
+        >
+        <nz-form-control [nzSpan]="16" nzErrorTip="Đơn vị sử dụng phải chọn">
+          <nz-select
+            id="phongbanId"
+            [(ngModel)]="dataMaytinhDetail.phongBanId"
+            formControlName="phongBanId"
+            nzPlaceHolder="Chọn đơn vị sử dụng"
+          >
+            @for (item of dsPhongban; track $index) {
+            <nz-option
+              [nzValue]="item.id"
+              [nzLabel]="item.tenPhong"
+            ></nz-option>
+            }
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- người dùng -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5" nzFor="nhanVienId" nzRequired
+          >Người dùng</nz-form-label
+        >
+        <nz-form-control [nzSpan]="16" nzErrorTip="Người dùng phải chọn">
+          <nz-select
+            id="nhanVienId"
+            [(ngModel)]="dataMaytinhDetail.nhanVienId"
+            formControlName="nhanVienId"
+            nzPlaceHolder="Chọn người dùng"
+          >
+            @for (item of dsNhanVien; track $index) {
+            <nz-option
+              [nzValue]="item.id"
+              [nzLabel]="item.tenNhanVien"
+            ></nz-option>
+            }
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <!-- ghi chú -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">Ghi chú</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <input
+            id="ghiChu"
+            nz-input
+            formControlName="ghiChu"
+            [(ngModel)]="dataMaytinhDetail.ghiChu"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <!-- hình thiết bị -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">Upload hình ảnh</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <app-upload-file
+            [pathFile]="pathFile"
+            (onUploadPath)="onUploadPath($event)"
+          ></app-upload-file>
+          <input
+            [hidden]="true"
+            type="text"
+            formControlName="hinhAnh"
+            [(ngModel)]="pathHinhAnh"
+          />
+        </nz-form-control>
+      </nz-form-item>
+      <!-- trạng thái -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">Trạng thái</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <c-form-check [switch]="dataMaytinhDetail.trangThai">
+            <input
+              cFormCheckInput
+              checked
+              sizing="lg"
+              type="checkbox"
+              [(ngModel)]="dataMaytinhDetail.trangThai"
+              formControlName="trangThai"
+            />
+            <label cFormCheckLabel>{{
+              dataMaytinhDetail.trangThai ? "Kích hoạt" : "Hủy kích hoạt"
+            }}</label>
+          </c-form-check>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

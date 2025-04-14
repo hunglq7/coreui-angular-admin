@@ -121,7 +121,17 @@ export class TonghopbomnuocComponent implements OnInit {
   keywordThietbi: number = 0;
   keywordDonvi: number = 0;
   data: TongHopBomNuoc[] = [];
-  dataDetail!: TongHopBomNuocDetail;
+  dataDetail: TongHopBomNuocDetail = {
+    id: 0,
+    maQuanLy: '',
+    bomNuocId: 0,
+    donViId: 0,
+    viTriLapDat: '',
+    ngayLap: '',
+    soLuong: 1,
+    tinhTrangThietBi: '',
+    ghiChu: '',
+  };
   danhSach: any[] = [];
   dsDonvi: any[] = [];
   Form!: FormGroup;
