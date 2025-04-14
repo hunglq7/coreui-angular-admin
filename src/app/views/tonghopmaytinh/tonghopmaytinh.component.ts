@@ -137,7 +137,6 @@ export class TonghopmaytinhComponent implements OnInit {
       });
   }
   public pageIndexChanged(event: any): void {
-    console.log(event);
     this.pageIndex = event;
     this.loadTonghopMaytinh();
   }

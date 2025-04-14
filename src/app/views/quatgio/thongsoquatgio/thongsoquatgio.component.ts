@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/utils/dialogs/confirm-dialog/confirm-dialog.component';
@@ -7,85 +7,67 @@ import {
   FormsModule,
   FormGroup,
   FormControl,
+  FormBuilder,
+  Validators,
 } from '@angular/forms';
 import {
-  ButtonCloseDirective,
-  ButtonDirective,
-  ModalBodyComponent,
-  ModalComponent,
-  ModalFooterComponent,
-  ModalHeaderComponent,
-  ModalTitleDirective,
-  ThemeDirective,
   RowComponent,
   ColComponent,
-  TextColorDirective,
-  CardComponent,
-  CardHeaderComponent,
-  CardBodyComponent,
-  TableDirective,
-  FormDirective,
-  FormLabelDirective,
-  FormControlDirective,
-  FormFeedbackComponent,
-  FormSelectDirective,
-  InputGroupComponent,
   DropdownModule,
   SharedModule,
+} from '@coreui/angular';
+import {
+  ButtonCloseDirective,
+  ModalBodyComponent,
+  ModalComponent,
+  ModalHeaderComponent,
+  ModalTitleDirective,
 } from '@coreui/angular';
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
-export interface ThongsoQuatgio {
-  id: number;
-  tenThietBi: number;
-  noiDung: string;
-  donViTinh: string;
-  thongSo: string;
-}
-export interface ThongsoQuatgioDetail {
-  id: number;
-  quatgioId: number;
-  noiDung: string;
-  donViTinh: string;
-  thongSo: string;
-}
+import { ThietbiSearchComponent } from '../../../components/nav-thietbi-search/thietbi-search.component';
+import { NzButtonModule, NzButtonSize } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { ThongsoQuatgio } from '../../../core/interface/quatgio/thongso-quatgio';
+import { ThongsoQuatgioDetail } from '../../../core/interface/quatgio/thongso-quatgio-detail';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 @Component({
   selector: 'app-thongsoquatgio',
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    FormDirective,
-    FormLabelDirective,
-    FormControlDirective,
-    FormFeedbackComponent,
-    InputGroupComponent,
-    FormSelectDirective,
-    ButtonDirective,
+    RowComponent,
+    ColComponent,
+    PaginationModule,
+    DropdownModule,
+    SharedModule,
+    ThietbiSearchComponent,
+    NzButtonModule,
+    NzIconModule,
+    NzToolTipModule,
+    NzTableModule,
+    NzModalModule,
+    NzFormModule,
+    NzInputModule,
+    NzSelectModule,
     ModalComponent,
     ModalHeaderComponent,
     ModalTitleDirective,
-    ThemeDirective,
     ButtonCloseDirective,
     ModalBodyComponent,
-    ModalFooterComponent,
-    RowComponent,
-    ColComponent,
-    TextColorDirective,
-    CardComponent,
-    CardHeaderComponent,
-    CardBodyComponent,
-    PaginationModule,
-    DropdownModule,
-    TableDirective,
-    SharedModule,
   ],
   templateUrl: './thongsoquatgio.component.html',
   styleUrl: './thongsoquatgio.component.scss',
 })
 export class ThongsoquatgioComponent implements OnInit {
-  public liveDemoVisible = false;
+  isVisible = false;
   title: string = '';
   customStylesValidated = false;
   browserDefaultsValidated = false;
@@ -107,13 +89,14 @@ export class ThongsoquatgioComponent implements OnInit {
   Form!: FormGroup;
   Id!: Number;
   themoi: boolean = false;
-
+  size: NzButtonSize = 'small';
+  isOkLoading = false;
   constructor(
     private dataService: DataService,
     private toastr: ToastrService,
     private dialog: MatDialog
   ) {}
-
+  private fb = inject(FormBuilder);
   ngOnInit(): void {
     this.initFormBuilder();
     this.loadData();
@@ -126,18 +109,30 @@ export class ThongsoquatgioComponent implements OnInit {
   }
 
   private initFormBuilder() {
-    this.Form = new FormGroup({
-      id: new FormControl({ value: null, disabled: false }),
-      quatgioId: new FormControl({ value: null, disabled: false }),
-      noiDung: new FormControl({ value: null, disabled: false }),
-      donViTinh: new FormControl({ value: null, disabled: false }),
-      thongSo: new FormControl({ value: null, disabled: false }),
+    this.Form = this.fb.group({
+      id: [null],
+      quatgioId: [null, Validators.required],
+      noiDung: [null],
+      donViTinh: [null],
+      thongSo: [null],
     });
   }
-  eventThietbi($event: number) {
-    this.keywordThietbi = $event;
-    this.loadData();
+  handleCancel(): void {
+    this.isVisible = false;
   }
+  submitForm(): void {
+    if (this.Form.valid) {
+      this.save();
+    } else {
+      Object.values(this.Form.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+  }
+
   private loadFormData(items: ThongsoQuatgioDetail) {
     this.entity = items;
     this.Form.setValue({
@@ -148,7 +143,10 @@ export class ThongsoquatgioComponent implements OnInit {
       thongSo: items.thongSo,
     });
   }
-
+  eventThietbi($event: number) {
+    this.keywordThietbi = $event;
+    this.loadData();
+  }
   addNew() {
     this.dataService.getById('/api/Thongsoquatgio/' + 0).subscribe({
       next: (data: any) => {
@@ -194,20 +192,20 @@ export class ThongsoquatgioComponent implements OnInit {
   }
 
   handleLiveDemoChange(event: boolean) {
-    this.liveDemoVisible = event;
+    this.isVisible = event;
   }
 
   onThemmoi() {
-    this.title = 'Thêm mới thông số';
+    this.title = 'Thêm mới';
     this.themoi = true;
     this.Id = 0;
     this.addNew();
-    this.liveDemoVisible = !this.liveDemoVisible;
+    this.isVisible = !this.isVisible;
   }
 
   onClode() {
     this.Form.reset();
-    this.liveDemoVisible = !this.liveDemoVisible;
+    this.isVisible = !this.isVisible;
   }
 
   onEdit(id: number) {
@@ -215,7 +213,7 @@ export class ThongsoquatgioComponent implements OnInit {
     this.Id = id;
     this.getThongsoById();
     this.title = 'Sửa thông số quạt gió';
-    this.liveDemoVisible = !this.liveDemoVisible;
+    this.isVisible = !this.isVisible;
   }
 
   onDelete(id: number) {
@@ -247,7 +245,7 @@ export class ThongsoquatgioComponent implements OnInit {
         next: () => {
           this.loadData();
           this.toastr.success('Lưu dữ liệu thành công', 'Success');
-          this.liveDemoVisible = !this.liveDemoVisible;
+          this.isVisible = !this.isVisible;
           this.Form.reset();
         },
         error: () => {
@@ -261,7 +259,7 @@ export class ThongsoquatgioComponent implements OnInit {
           next: () => {
             this.loadData();
             this.toastr.success('Lưu dữ liệu thành công', 'Success');
-            this.liveDemoVisible = !this.liveDemoVisible;
+            this.isVisible = !this.isVisible;
             this.Form.reset();
           },
           error: () => {
@@ -271,8 +269,12 @@ export class ThongsoquatgioComponent implements OnInit {
     }
   }
 
-  public pageChanged(event: any): void {
+  public pageIndexChanged(event: any): void {
     this.pageIndex = event.page;
+    this.loadData();
+  }
+  pageSizeChange(event: any): void {
+    this.pageSize = event;
     this.loadData();
   }
 }
