@@ -2,10 +2,7 @@
   <c-col sm="12">
     <c-row>
       <c-col sm="4">
-        <app-thietbi-search
-          [dsThietbi]="dsDanhmucQuatgio"
-          (eventSearchThietbi)="eventThietbi($event)"
-        >
+        <app-thietbi-search [dsThietbi]="dsDanhmucQuatgio" (eventSearchThietbi)="eventThietbi($event)">
         </app-thietbi-search>
       </c-col>
       <c-col sm="8">
@@ -15,24 +12,13 @@
       </c-col>
     </c-row>
 
-    <nz-table
-      cTable
-      #columnTable
-      nzShowQuickJumper
-      nzShowSizeChanger
-      [nzData]="dataSource"
-      [nzScroll]="{ x: '1100px' }"
-      [nzPageIndex]="pageIndex"
-      [nzPageSize]="pageSize"
-      [nzPageSizeOptions]="[3, 5, 10, 20]"
-      [nzTotal]="totalRow"
-      [nzFrontPagination]="false"
-      (nzPageIndexChange)="pageIndexChanged($event)"
-      (nzPageSizeChange)="pageSizeChange($event)"
-    >
+    <nz-table cTable #columnTable nzShowQuickJumper nzShowSizeChanger [nzData]="dataSource" [nzScroll]="{ x: '1100px' }"
+      [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" [nzPageSizeOptions]="[3, 5, 10, 20]" [nzTotal]="totalRow"
+      [nzFrontPagination]="false" (nzPageIndexChange)="pageIndexChanged($event)"
+      (nzPageSizeChange)="pageSizeChange($event)">
       <thead>
         <tr>
-          <th scope="col">Thiết bị</th>
+          <th nzLeft scope="col">Thiết bị</th>
           <th scope="col">Nội dung</th>
           <th scope="col">Đơn vị tính</th>
           <th scope="col">Thông số</th>
@@ -42,31 +28,17 @@
       <tbody>
         @for (item of dataSource ; track $index) {
         <tr>
-          <td>{{ item.tenThietBi }}</td>
+          <td nzLeft>{{ item.tenThietBi }}</td>
           <td>{{ item.noiDung }}</td>
           <td>{{ item.donViTinh }}</td>
           <td>{{ item.thongSo }}</td>
           <td>
-            <button
-              nz-tooltip
-              [nzTooltipTitle]="titleSua"
-              [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
-              nz-button
-              nzType="default"
-              [nzSize]="size"
-              (click)="onEdit(item.id)"
-            >
+            <button nz-tooltip [nzTooltipTitle]="titleSua" [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button
+              nzType="default" [nzSize]="size" (click)="onEdit(item.id)">
               <nz-icon nzType="edit" style="color: rgb(16, 142, 233)" />
             </button>
-            <button
-              nz-tooltip
-              [nzTooltipTitle]="titleXoa"
-              [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
-              nz-button
-              nzType="default"
-              [nzSize]="size"
-              (click)="onDelete(item.id)"
-            >
+            <button nz-tooltip [nzTooltipTitle]="titleXoa" [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button
+              nzType="default" [nzSize]="size" (click)="onDelete(item.id)">
               <nz-icon nzType="delete" style="color: rgb(255, 0, 0)" />
             </button>
           </td>
@@ -99,26 +71,13 @@
       <c-col xs="12">
         <form nz-form [formGroup]="Form" (ngSubmit)="submitForm()">
           <!-- hidden id  -->
-          <input
-            [hidden]="true"
-            type="number"
-            formControlName="id"
-            [(ngModel)]="entity.id"
-          />
+          <input [hidden]="true" type="number" formControlName="id" [(ngModel)]="entity.id" />
           <!-- thiết bị -->
           <nz-form-item>
-            <nz-form-label [nzSpan]="5" nzFor="quatgioId" nzRequired
-              >Thiết bị</nz-form-label
-            >
+            <nz-form-label [nzSpan]="5" nzFor="quatgioId" nzRequired>Thiết bị</nz-form-label>
             <nz-form-control [nzSpan]="16" nzErrorTip="thiết bị phải chọn">
-              <select
-                id="quatgioId"
-                formControlName="quatgioId"
-                [(ngModel)]="entity.quatgioId"
-                aria-label="Default select example"
-                cSelect
-                sizing="md"
-              >
+              <select id="quatgioId" formControlName="quatgioId" [(ngModel)]="entity.quatgioId"
+                aria-label="Default select example" cSelect sizing="sm">
                 <option>Open this select menu</option>
                 @for (item of dsDanhmucQuatgio; track item.id) {
                 <option value="{{ item.id }}">{{ item.tenThietBi }}</option>
@@ -131,12 +90,8 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="5">Nội dung</nz-form-label>
             <nz-form-control [nzSpan]="16">
-              <input
-                id="noiDung"
-                nz-input
-                formControlName="noiDung"
-                [(ngModel)]="entity.noiDung"
-              />
+              <input id="noiDung" nz-input cFormControl sizing="sm" formControlName="noiDung"
+                [(ngModel)]="entity.noiDung" />
             </nz-form-control>
           </nz-form-item>
 
@@ -144,12 +99,8 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="5">Đơn vị tính</nz-form-label>
             <nz-form-control [nzSpan]="16">
-              <input
-                id="donViTinh"
-                nz-input
-                formControlName="donViTinh"
-                [(ngModel)]="entity.donViTinh"
-              />
+              <input id="donViTinh" nz-input cFormControl sizing="sm" formControlName="donViTinh"
+                [(ngModel)]="entity.donViTinh" />
             </nz-form-control>
           </nz-form-item>
 
@@ -157,12 +108,8 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="5">Thông số</nz-form-label>
             <nz-form-control [nzSpan]="16">
-              <input
-                id="thongSo"
-                nz-input
-                formControlName="thongSo"
-                [(ngModel)]="entity.thongSo"
-              />
+              <input id="thongSo" nz-input cFormControl sizing="sm" formControlName="thongSo"
+                [(ngModel)]="entity.thongSo" />
             </nz-form-control>
           </nz-form-item>
 

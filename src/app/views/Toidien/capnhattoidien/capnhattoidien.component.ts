@@ -20,15 +20,8 @@ import {
   ThemeDirective,
   RowComponent,
   ColComponent,
-  TextColorDirective,
-  CardComponent,
-  CardHeaderComponent,
-  CardBodyComponent,
   TabDirective,
-  FormDirective,
-  FormLabelDirective,
   FormControlDirective,
-  FormFeedbackComponent,
   FormSelectDirective,
   DropdownModule,
   SharedModule,
@@ -54,6 +47,7 @@ import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
 import * as XLSX from 'xlsx';
+import { NzFormModule } from 'ng-zorro-antd/form';
 export interface Tonghoptoitruc {
   id: number;
   maQuanLy: string;
@@ -85,10 +79,7 @@ export interface TonghoptoitrucDetail {
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    FormDirective,
-    FormLabelDirective,
     FormControlDirective,
-    FormFeedbackComponent,
     FormSelectDirective,
     ModalComponent,
     ModalHeaderComponent,
@@ -98,10 +89,6 @@ export interface TonghoptoitrucDetail {
     ModalBodyComponent,
     RowComponent,
     ColComponent,
-    TextColorDirective,
-    CardComponent,
-    CardHeaderComponent,
-    CardBodyComponent,
     PaginationModule,
     DropdownModule,
     SharedModule,
@@ -123,6 +110,7 @@ export interface TonghoptoitrucDetail {
     NzFloatButtonModule,
     NzModalModule,
     NzToolTipModule,
+    NzFormModule,
   ],
 
   templateUrl: './capnhattoidien.component.html',

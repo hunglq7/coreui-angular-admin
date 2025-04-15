@@ -8,13 +8,11 @@ import {
   ReactiveFormsModule,
   FormsModule,
   FormGroup,
-  FormControl,
   FormBuilder,
   Validators,
 } from '@angular/forms';
 import {
   ButtonCloseDirective,
-  ButtonDirective,
   ModalBodyComponent,
   ModalComponent,
   ModalHeaderComponent,
@@ -24,14 +22,9 @@ import {
   ColComponent,
   TextColorDirective,
   CardComponent,
-  CardHeaderComponent,
   CardBodyComponent,
-  TableDirective,
   TabDirective,
-  FormDirective,
-  FormLabelDirective,
   FormControlDirective,
-  FormFeedbackComponent,
   FormSelectDirective,
   DropdownModule,
   SharedModule,
@@ -39,13 +32,17 @@ import {
   TabsComponent,
   TabsContentComponent,
   TabsListComponent,
-  GutterDirective,
 } from '@coreui/angular';
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
 import * as XLSX from 'xlsx';
-
+import { SelectSearchComponent } from '../../../components/nav-select-search/select-search.component';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule, NzButtonSize } from 'ng-zorro-antd/button';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzFormModule } from 'ng-zorro-antd/form';
 export interface Tonghopquatgio {
   id: number;
   maQuanLy: string;
@@ -75,12 +72,8 @@ export interface TonghopquatgioDetail {
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    FormDirective,
-    FormLabelDirective,
     FormControlDirective,
-    FormFeedbackComponent,
     FormSelectDirective,
-    ButtonDirective,
     ModalComponent,
     ModalHeaderComponent,
     ModalTitleDirective,
@@ -91,21 +84,24 @@ export interface TonghopquatgioDetail {
     ColComponent,
     TextColorDirective,
     CardComponent,
-    CardHeaderComponent,
     CardBodyComponent,
     PaginationModule,
     DropdownModule,
-    TableDirective,
     SharedModule,
     TabDirective,
     TabPanelComponent,
     TabsComponent,
     TabsContentComponent,
     TabsListComponent,
-    GutterDirective,
     FormsModule,
     NhatkyquatgioTabComponent,
     ThongsoquatgioTabComponent,
+    SelectSearchComponent,
+    NzIconModule,
+    NzButtonModule,
+    NzToolTipModule,
+    NzTableModule,
+    NzFormModule,
   ],
   templateUrl: './tonghopquatgio.component.html',
   styleUrl: './tonghopquatgio.component.scss',
@@ -140,7 +136,7 @@ export class TonghopquatgioComponent implements OnInit {
   Form!: FormGroup;
   Id!: Number;
   public themoi: boolean = false;
-
+  size: NzButtonSize = 'small';
   ngOnInit(): void {
     this.initFormBuilder();
     this.loadTonghopQuatgio();
@@ -158,6 +154,16 @@ export class TonghopquatgioComponent implements OnInit {
     private dialog: MatDialog,
     private fb: FormBuilder
   ) {}
+
+  eventThietbi($event: number) {
+    this.keywordThietbi = $event;
+    this.loadTonghopQuatgio();
+  }
+
+  eventDonvi($event: number) {
+    this.keywordDonvi = $event;
+    this.loadTonghopQuatgio();
+  }
 
   private initFormBuilder() {
     this.Form = this.fb.group({
@@ -259,11 +265,14 @@ export class TonghopquatgioComponent implements OnInit {
       });
   }
 
-  public pageChanged(event: any): void {
+  public pageIndexChanged(event: any): void {
     this.pageIndex = event.page;
     this.loadTonghopQuatgio();
   }
-
+  pageSizeChange(event: number): void {
+    this.pageSize = event;
+    this.loadTonghopQuatgio();
+  }
   onThemmoi() {
     this.title = 'Thêm quạt gió';
     this.themoi = true;

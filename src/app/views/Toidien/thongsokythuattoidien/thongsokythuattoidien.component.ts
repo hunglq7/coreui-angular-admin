@@ -10,23 +10,14 @@ import {
 } from '@angular/forms';
 import {
   ButtonCloseDirective,
-  ButtonDirective,
   ModalBodyComponent,
   ModalComponent,
-  ModalFooterComponent,
   ModalHeaderComponent,
   ModalTitleDirective,
   ThemeDirective,
   RowComponent,
   ColComponent,
-  TextColorDirective,
-  CardComponent,
-  CardHeaderComponent,
-  CardBodyComponent,
-  FormDirective,
-  FormLabelDirective,
   FormControlDirective,
-  FormFeedbackComponent,
   FormSelectDirective,
   DropdownModule,
   SharedModule,
@@ -35,11 +26,12 @@ import {
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
-import { NzButtonComponent, NzButtonSize } from 'ng-zorro-antd/button';
+import { NzButtonModule, NzButtonSize } from 'ng-zorro-antd/button';
 import { ThietbiSearchComponent } from '../../../components/nav-thietbi-search/thietbi-search.component';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzFormModule } from 'ng-zorro-antd/form';
 export interface Thongsokythuattoitruc {
   id: number;
   tenToiTruc: string;
@@ -61,10 +53,7 @@ export interface ThongsokythuattoitrucDetail {
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    FormDirective,
-    FormLabelDirective,
     FormControlDirective,
-    FormFeedbackComponent,
     FormSelectDirective,
     ModalComponent,
     ModalHeaderComponent,
@@ -72,22 +61,14 @@ export interface ThongsokythuattoitrucDetail {
     ThemeDirective,
     ButtonCloseDirective,
     ModalBodyComponent,
-    ModalFooterComponent,
     RowComponent,
     ColComponent,
-    TextColorDirective,
-    CardComponent,
-    CardHeaderComponent,
-    CardBodyComponent,
     PaginationModule,
     DropdownModule,
     SharedModule,
-
-    // Tab
-    CardBodyComponent,
-    CardComponent,
-    RowComponent,
-    NzButtonComponent,
+    NzFormModule,
+    NzFormModule,
+    NzButtonModule,
     NzTableModule,
     NzToolTipModule,
     NzIconModule,

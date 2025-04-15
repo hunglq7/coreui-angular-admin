@@ -15,6 +15,7 @@ import {
   DropdownModule,
   SharedModule,
   FormSelectDirective,
+  FormControlDirective,
 } from '@coreui/angular';
 import {
   ButtonCloseDirective,
@@ -46,6 +47,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     FormsModule,
     RowComponent,
     ColComponent,
+    FormControlDirective,
     PaginationModule,
     DropdownModule,
     SharedModule,
@@ -217,7 +219,7 @@ export class ThongsoquatgioComponent implements OnInit {
     this.themoi = false;
     this.Id = id;
     this.getThongsoById();
-    this.title = 'Sửa thông số quạt gió';
+    this.title = 'Sửa thông số ';
     this.isVisible = !this.isVisible;
   }
 
