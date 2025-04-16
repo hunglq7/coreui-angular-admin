@@ -1,7 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../../../shared/utils/dialogs/confirm-dialog/confirm-dialog.component';
 import { NhatkybomnuocTabComponent } from '../../bomnuoc/nhatkybomnuoc-tab/nhatkybomnuoc-tab.component';
 import { ThongsobomnuocTabComponent } from '../../bomnuoc/thongsobomnuoc-tab/thongsobomnuoc-tab.component';
 import {
@@ -40,33 +39,26 @@ import {
   TabsListComponent,
   GutterDirective,
 } from '@coreui/angular';
+import { NzButtonModule, NzButtonSize } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzCascaderModule } from 'ng-zorro-antd/cascader';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
 import * as XLSX from 'xlsx';
-export interface TongHopBomNuoc {
-  id: number;
-  maQuanLy: string;
-  tenThietBi: number;
-  tenDonVi: number;
-  viTriLapDat: string;
-  ngayLap: string;
-  soLuong: number;
-  tinhTrangThietBi: string;
-  ghiChu: string;
-}
-
-export interface TongHopBomNuocDetail {
-  id: number;
-  maQuanLy: string;
-  bomNuocId: number;
-  donViId: number;
-  viTriLapDat: string;
-  ngayLap: string;
-  soLuong: number;
-  tinhTrangThietBi: string;
-  ghiChu: string;
-}
+import {
+  TongHopBomNuoc,
+  TongHopBomNuocDetail,
+} from '../../../core/interface/bomnuoc/bomnuoc-interface';
+import { SelectSearchComponent } from '../../../components/nav-select-search/select-search.component';
 @Component({
   selector: 'app-tonghopbomnuoc',
   imports: [
@@ -104,6 +96,17 @@ export interface TongHopBomNuocDetail {
     FormsModule,
     NhatkybomnuocTabComponent,
     ThongsobomnuocTabComponent,
+    SelectSearchComponent,
+    NzButtonModule,
+    NzIconModule,
+    NzInputModule,
+    NzSelectModule,
+    NzCascaderModule,
+    NzTableModule,
+    NzFloatButtonModule,
+    NzModalModule,
+    NzToolTipModule,
+    NzFormModule,
   ],
   templateUrl: './tonghopbomnuoc.component.html',
   styleUrl: './tonghopbomnuoc.component.scss',
@@ -115,6 +118,7 @@ export class TonghopbomnuocComponent implements OnInit {
   browserDefaultsValidated = false;
   tooltipValidated = false;
   totalRow!: number;
+  sumSoluong!: number;
   pageIndex = 1;
   pageSize = 10;
   pageDisplay = 10;
@@ -137,12 +141,13 @@ export class TonghopbomnuocComponent implements OnInit {
   Form!: FormGroup;
   Id!: Number;
   public themoi: boolean = false;
-
+  size: NzButtonSize = 'small';
   constructor(
     private dataService: DataService,
     private toastr: ToastrService,
     private dialog: MatDialog,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private modal: NzModalService
   ) {}
 
   ngOnInit(): void {
@@ -168,6 +173,24 @@ export class TonghopbomnuocComponent implements OnInit {
       tinhTrangThietBi: [''],
       ghiChu: [''],
     });
+  }
+
+  eventThietbi($event: any) {
+    this.keywordThietbi = $event;
+    this.loadTonghopBomnuoc();
+  }
+
+  eventDonvi($event: any) {
+    this.keywordDonvi = $event;
+    this.loadTonghopBomnuoc();
+  }
+  pageIndexChanged($event: any) {
+    this.pageIndex = $event;
+    this.loadTonghopBomnuoc();
+  }
+  pageSizeChange($event: any) {
+    this.pageSize = $event;
+    this.loadTonghopBomnuoc();
   }
   loadDataDetail() {
     this.dataService.getById('/api/Tonghopbomnuoc/' + this.Id).subscribe({
@@ -280,26 +303,30 @@ export class TonghopbomnuocComponent implements OnInit {
     this.liveDemoVisible = !this.liveDemoVisible;
   }
 
+  showConfirm(item: any): void {
+    let pos = 2;
+    this.modal.confirm({
+      nzTitle: '<i>Bán có muốn xóa bản ghi này?</i>',
+      nzContent: '<b>Thiết bị: </b>' + item.tenThietBi,
+      nzStyle: {
+        position: 'relative',
+        top: `${pos * 90}px`,
+        left: `${pos * 60}px`,
+      },
+      nzOnOk: () => this.onDelete(item),
+    });
+  }
+
   onDelete(id: number) {
     this.Id = id;
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        name: 'Bán có muốn xóa bản ghi này?',
+    this.dataService.delete('/api/Tonghopbomnuoc/' + this.Id).subscribe({
+      next: () => {
+        this.loadTonghopBomnuoc();
+        this.toastr.success('Xóa dữ liệu thành công', 'Success');
       },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.dataService.delete('/api/Tonghopbomnuoc/' + this.Id).subscribe({
-          next: () => {
-            this.loadTonghopBomnuoc();
-            this.toastr.success('Xóa dữ liệu thành công', 'Success');
-          },
-          error: () => {
-            this.toastr.error('Xóa dữ liệu thất bại', 'Error');
-          },
-        });
-      }
+      error: () => {
+        this.toastr.error('Xóa dữ liệu thất bại', 'Error');
+      },
     });
   }
 

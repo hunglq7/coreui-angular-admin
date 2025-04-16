@@ -1,187 +1,200 @@
-<c-col sm="12">
-  <c-card class="mb-3">
-    <c-card-header ngPreserveWhitespaces>
-      <strong>Cập nhật thông số</strong>
-    </c-card-header>
-    <c-card-body>
-      <c-col sm="12">
-        <c-card class="mb-4">
-          <c-card-body class="table-responsive">
-            <c-row>
-              <c-col>
-                <app-nav-search
-                  [items]="dsDanhmuc"
-                  (eventSearch)="eventSearch($event)"
-                  (eventAdd)="eventAdd($event)"
-                ></app-nav-search>
-                <button
-                  cButton
-                  size="sm"
-                  color="success"
-                  (click)="exportexcel()"
-                >
-                  Export Excel
-                </button>
-              </c-col>
-            </c-row>
-            <hr />
-            <c-row>
-              <c-col sm="12">
-                <table [hover]="true" cTable>
-                  <thead>
-                    <tr>
-                      <th scope="col">Thiết bị</th>
-                      <th scope="col">Nội dung</th>
-                      <th scope="col">Đơn vị tính</th>
-                      <th scope="col">Thông số</th>
-                      <th scope="col">Hành động</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @for (item of dataSource ; track $index) {
-                    <tr>
-                      <td>{{ item.tenThietBi }}</td>
-                      <td>{{ item.noiDung }}</td>
-                      <td>{{ item.donViTinh }}</td>
-                      <td>{{ item.thongSo }}</td>
-                      <td>
-                        <button
-                          (click)="onEdit(item.id)"
-                          style="margin-right: 5px"
-                          cButton
-                          size="sm"
-                        >
-                          Sửa
-                        </button>
-                        <button
-                          (click)="onDelete(item.id)"
-                          cButton
-                          color="danger"
-                          size="sm"
-                        >
-                          Xóa
-                        </button>
-                      </td>
-                    </tr>
-                    }
-                  </tbody>
-                </table>
-              </c-col>
-            </c-row>
-            <div class="d-flex justify-content-center">
-              <pagination
-                [boundaryLinks]="true"
-                [itemsPerPage]="pageSize"
-                (pageChanged)="pageChanged($event)"
-                [totalItems]="totalRow"
-                [(ngModel)]="pageIndex"
-                class="pagination-sm"
-                previousText="&lsaquo;"
-                nextText="&rsaquo;"
-                firstText="&laquo;"
-                lastText="&raquo;"
-              ></pagination>
-            </div>
-          </c-card-body>
-        </c-card>
+<c-row>
+  <c-col sm="12">
+    <c-row>
+      <c-col sm="4">
+        <app-thietbi-search
+          [dsThietbi]="dsDanhmuc"
+          (eventSearchThietbi)="eventThietbi($event)"
+        >
+        </app-thietbi-search>
       </c-col>
-    </c-card-body>
-  </c-card>
-</c-col>
+      <c-col sm="8">
+        <button nz-button nzType="primary" (click)="onThemmoi()">
+          Thêm mới
+        </button>
+        <button nz-button nzType="default" (click)="exportexcel()">
+          Export Excel
+        </button>
+      </c-col>
+    </c-row>
+    <nz-table
+      cTable
+      #columnTable
+      nzShowQuickJumper
+      nzShowSizeChanger
+      [nzData]="dataSource"
+      [nzScroll]="{ x: '1100px' }"
+      [nzPageIndex]="pageIndex"
+      [nzPageSize]="pageSize"
+      [nzPageSizeOptions]="[3, 5, 10, 20]"
+      [nzTotal]="totalRow"
+      [nzFrontPagination]="false"
+      (nzPageIndexChange)="pageIndexChanged($event)"
+      (nzPageSizeChange)="pageSizeChange($event)"
+    >
+      <thead>
+        <tr>
+          <th nzLeft scope="col">Thiết bị</th>
+          <th scope="col">Nội dung</th>
+          <th scope="col">Đơn vị tính</th>
+          <th scope="col">Thông số</th>
+          <th scope="col">Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of dataSource ; track $index) {
+        <tr>
+          <td nzLeft>{{ item.tenThietBi }}</td>
+          <td>{{ item.noiDung }}</td>
+          <td>{{ item.donViTinh }}</td>
+          <td>{{ item.thongSo }}</td>
+          <td>
+            <button
+              nz-tooltip
+              [nzTooltipTitle]="titleSua"
+              [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+              nz-button
+              nzType="primary"
+              style="border-radius: 3px"
+              [nzSize]="size"
+              (click)="onEdit(item.id)"
+            >
+              <nz-icon nzType="edit" style="color: #ffffff" /><span>Sửa</span>
+            </button>
+            <button
+              nz-tooltip
+              [nzTooltipTitle]="titleXoa"
+              [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+              nz-button
+              nzType="primary"
+              nzDanger
+              style="border-radius: 3px"
+              [nzSize]="size"
+              (click)="onDelete(item.id)"
+            >
+              <nz-icon nzType="delete" style="color: #ffffff" /><span>Xóa</span>
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </nz-table>
+  </c-col>
+</c-row>
+
+<!-- Icon -->
+<ng-template #titleSua let-thing>
+  <nz-icon nzType="edit" />
+  <span>Sửa bản ghi</span>
+</ng-template>
+<ng-template #titleXoa let-thing>
+  <nz-icon nzType="delete" />
+  <span>Xóa bản ghi</span>
+</ng-template>
 
 <!-- Model -->
 
 <c-modal
   id="liveDemoModal"
   backdrop="static"
-  size="xl"
+  size="lg"
   [visible]="liveDemoVisible"
-  (visibleChange)="handleLiveDemoChange($event)"
 >
   <c-modal-header>
-    <h5 cModalTitle>{{ title }}</h5>
+    <h6 cModalTitle>{{ title }}</h6>
     <button (click)="onClode()" cButtonClose></button>
   </c-modal-header>
   <c-modal-body>
-    <form
-      [formGroup]="Form"
-      #customStylesForm="ngForm"
-      (ngSubmit)="save()"
-      [validated]="customStylesValidated"
-      cForm
-      class="row g-3 needs-validation"
-    >
-      <div>
-        <input
-          hidden="true"
-          formControlName="id"
-          cFormControl
-          id="id"
-          type="number"
-          value="Mark"
-        />
-      </div>
+    <c-row>
+      <c-col xs="12">
+        <form nz-form [formGroup]="Form" (ngSubmit)="save()">
+          <!-- hidden id  -->
+          <input
+            [hidden]="true"
+            type="number"
+            formControlName="id"
+            [(ngModel)]="entity.id"
+          />
+          <!-- thiết bị -->
+          <nz-form-item>
+            <nz-form-label [nzSpan]="5" nzFor="bomNuocId" nzRequired
+              >Thiết bị</nz-form-label
+            >
+            <nz-form-control [nzSpan]="16" nzErrorTip="thiết bị phải chọn">
+              <select
+                id="bomNuocId"
+                formControlName="bomNuocId"
+                [(ngModel)]="entity.bomNuocId"
+                aria-label="Default select example"
+                cSelect
+                sizing="sm"
+              >
+                <option>Chọn thiết bị</option>
+                @for (item of dsDanhmuc; track item.id) {
+                <option value="{{ item.id }}">{{ item.tenThietBi }}</option>
+                }
+              </select>
+            </nz-form-control>
+          </nz-form-item>
 
-      <c-col md="12">
-        <label cLabel for="bomNuocId">Thiết bị</label>
-        <select formControlName="bomNuocId" cSelect id="bomNuocId" required>
-          <option selected="true" value="">Chọn hết</option>
-          @for (item of dsDanhmuc; track $index) {
-          <option value="{{ item.id }}">{{ item.tenThietBi }}</option>
-          }
-        </select>
-        <c-form-feedback [valid]="false">Thiết bị phải chọn.</c-form-feedback>
-      </c-col>
+          <!-- Nội dung -->
+          <nz-form-item>
+            <nz-form-label [nzSpan]="5">Nội dung</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input
+                id="noiDung"
+                nz-input
+                cFormControl
+                sizing="sm"
+                formControlName="noiDung"
+                [(ngModel)]="entity.noiDung"
+              />
+            </nz-form-control>
+          </nz-form-item>
 
-      <c-col md="12">
-        <label cLabel for="noiDung">Thông số kỹ thuật</label>
-        <input
-          formControlName="noiDung"
-          cFormControl
-          id="noiDung"
-          required
-          type="text"
-        />
-        <c-form-feedback [valid]="false">Nội dung phải nhập.</c-form-feedback>
-      </c-col>
+          <!-- Đơn vị tính -->
+          <nz-form-item>
+            <nz-form-label [nzSpan]="5">Đơn vị tính</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input
+                id="donViTinh"
+                nz-input
+                cFormControl
+                sizing="sm"
+                formControlName="donViTinh"
+                [(ngModel)]="entity.donViTinh"
+              />
+            </nz-form-control>
+          </nz-form-item>
 
-      <c-col md="12">
-        <label cLabel for="donViTinh">Đơn vị </label>
-        <input
-          formControlName="donViTinh"
-          cFormControl
-          id="donViTinh"
-          required
-          type="text"
-        />
-        <c-form-feedback [valid]="false">Đơn vị phải nhập.</c-form-feedback>
-      </c-col>
+          <!-- Thông số-->
+          <nz-form-item>
+            <nz-form-label [nzSpan]="5">Thông số</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <input
+                id="thongSo"
+                nz-input
+                cFormControl
+                sizing="sm"
+                formControlName="thongSo"
+                [(ngModel)]="entity.thongSo"
+              />
+            </nz-form-control>
+          </nz-form-item>
 
-      <c-col md="12">
-        <label cLabel for="thongSo">Thông số</label>
-        <input
-          formControlName="thongSo"
-          cFormControl
-          id="thongSo"
-          required
-          type="text"
-        />
-        <c-form-feedback [valid]="false">Thông số phải nhập.</c-form-feedback>
+          <nz-form-item>
+            <nz-form-label class="hide" [nzSpan]="5"></nz-form-label>
+            <nz-form-control [nzSpan]="16">
+              <button nz-button nzType="primary" nzPrimary type="submit">
+                Lưu lại
+              </button>
+              <button nz-button nzType="default" nzPrimary (click)="onClode()">
+                Đóng
+              </button>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
       </c-col>
-
-      <c-col md="12">
-        <button
-          [disabled]="Form.invalid"
-          cButton
-          class="me-1"
-          color="primary"
-          type="submit"
-        >
-          Lưu lại
-        </button>
-        <button cButton color="danger" (click)="onClode()">Đóng</button>
-      </c-col>
-    </form>
+    </c-row>
   </c-modal-body>
-  <c-modal-footer> </c-modal-footer>
 </c-modal>

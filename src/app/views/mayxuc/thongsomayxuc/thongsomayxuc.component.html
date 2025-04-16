@@ -2,7 +2,10 @@
   <c-col sm="12">
     <c-row>
       <c-col sm="4">
-        <app-thietbi-search [dsThietbi]="dsDanhmucMayxuc" (eventSearchThietbi)="eventThietbi($event)">
+        <app-thietbi-search
+          [dsThietbi]="dsDanhmucMayxuc"
+          (eventSearchThietbi)="eventThietbi($event)"
+        >
         </app-thietbi-search>
       </c-col>
       <c-col sm="8">
@@ -11,10 +14,21 @@
         </button>
       </c-col>
     </c-row>
-    <nz-table cTable #columnTable nzShowQuickJumper nzShowSizeChanger [nzData]="dataSource" [nzScroll]="{ x: '1100px' }"
-      [nzPageIndex]="pageIndex" [nzPageSize]="pageSize" [nzPageSizeOptions]="[3, 5, 10, 20]" [nzTotal]="totalRow"
-      [nzFrontPagination]="false" (nzPageIndexChange)="pageIndexChanged($event)"
-      (nzPageSizeChange)="pageSizeChange($event)">
+    <nz-table
+      cTable
+      #columnTable
+      nzShowQuickJumper
+      nzShowSizeChanger
+      [nzData]="dataSource"
+      [nzScroll]="{ x: '1100px' }"
+      [nzPageIndex]="pageIndex"
+      [nzPageSize]="pageSize"
+      [nzPageSizeOptions]="[3, 5, 10, 20]"
+      [nzTotal]="totalRow"
+      [nzFrontPagination]="false"
+      (nzPageIndexChange)="pageIndexChanged($event)"
+      (nzPageSizeChange)="pageSizeChange($event)"
+    >
       <thead>
         <tr>
           <th nzLeft scope="col">Thiết bị</th>
@@ -32,13 +46,30 @@
           <td>{{ item.donViTinh }}</td>
           <td>{{ item.thongSo }}</td>
           <td>
-            <button nz-tooltip [nzTooltipTitle]="titleSua" [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button
-              nzType="default" [nzSize]="size" (click)="onEdit(item.id)">
-              <nz-icon nzType="edit" style="color: rgb(16, 142, 233)" />
+            <button
+              nz-tooltip
+              [nzTooltipTitle]="titleSua"
+              [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+              nz-button
+              nzType="primary"
+              style="border-radius: 3px"
+              [nzSize]="size"
+              (click)="onEdit(item.id)"
+            >
+              <nz-icon nzType="edit" style="color: #ffffff" /><span>Sửa</span>
             </button>
-            <button nz-tooltip [nzTooltipTitle]="titleXoa" [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button
-              nzType="default" [nzSize]="size" (click)="onDelete(item.id)">
-              <nz-icon nzType="delete" style="color: rgb(255, 0, 0)" />
+            <button
+              nz-tooltip
+              [nzTooltipTitle]="titleXoa"
+              [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+              nz-button
+              nzType="primary"
+              nzDanger
+              style="border-radius: 3px"
+              [nzSize]="size"
+              (click)="onDelete(item.id)"
+            >
+              <nz-icon nzType="delete" style="color: #ffffff" /><span>Xóa</span>
             </button>
           </td>
         </tr>
@@ -57,10 +88,14 @@
   <span>Xóa bản ghi</span>
 </ng-template>
 
-
 <!-- Model -->
 
-<c-modal id="liveDemoModal" backdrop="static" size="lg" [visible]="liveDemoVisible">
+<c-modal
+  id="liveDemoModal"
+  backdrop="static"
+  size="lg"
+  [visible]="liveDemoVisible"
+>
   <c-modal-header>
     <h6 cModalTitle>{{ title }}</h6>
     <button (click)="onClode()" cButtonClose></button>
@@ -70,13 +105,26 @@
       <c-col xs="12">
         <form nz-form [formGroup]="Form" (ngSubmit)="save()">
           <!-- hidden id  -->
-          <input [hidden]="true" type="number" formControlName="id" [(ngModel)]="entity.id" />
+          <input
+            [hidden]="true"
+            type="number"
+            formControlName="id"
+            [(ngModel)]="entity.id"
+          />
           <!-- thiết bị -->
           <nz-form-item>
-            <nz-form-label [nzSpan]="5" nzFor="mayXucId" nzRequired>Thiết bị</nz-form-label>
+            <nz-form-label [nzSpan]="5" nzFor="mayXucId" nzRequired
+              >Thiết bị</nz-form-label
+            >
             <nz-form-control [nzSpan]="16" nzErrorTip="thiết bị phải chọn">
-              <select id="mayXucId" formControlName="mayXucId" [(ngModel)]="entity.mayXucId"
-                aria-label="Default select example" cSelect sizing="sm">
+              <select
+                id="mayXucId"
+                formControlName="mayXucId"
+                [(ngModel)]="entity.mayXucId"
+                aria-label="Default select example"
+                cSelect
+                sizing="sm"
+              >
                 <option>Open this select menu</option>
                 @for (item of dsDanhmucMayxuc; track item.id) {
                 <option value="{{ item.id }}">{{ item.tenThietBi }}</option>
@@ -89,8 +137,14 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="5">Nội dung</nz-form-label>
             <nz-form-control [nzSpan]="16">
-              <input id="noiDung" nz-input cFormControl sizing="sm" formControlName="noiDung"
-                [(ngModel)]="entity.noiDung" />
+              <input
+                id="noiDung"
+                nz-input
+                cFormControl
+                sizing="sm"
+                formControlName="noiDung"
+                [(ngModel)]="entity.noiDung"
+              />
             </nz-form-control>
           </nz-form-item>
 
@@ -98,8 +152,14 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="5">Đơn vị tính</nz-form-label>
             <nz-form-control [nzSpan]="16">
-              <input id="donViTinh" nz-input cFormControl sizing="sm" formControlName="donViTinh"
-                [(ngModel)]="entity.donViTinh" />
+              <input
+                id="donViTinh"
+                nz-input
+                cFormControl
+                sizing="sm"
+                formControlName="donViTinh"
+                [(ngModel)]="entity.donViTinh"
+              />
             </nz-form-control>
           </nz-form-item>
 
@@ -107,8 +167,14 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="5">Thông số</nz-form-label>
             <nz-form-control [nzSpan]="16">
-              <input id="thongSo" nz-input cFormControl sizing="sm" formControlName="thongSo"
-                [(ngModel)]="entity.thongSo" />
+              <input
+                id="thongSo"
+                nz-input
+                cFormControl
+                sizing="sm"
+                formControlName="thongSo"
+                [(ngModel)]="entity.thongSo"
+              />
             </nz-form-control>
           </nz-form-item>
 

@@ -6,6 +6,7 @@ import { NzButtonModule, NzButtonSize } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzFormModule } from 'ng-zorro-antd/form';
 import {
   ReactiveFormsModule,
   FormsModule,
@@ -30,7 +31,7 @@ import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
 import { ThietbiSearchComponent } from '../../../components/nav-thietbi-search/thietbi-search.component';
-import { NzFormModule } from 'ng-zorro-antd/form';
+
 import {
   Thongsokythuatmayxuc,
   ThongsokythuatmayxucEdit,

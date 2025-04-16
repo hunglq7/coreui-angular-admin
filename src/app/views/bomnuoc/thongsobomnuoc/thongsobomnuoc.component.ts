@@ -2,17 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/utils/dialogs/confirm-dialog/confirm-dialog.component';
+import { ThietbiSearchComponent } from '../../../components/nav-thietbi-search/thietbi-search.component';
 import {
   ReactiveFormsModule,
   FormsModule,
   FormGroup,
-  FormControl,
   FormBuilder,
   Validators,
 } from '@angular/forms';
 import {
   ButtonCloseDirective,
-  ButtonDirective,
   ModalBodyComponent,
   ModalComponent,
   ModalFooterComponent,
@@ -22,49 +21,33 @@ import {
   RowComponent,
   ColComponent,
   TextColorDirective,
-  CardComponent,
-  CardHeaderComponent,
-  CardBodyComponent,
   TableDirective,
-  FormDirective,
-  FormLabelDirective,
   FormControlDirective,
-  FormFeedbackComponent,
   FormSelectDirective,
   DropdownModule,
   SharedModule,
 } from '@coreui/angular';
-import { NavSearchComponent } from '../../../components/nav-search/nav-search.component';
+import { NzButtonModule, NzButtonSize } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzFormModule } from 'ng-zorro-antd/form';
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
 import * as XLSX from 'xlsx';
-export interface ThongSoBomNuoc {
-  id: number;
-  tenThietBi: number;
-  noiDung: string;
-  donViTinh: string;
-  thongSo: string;
-}
-export interface ThongSoBomNuocDetail {
-  id: number;
-  bomNuocId: number;
-  noiDung: string;
-  donViTinh: string;
-  thongSo: string;
-}
+import {
+  ThongSoBomNuoc,
+  ThongSoBomNuocDetail,
+} from '../../../core/interface/bomnuoc/bomnuoc-interface';
 @Component({
   selector: 'app-thongsobomnuoc',
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    FormDirective,
-    FormLabelDirective,
     FormControlDirective,
-    FormFeedbackComponent,
     FormSelectDirective,
-    ButtonDirective,
     ModalComponent,
     ModalHeaderComponent,
     ModalTitleDirective,
@@ -75,14 +58,16 @@ export interface ThongSoBomNuocDetail {
     RowComponent,
     ColComponent,
     TextColorDirective,
-    CardComponent,
-    CardHeaderComponent,
-    CardBodyComponent,
     PaginationModule,
     DropdownModule,
     TableDirective,
+    ThietbiSearchComponent,
     SharedModule,
-    NavSearchComponent,
+    NzIconModule,
+    NzButtonModule,
+    NzToolTipModule,
+    NzTableModule,
+    NzFormModule,
   ],
   templateUrl: './thongsobomnuoc.component.html',
   styleUrl: './thongsobomnuoc.component.scss',
@@ -110,7 +95,7 @@ export class ThongsobomnuocComponent implements OnInit {
   Form!: FormGroup;
   Id!: Number;
   themoi: boolean = false;
-
+  size: NzButtonSize = 'small';
   constructor(
     private dataService: DataService,
     private toastr: ToastrService,
@@ -137,7 +122,19 @@ export class ThongsobomnuocComponent implements OnInit {
       thongSo: [''],
     });
   }
+  eventThietbi($event: any) {
+    this.keywordThietbi = $event;
+    this.loadData();
+  }
+  pageSizeChange(event: number) {
+    this.pageSize = event;
+    this.loadData();
+  }
 
+  pageIndexChanged(event: any) {
+    this.pageIndex = event;
+    this.loadData();
+  }
   private loadFormData(items: ThongSoBomNuocDetail) {
     this.entity = items;
     this.Form.setValue({

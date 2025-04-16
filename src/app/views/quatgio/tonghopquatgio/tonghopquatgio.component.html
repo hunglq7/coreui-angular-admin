@@ -2,8 +2,12 @@
   <c-col sm="12">
     <c-row>
       <c-col sm="4">
-        <app-select-search [dsThietbi]="dsQuatgio" [dsDonvi]="dsDonvi" (eventSearchThietbi)="eventThietbi($event)"
-          (eventSearchDonvi)="eventDonvi($event)"></app-select-search>
+        <app-select-search
+          [dsThietbi]="dsQuatgio"
+          [dsDonvi]="dsDonvi"
+          (eventSearchThietbi)="eventThietbi($event)"
+          (eventSearchDonvi)="eventDonvi($event)"
+        ></app-select-search>
       </c-col>
       <c-col class="d-flex" sm="8">
         <button nz-button nzType="primary" (click)="onThemmoi()">
@@ -15,10 +19,21 @@
       </c-col>
     </c-row>
 
-    <nz-table cTable #columnTable nzShowQuickJumper nzShowSizeChanger [nzData]="dataQuatgioDetail"
-      [nzScroll]="{ x: '1100px' }" [nzPageIndex]="pageIndex" [nzPageSize]="pageSize"
-      [nzPageSizeOptions]="[3, 5, 10, 20]" [nzTotal]="totalRow" [nzFrontPagination]="false"
-      (nzPageIndexChange)="pageIndexChanged($event)" (nzPageSizeChange)="pageSizeChange($event)">
+    <nz-table
+      cTable
+      #columnTable
+      nzShowQuickJumper
+      nzShowSizeChanger
+      [nzData]="dataQuatgioDetail"
+      [nzScroll]="{ x: '1100px' }"
+      [nzPageIndex]="pageIndex"
+      [nzPageSize]="pageSize"
+      [nzPageSizeOptions]="[3, 5, 10, 20]"
+      [nzTotal]="totalRow"
+      [nzFrontPagination]="false"
+      (nzPageIndexChange)="pageIndexChanged($event)"
+      (nzPageSizeChange)="pageSizeChange($event)"
+    >
       <thead>
         <tr>
           <th nzLeft scope="col">Mã QL</th>
@@ -40,13 +55,29 @@
           <td>{{ item.viTriLapDat }}</td>
           <td>{{ item.soLuong }}</td>
           <td>
-            <button nz-tooltip [nzTooltipTitle]="titleSua" [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button
-              nzType="default" [nzSize]="size" (click)="onEdit(item.id)">
-              <nz-icon nzType="edit" style="color: rgb(16, 142, 233)" />
+            <button
+              nz-tooltip
+              [nzTooltipTitle]="titleSua"
+              [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+              nz-button
+              nzType="primary"
+              style="border-radius: 3px"
+              [nzSize]="size"
+              (click)="onEdit(item.id)"
+            >
+              <nz-icon nzType="edit" style="color: #ffffff" /><span>Sửa</span>
             </button>
-            <button nz-tooltip [nzTooltipTitle]="titleXoa" [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button
-              nzType="default" [nzSize]="size" (click)="onDelete(item.id)">
-              <nz-icon nzType="delete" style="color: rgb(255, 0, 0)" />
+            <button
+              nz-tooltip
+              [nzTooltipTitle]="titleXoa"
+              [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+              nz-button
+              nzDanger
+              nzType="primary"
+              [nzSize]="size"
+              (click)="onDelete(item.id)"
+            >
+              <nz-icon nzType="delete" style="color: #ffffff" /><span>Xóa</span>
             </button>
           </td>
         </tr>
@@ -67,8 +98,13 @@
 
 <!-- Modal -->
 
-<c-modal id="liveDemoModal" backdrop="static" size="xl" [visible]="liveDemoVisible"
-  (visibleChange)="handleLiveDemoChange($event)">
+<c-modal
+  id="liveDemoModal"
+  backdrop="static"
+  size="xl"
+  [visible]="liveDemoVisible"
+  (visibleChange)="handleLiveDemoChange($event)"
+>
   <c-modal-header>
     <h5 cModalTitle>{{ title }}</h5>
     <button (click)="onClode()" cButtonClose></button>
@@ -78,7 +114,10 @@
       <c-col xs="12">
         <c-card class="mb-3">
           <c-card-body>
-            <c-tabs [activeItemKey]="0" (activeItemKeyChange)="handleActiveItemChange($event)">
+            <c-tabs
+              [activeItemKey]="0"
+              (activeItemKeyChange)="handleActiveItemChange($event)"
+            >
               <c-tabs-list variant="underline-border">
                 <button cTab [itemKey]="0">Cập nhật quạt gió</button>
                 <button [hidden]="themoi" cTab [itemKey]="1">
@@ -92,24 +131,48 @@
                 <c-tab-panel [itemKey]="0" class="p-3">
                   <form nz-form [formGroup]="Form" (ngSubmit)="save()">
                     <!-- hidden id  -->
-                    <input [hidden]="true" type="number" formControlName="id" [(ngModel)]="tonghopquatgioDetail.id" />
+                    <input
+                      [hidden]="true"
+                      type="number"
+                      formControlName="id"
+                      [(ngModel)]="tonghopquatgioDetail.id"
+                    />
                     <!-- Mã quản lý -->
                     <nz-form-item>
                       <nz-form-label [nzSpan]="5">Mã quản lý</nz-form-label>
                       <nz-form-control [nzSpan]="16">
-                        <input id="maQuanLy" nz-input cFormControl sizing="sm" formControlName="maQuanLy"
-                          [(ngModel)]="tonghopquatgioDetail.maQuanLy" />
+                        <input
+                          id="maQuanLy"
+                          nz-input
+                          cFormControl
+                          sizing="sm"
+                          formControlName="maQuanLy"
+                          [(ngModel)]="tonghopquatgioDetail.maQuanLy"
+                        />
                       </nz-form-control>
                     </nz-form-item>
                     <!-- thiết bị -->
                     <nz-form-item>
-                      <nz-form-label [nzSpan]="5" nzFor="quatGioId" nzRequired>Thiết bị</nz-form-label>
-                      <nz-form-control [nzSpan]="16" nzErrorTip="thiết bị phải chọn">
-                        <select id="quatGioId" formControlName="quatGioId" [(ngModel)]="tonghopquatgioDetail.quatGioId"
-                          aria-label="Default select example" cSelect sizing="sm">
+                      <nz-form-label [nzSpan]="5" nzFor="quatGioId" nzRequired
+                        >Thiết bị</nz-form-label
+                      >
+                      <nz-form-control
+                        [nzSpan]="16"
+                        nzErrorTip="thiết bị phải chọn"
+                      >
+                        <select
+                          id="quatGioId"
+                          formControlName="quatGioId"
+                          [(ngModel)]="tonghopquatgioDetail.quatGioId"
+                          aria-label="Default select example"
+                          cSelect
+                          sizing="sm"
+                        >
                           <option>Chọn thiết bị</option>
                           @for (item of dsQuatgio; track item.id) {
-                          <option value="{{ item.id }}">{{ item.tenThietBi }}</option>
+                          <option value="{{ item.id }}">
+                            {{ item.tenThietBi }}
+                          </option>
                           }
                         </select>
                       </nz-form-control>
@@ -119,11 +182,18 @@
                     <nz-form-item>
                       <nz-form-label [nzSpan]="5">Đơn vị</nz-form-label>
                       <nz-form-control [nzSpan]="16">
-                        <select id="donViId" formControlName="donViId" [(ngModel)]="tonghopquatgioDetail.donViId"
-                          cSelect sizing="sm">
+                        <select
+                          id="donViId"
+                          formControlName="donViId"
+                          [(ngModel)]="tonghopquatgioDetail.donViId"
+                          cSelect
+                          sizing="sm"
+                        >
                           <option>Chọn đơn vị</option>
                           @for (item of dsDonvi; track item.id) {
-                          <option value="{{ item.id }}">{{ item.tenPhong }}</option>
+                          <option value="{{ item.id }}">
+                            {{ item.tenPhong }}
+                          </option>
                           }
                         </select>
                       </nz-form-control>
@@ -132,50 +202,94 @@
                     <nz-form-item>
                       <nz-form-label [nzSpan]="5">Vị trí lắp đặt</nz-form-label>
                       <nz-form-control [nzSpan]="16">
-                        <input id="viTriLapDat" nz-input cFormControl sizing="sm" formControlName="viTriLapDat"
-                          [(ngModel)]="tonghopquatgioDetail.viTriLapDat" />
+                        <input
+                          id="viTriLapDat"
+                          nz-input
+                          cFormControl
+                          sizing="sm"
+                          formControlName="viTriLapDat"
+                          [(ngModel)]="tonghopquatgioDetail.viTriLapDat"
+                        />
                       </nz-form-control>
                     </nz-form-item>
                     <!-- Ngày lắp -->
                     <nz-form-item>
                       <nz-form-label [nzSpan]="5">Ngày lắp</nz-form-label>
                       <nz-form-control [nzSpan]="16">
-                        <input id="ngayLap" nz-input cFormControl sizing="sm" formControlName="ngayLap"
-                          [(ngModel)]="tonghopquatgioDetail.ngayLap" type="date" />
+                        <input
+                          id="ngayLap"
+                          nz-input
+                          cFormControl
+                          sizing="sm"
+                          formControlName="ngayLap"
+                          [(ngModel)]="tonghopquatgioDetail.ngayLap"
+                          type="date"
+                        />
                       </nz-form-control>
                     </nz-form-item>
                     <!-- Số lượng -->
                     <nz-form-item>
                       <nz-form-label [nzSpan]="5">Số lượng</nz-form-label>
                       <nz-form-control [nzSpan]="16">
-                        <input id="soLuong" nz-input cFormControl sizing="sm" formControlName="soLuong"
-                          [(ngModel)]="tonghopquatgioDetail.soLuong" type="number" />
+                        <input
+                          id="soLuong"
+                          nz-input
+                          cFormControl
+                          sizing="sm"
+                          formControlName="soLuong"
+                          [(ngModel)]="tonghopquatgioDetail.soLuong"
+                          type="number"
+                        />
                       </nz-form-control>
                     </nz-form-item>
                     <!-- Tình trạng -->
                     <nz-form-item>
-                      <nz-form-label [nzSpan]="5">Tình trạng thiết bị</nz-form-label>
+                      <nz-form-label [nzSpan]="5"
+                        >Tình trạng thiết bị</nz-form-label
+                      >
                       <nz-form-control [nzSpan]="16">
-                        <input id="tinhTrangThietBi" nz-input cFormControl sizing="sm"
-                          formControlName="tinhTrangThietBi" [(ngModel)]="tonghopquatgioDetail.tinhTrangThietBi" />
+                        <input
+                          id="tinhTrangThietBi"
+                          nz-input
+                          cFormControl
+                          sizing="sm"
+                          formControlName="tinhTrangThietBi"
+                          [(ngModel)]="tonghopquatgioDetail.tinhTrangThietBi"
+                        />
                       </nz-form-control>
                     </nz-form-item>
                     <!-- Ghi chú -->
                     <nz-form-item>
                       <nz-form-label [nzSpan]="5">Ghi chú</nz-form-label>
                       <nz-form-control [nzSpan]="16">
-                        <input id="ghiChu" nz-input cFormControl sizing="sm" formControlName="ghiChu"
-                          [(ngModel)]="tonghopquatgioDetail.ghiChu" />
+                        <input
+                          id="ghiChu"
+                          nz-input
+                          cFormControl
+                          sizing="sm"
+                          formControlName="ghiChu"
+                          [(ngModel)]="tonghopquatgioDetail.ghiChu"
+                        />
                       </nz-form-control>
                     </nz-form-item>
 
                     <nz-form-item>
                       <nz-form-label class="hide" [nzSpan]="5"></nz-form-label>
                       <nz-form-control [nzSpan]="16">
-                        <button nz-button nzType="primary" nzPrimary type="submit">
+                        <button
+                          nz-button
+                          nzType="primary"
+                          nzPrimary
+                          type="submit"
+                        >
                           Lưu lại
                         </button>
-                        <button nz-button nzType="default" nzPrimary (click)="onClode()">
+                        <button
+                          nz-button
+                          nzType="default"
+                          nzPrimary
+                          (click)="onClode()"
+                        >
                           Đóng
                         </button>
                       </nz-form-control>
@@ -183,11 +297,15 @@
                   </form>
                 </c-tab-panel>
                 <c-tab-panel [itemKey]="1" class="p-3">
-                  <app-nhatkyquatgio-tab [TonghopquatgioDetail]="tonghopquatgioDetail">
+                  <app-nhatkyquatgio-tab
+                    [TonghopquatgioDetail]="tonghopquatgioDetail"
+                  >
                   </app-nhatkyquatgio-tab>
                 </c-tab-panel>
                 <c-tab-panel [itemKey]="2" class="p-3">
-                  <app-thongsoquatgio-tab [TonghopquatgioDetail]="tonghopquatgioDetail" />
+                  <app-thongsoquatgio-tab
+                    [TonghopquatgioDetail]="tonghopquatgioDetail"
+                  />
                 </c-tab-panel>
               </c-tabs-content>
             </c-tabs>

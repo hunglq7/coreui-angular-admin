@@ -26,7 +26,7 @@ import {
   FormControlDirective,
   ButtonDirective,
 } from '@coreui/angular';
-
+import { NzButtonModule } from 'ng-zorro-antd/button';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -47,6 +47,7 @@ import {
     IconDirective,
     FormControlDirective,
     ButtonDirective,
+    NzButtonModule,
   ],
 })
 export class LoginComponent implements OnInit {
