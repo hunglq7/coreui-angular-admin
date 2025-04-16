@@ -42,12 +42,13 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzFormModule } from 'ng-zorro-antd/form';
 import { SelectSearchComponent } from '../../../components/nav-select-search/select-search.component';
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
 import * as XLSX from 'xlsx';
-import { NzFormModule } from 'ng-zorro-antd/form';
+
 export interface Tonghoptoitruc {
   id: number;
   maQuanLy: string;
@@ -100,13 +101,13 @@ export interface TonghoptoitrucDetail {
     NhatkytoidienTabComponent,
     ThongsotoidienTabComponent,
     FormModule,
+    SelectSearchComponent,
     NzButtonModule,
     NzIconModule,
     NzInputModule,
     NzSelectModule,
     NzCascaderModule,
     NzTableModule,
-    SelectSearchComponent,
     NzFloatButtonModule,
     NzModalModule,
     NzToolTipModule,

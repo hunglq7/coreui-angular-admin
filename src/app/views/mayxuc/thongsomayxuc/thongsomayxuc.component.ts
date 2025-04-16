@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/utils/dialogs/confirm-dialog/confirm-dialog.component';
+import { NzButtonModule, NzButtonSize } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTableModule } from 'ng-zorro-antd/table';
 import {
   ReactiveFormsModule,
   FormsModule,
@@ -10,48 +14,27 @@ import {
 } from '@angular/forms';
 import {
   ButtonCloseDirective,
-  ButtonDirective,
   ModalBodyComponent,
   ModalComponent,
-  ModalFooterComponent,
   ModalHeaderComponent,
   ModalTitleDirective,
   ThemeDirective,
   RowComponent,
   ColComponent,
-  TextColorDirective,
-  CardComponent,
-  CardHeaderComponent,
-  CardBodyComponent,
-  TableDirective,
-  FormDirective,
-  FormLabelDirective,
   FormControlDirective,
-  FormFeedbackComponent,
   FormSelectDirective,
-  InputGroupComponent,
   DropdownModule,
   SharedModule,
 } from '@coreui/angular';
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
-
-export interface Thongsokythuatmayxuc {
-  id: number;
-  tenMayXuc: string;
-  noiDung: string;
-  donViTinh: string;
-  thongSo: string;
-}
-
-export interface ThongsokythuatmayxucEdit {
-  id: number;
-  mayXucId: number;
-  noiDung: string;
-  donViTinh: string;
-  thongSo: string;
-}
+import { ThietbiSearchComponent } from '../../../components/nav-thietbi-search/thietbi-search.component';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import {
+  Thongsokythuatmayxuc,
+  ThongsokythuatmayxucEdit,
+} from '../../../core/interface/mayxuc/mayxuc';
 
 @Component({
   selector: 'app-thongsomayxuc',
@@ -59,31 +42,25 @@ export interface ThongsokythuatmayxucEdit {
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    FormDirective,
-    FormLabelDirective,
     FormControlDirective,
-    FormFeedbackComponent,
-    InputGroupComponent,
     FormSelectDirective,
-    ButtonDirective,
     ModalComponent,
     ModalHeaderComponent,
     ModalTitleDirective,
     ThemeDirective,
     ButtonCloseDirective,
     ModalBodyComponent,
-    ModalFooterComponent,
     RowComponent,
     ColComponent,
-    TextColorDirective,
-    CardComponent,
-    CardHeaderComponent,
-    CardBodyComponent,
     PaginationModule,
     DropdownModule,
-    TableDirective,
     SharedModule,
-    
+    ThietbiSearchComponent,
+    NzIconModule,
+    NzButtonModule,
+    NzToolTipModule,
+    NzTableModule,
+    NzFormModule,
   ],
   templateUrl: './thongsomayxuc.component.html',
   styleUrl: './thongsomayxuc.component.scss',
@@ -111,7 +88,7 @@ export class ThongsomayxucComponent implements OnInit {
   Form!: FormGroup;
   Id!: Number;
   themoi: boolean = false;
-
+  size: NzButtonSize = 'small';
   constructor(
     private dataService: DataService,
     private toastr: ToastrService,
@@ -138,7 +115,19 @@ export class ThongsomayxucComponent implements OnInit {
       thongSo: new FormControl({ value: null, disabled: false }),
     });
   }
+  eventThietbi($event: number) {
+    this.keywordThietbi = $event;
+    this.loadData();
+  }
+  pageSizeChange(event: number) {
+    this.pageSize = event;
+    this.loadData();
+  }
 
+  pageIndexChanged(event: any) {
+    this.pageIndex = event;
+    this.loadData();
+  }
   private loadFormData(items: ThongsokythuatmayxucEdit) {
     this.entity = items;
     this.Form.setValue({
@@ -215,7 +204,7 @@ export class ThongsomayxucComponent implements OnInit {
     this.themoi = false;
     this.Id = id;
     this.getThongsokythuatMayxuc();
-    this.title = 'Sửa tời điện';
+    this.title = 'Sửa thông số';
     this.liveDemoVisible = !this.liveDemoVisible;
   }
 
@@ -274,10 +263,5 @@ export class ThongsomayxucComponent implements OnInit {
           },
         });
     }
-  }
-
-  public pageChanged(event: any): void {
-    this.pageIndex = event.page;
-    this.loadData();
   }
 }

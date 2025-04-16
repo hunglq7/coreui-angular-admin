@@ -11,7 +11,7 @@ import {
 } from 'ag-grid-community';
 import { DataService } from '../../../core/services/data.service';
 import { AgGridAngular } from 'ag-grid-angular';
-
+import { QuatGio } from '../../../core/interface/quatgio/quat-gio';
 import {
   RowComponent,
   ColComponent,
@@ -23,12 +23,6 @@ import {
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 ModuleRegistry.registerModules([AllCommunityModule, RowSelectionModule]);
-
-export interface QuatGio {
-  id: number;
-  tenQuat: string;
-  loaithietbi: string;
-}
 
 @Component({
   selector: 'app-danhmucquatgio',
@@ -74,7 +68,7 @@ export class DanhmucquatgioComponent implements OnInit {
       add: [
         {
           id: 0,
-          tenQuat: '',
+          tenThietBi: '',
           loaithietbi: '',
         },
       ],
@@ -91,7 +85,7 @@ export class DanhmucquatgioComponent implements OnInit {
     },
 
     {
-      field: 'tenQuat',
+      field: 'tenThietBi',
       headerName: 'Tên thiết bị',
       filter: 'agTextColumnFilter',
       editable: true,

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-
 import {
   ColDef,
   GridApi,
@@ -9,17 +8,9 @@ import {
   RowSelectionOptions,
 } from 'ag-grid-community';
 import { DataService } from '../../../core/services/data.service';
-import { Router } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular';
 
-import {
-  RowComponent,
-  ColComponent,
-  TextColorDirective,
-  CardComponent,
-  CardHeaderComponent,
-  CardBodyComponent,
-} from '@coreui/angular';
+import { RowComponent, ColComponent } from '@coreui/angular';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 ModuleRegistry.registerModules([AllCommunityModule, RowSelectionModule]);
@@ -36,16 +27,7 @@ export interface Danhmuctoitruc {
 
 @Component({
   selector: 'app-danhmuctoidien',
-  imports: [
-    RowComponent,
-    ColComponent,
-    TextColorDirective,
-    CardComponent,
-    CardHeaderComponent,
-    CardBodyComponent,
-    AgGridAngular,
-    NzButtonModule,
-  ],
+  imports: [RowComponent, ColComponent, AgGridAngular, NzButtonModule],
   templateUrl: './danhmuctoidien.component.html',
   styleUrl: './danhmuctoidien.component.scss',
 })

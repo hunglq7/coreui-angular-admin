@@ -1,9 +1,8 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../../../shared/utils/dialogs/confirm-dialog/confirm-dialog.component';
 import { NhatkymayxucTabComponent } from '../nhatkymayxuc-tab/nhatkymayxuc-tab.component';
 import { ThongsomayxucTabComponent } from '../thongsomayxuc-tab/thongsomayxuc-tab.component';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import {
   ReactiveFormsModule,
   FormsModule,
@@ -22,9 +21,7 @@ import {
   ColComponent,
   TextColorDirective,
   CardComponent,
-  CardHeaderComponent,
   CardBodyComponent,
-  TableDirective,
   TabDirective,
   FormDirective,
   FormLabelDirective,
@@ -39,38 +36,25 @@ import {
   TabsListComponent,
   GutterDirective,
 } from '@coreui/angular';
-
+import { NzButtonModule, NzButtonSize } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzCascaderModule } from 'ng-zorro-antd/cascader';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
 import * as XLSX from 'xlsx';
-
-export interface TongHopMayXuc {
-  id: number;
-  maQuanLy: string;
-  tenMayXuc: string;
-  loaiThietBi: string;
-  tenPhongBan: string;
-  viTriLapDat: string;
-  ngayLap: string;
-  soLuong: number;
-  tinhTrang: string;
-  ghiChu: string;
-}
-
-export interface TonghopMayxucDetail {
-  id: number;
-  mayXucId: number;
-  maQuanLy: string;
-  loaiThietBiId: number;
-  phongBanId: number;
-  viTriLapDat: string;
-  ngayLap: string;
-  soLuong: number;
-  tinhTrang: string;
-  ghiChu: string;
-}
-
+import {
+  TongHopMayXuc,
+  TonghopMayxucDetail,
+} from '../../../core/interface/mayxuc/mayxuc';
+import { SelectSearchComponent } from '../../../components/nav-select-search/select-search.component';
 @Component({
   selector: 'app-tonghopmayxuc',
   imports: [
@@ -93,11 +77,9 @@ export interface TonghopMayxucDetail {
     ColComponent,
     TextColorDirective,
     CardComponent,
-    CardHeaderComponent,
     CardBodyComponent,
     PaginationModule,
     DropdownModule,
-    TableDirective,
     SharedModule,
     TabDirective,
     TabPanelComponent,
@@ -106,8 +88,18 @@ export interface TonghopMayxucDetail {
     TabsListComponent,
     NhatkymayxucTabComponent,
     ThongsomayxucTabComponent,
-    GutterDirective,
+    SelectSearchComponent,
     FormsModule,
+    NzButtonModule,
+    NzIconModule,
+    NzInputModule,
+    NzSelectModule,
+    NzCascaderModule,
+    NzTableModule,
+    NzFloatButtonModule,
+    NzModalModule,
+    NzToolTipModule,
+    NzFormModule,
   ],
   templateUrl: './tonghopmayxuc.component.html',
   styleUrl: './tonghopmayxuc.component.scss',
@@ -144,7 +136,7 @@ export class TonghopmayxucComponent implements OnInit {
   Form!: FormGroup;
   Id: Number = 0;
   public themoi: boolean = false;
-
+  size: NzButtonSize = 'small';
   ngOnInit(): void {
     this.loadTonghopMayxuc();
     this.getDataDonvi();
@@ -160,7 +152,7 @@ export class TonghopmayxucComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private toastr: ToastrService,
-    private dialog: MatDialog
+    private modal: NzModalService
   ) {
     this.initFormBuilder();
   }
@@ -184,6 +176,23 @@ export class TonghopmayxucComponent implements OnInit {
     singleDatePicker: true,
   };
 
+  eventThietbi($event: any) {
+    this.keywordThietbi = $event;
+    this.loadTonghopMayxuc();
+  }
+
+  eventDonvi($event: any) {
+    this.keywordDonvi = $event;
+    this.loadTonghopMayxuc();
+  }
+  pageIndexChanged($event: any) {
+    this.pageIndex = $event;
+    this.loadTonghopMayxuc();
+  }
+  pageSizeChange($event: any) {
+    this.pageSize = $event;
+    this.loadTonghopMayxuc();
+  }
   getLoaiThietBi() {
     this.dataService.get('/api/Loaithietbi').subscribe({
       next: (data: any) => {
@@ -281,7 +290,7 @@ export class TonghopmayxucComponent implements OnInit {
   }
 
   public pageChanged(event: any): void {
-    this.pageIndex = event.page;
+    this.pageIndex = event;
     this.loadTonghopMayxuc();
   }
 
@@ -306,26 +315,29 @@ export class TonghopmayxucComponent implements OnInit {
     this.liveDemoVisible = !this.liveDemoVisible;
   }
 
+  showConfirm(item: any): void {
+    let pos = 2;
+    this.modal.confirm({
+      nzTitle: '<i>Bán có muốn xóa bản ghi này?</i>',
+      nzContent: '<b>Thiết bị: </b>' + item.tenThietBi,
+      nzStyle: {
+        position: 'relative',
+        top: `${pos * 90}px`,
+        left: `${pos * 60}px`,
+      },
+      nzOnOk: () => this.onDelete(item),
+    });
+  }
   onDelete(id: number) {
     this.Id = id;
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        name: 'Bán có muốn xóa bản ghi này?',
+    this.dataService.delete('/api/Tonghopmayxuc/' + this.Id).subscribe({
+      next: () => {
+        this.loadTonghopMayxuc();
+        this.toastr.success('Xóa dữ liệu thành công', 'Success');
       },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.dataService.delete('/api/Tonghopmayxuc/' + this.Id).subscribe({
-          next: () => {
-            this.loadTonghopMayxuc();
-            this.toastr.success('Xóa dữ liệu thành công', 'Success');
-          },
-          error: () => {
-            this.toastr.error('Xóa dữ liệu thất bại', 'Error');
-          },
-        });
-      }
+      error: () => {
+        this.toastr.error('Xóa dữ liệu thất bại', 'Error');
+      },
     });
   }
 

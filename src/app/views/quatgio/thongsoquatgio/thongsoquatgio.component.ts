@@ -277,7 +277,7 @@ export class ThongsoquatgioComponent implements OnInit {
   }
 
   public pageIndexChanged(event: any): void {
-    this.pageIndex = event.page;
+    this.pageIndex = event;
     this.loadData();
   }
   pageSizeChange(event: any): void {

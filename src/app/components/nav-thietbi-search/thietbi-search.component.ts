@@ -31,6 +31,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         [(ngModel)]="keywordThietbi"
         style="width: 400px"
       >
+        <nz-option [nzLabel]="'Chọn hết...'" [nzValue]="''"></nz-option>
         @for (item of dsThietbi ; track $index) {
         <nz-option [nzLabel]="item.tenThietBi" [nzValue]="item.id"></nz-option>
         }
