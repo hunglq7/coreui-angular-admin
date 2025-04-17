@@ -35,35 +35,16 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzFormModule } from 'ng-zorro-antd/form';
 import { SelectSearchComponent } from '../../../components/nav-select-search/select-search.component';
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
 import * as XLSX from 'xlsx';
-export interface TongHopBaLang {
-  id: number;
-  tenThietBi: string;
-  tenDonVi: string;
-  viTriLapDat: string;
-  ngayLap: string;
-  donViTinh: string;
-  soLuong: number;
-  tinhTrangKyThuat: string;
-  ghiChu: string;
-}
-
-export interface TongHopBaLangDetail {
-  id: number;
-  baLangId: number;
-  donViId: number;
-  viTriLapDat: string;
-  ngayLap: string;
-  donViTinh: string;
-  soLuong: number;
-  tinhTrangKyThuat: string;
-  ghiChu: string;
-}
-
+import {
+  TongHopBaLang,
+  TongHopBaLangDetail,
+} from '../../../core/interface/balang/balang-interface';
 @Component({
   selector: 'app-tonghopbalang',
   imports: [
@@ -96,6 +77,7 @@ export interface TongHopBaLangDetail {
     NzFloatButtonModule,
     NzModalModule,
     NzToolTipModule,
+    NzFormModule,
   ],
 
   templateUrl: './tonghopbalang.component.html',

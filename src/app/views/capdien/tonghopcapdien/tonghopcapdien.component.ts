@@ -1,8 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../../../shared/utils/dialogs/confirm-dialog/confirm-dialog.component';
-
 import {
   ReactiveFormsModule,
   FormsModule,
@@ -12,7 +10,6 @@ import {
 } from '@angular/forms';
 import {
   ButtonCloseDirective,
-  ButtonDirective,
   ModalBodyComponent,
   ModalComponent,
   ModalHeaderComponent,
@@ -20,67 +17,39 @@ import {
   ThemeDirective,
   RowComponent,
   ColComponent,
-  TextColorDirective,
-  CardComponent,
-  CardHeaderComponent,
-  CardBodyComponent,
-  TableDirective,
-  FormDirective,
-  FormLabelDirective,
   FormControlDirective,
   FormSelectDirective,
   DropdownModule,
   SharedModule,
-  GutterDirective,
 } from '@coreui/angular';
-
+import { NzButtonModule, NzButtonSize } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzCascaderModule } from 'ng-zorro-antd/cascader';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
 import * as XLSX from 'xlsx';
-
-export interface TongHopCapDienDetail {
-  id: number;
-  maquanly: string;
-  donviId: number;
-  ngaythang: string;
-  capdienId: number;
-  donvitinh: string;
-  tondauthang: number;
-  nhaptrongky: number;
-  xuattrongky: number;
-  toncuoithang: number;
-  dangsudung: number;
-  duphong: number;
-  ghichu: string;
-}
-
-export interface TongHopCapDienList {
-  id: number;
-  maquanly?: string;
-  tenDonVi?: string;
-  ngaythang: Date;
-  tenThietBi?: string;
-  donvitinh?: string;
-  tondauthang: number;
-  nhaptrongky: number;
-  xuattrongky: number;
-  toncuoithang: number;
-  dangsudung: number;
-  duphong: number;
-}
-
+import { SelectSearchComponent } from '../../../components/nav-select-search/select-search.component';
+import {
+  TongHopCapDienDetail,
+  TongHopCapDienList,
+} from '../../../core/interface/capdien/capdien-interface';
 @Component({
   selector: 'app-tonghopcapdien',
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    FormDirective,
-    FormLabelDirective,
     FormControlDirective,
     FormSelectDirective,
-    ButtonDirective,
     ModalComponent,
     ModalHeaderComponent,
     ModalTitleDirective,
@@ -89,16 +58,21 @@ export interface TongHopCapDienList {
     ModalBodyComponent,
     RowComponent,
     ColComponent,
-    TextColorDirective,
-    CardComponent,
-    CardHeaderComponent,
-    CardBodyComponent,
     PaginationModule,
     DropdownModule,
-    TableDirective,
     SharedModule,
-    GutterDirective,
+    SelectSearchComponent,
     FormsModule,
+    NzButtonModule,
+    NzIconModule,
+    NzInputModule,
+    NzSelectModule,
+    NzCascaderModule,
+    NzTableModule,
+    NzFloatButtonModule,
+    NzModalModule,
+    NzToolTipModule,
+    NzFormModule,
   ],
   templateUrl: './tonghopcapdien.component.html',
   styleUrl: './tonghopcapdien.component.scss',
@@ -138,12 +112,12 @@ export class TonghopcapdienComponent implements OnInit {
   Form!: FormGroup;
   Id: Number = 0;
   public themoi: boolean = false;
-
+  size: NzButtonSize = 'small';
   constructor(
     private dataService: DataService,
     private toastr: ToastrService,
-    private dialog: MatDialog,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private modal: NzModalService
   ) {}
 
   ngOnInit(): void {
@@ -174,6 +148,23 @@ export class TonghopcapdienComponent implements OnInit {
       duphong: [''],
       ghichu: [''],
     });
+  }
+
+  eventThietbi($event: any) {
+    this.keywordThietbi = $event;
+    this.getDanhsachTonghopcapdien();
+  }
+  eventDonvi($event: any) {
+    this.keywordDonvi = $event;
+    this.getDanhsachTonghopcapdien();
+  }
+  pageIndexChanged($event: any) {
+    this.pageIndex = $event;
+    this.getDanhsachTonghopcapdien();
+  }
+  pageSizeChange($event: any) {
+    this.pageSize = $event;
+    this.getDanhsachTonghopcapdien();
   }
   // Lấy danh sách phòng ban
   getDanhmucPhongban() {
@@ -270,11 +261,6 @@ export class TonghopcapdienComponent implements OnInit {
     });
   }
 
-  public pageChanged(event: any): void {
-    this.pageIndex = event.page;
-    this.getDanhsachTonghopcapdien();
-  }
-
   onThemmoi() {
     this.title = 'Thêm cáp điện';
     this.themoi = true;
@@ -296,26 +282,30 @@ export class TonghopcapdienComponent implements OnInit {
     this.visible = !this.visible;
   }
 
+  showConfirm(item: any): void {
+    let pos = 2;
+    this.modal.confirm({
+      nzTitle: '<i>Bán có muốn xóa bản ghi này?</i>',
+      nzContent: '<b>Thiết bị: </b>' + item.tenThietBi,
+      nzStyle: {
+        position: 'relative',
+        top: `${pos * 90}px`,
+        left: `${pos * 60}px`,
+      },
+      nzOnOk: () => this.onDelete(item),
+    });
+  }
+
   onDelete(id: number) {
     this.Id = id;
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        name: 'Bán có muốn xóa bản ghi này?',
+    this.dataService.delete('/api/Tonghopcapdien/' + this.Id).subscribe({
+      next: () => {
+        this.getDanhsachTonghopcapdien();
+        this.toastr.success('Xóa dữ liệu thành công', 'Success');
       },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.dataService.delete('/api/Tonghopcapdien/' + this.Id).subscribe({
-          next: () => {
-            this.getDanhsachTonghopcapdien();
-            this.toastr.success('Xóa dữ liệu thành công', 'Success');
-          },
-          error: () => {
-            this.toastr.error('Xóa dữ liệu thất bại', 'Error');
-          },
-        });
-      }
+      error: () => {
+        this.toastr.error('Xóa dữ liệu thất bại', 'Error');
+      },
     });
   }
 
@@ -364,6 +354,9 @@ export class TonghopcapdienComponent implements OnInit {
   }
 
   handleChange(event: any) {
+    this.visible = event;
+  }
+  handleLiveDemoChange(event: any) {
     this.visible = event;
   }
 }

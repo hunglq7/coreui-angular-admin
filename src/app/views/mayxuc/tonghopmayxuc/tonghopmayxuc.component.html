@@ -1,10 +1,6 @@
 <c-col sm="12">
-  <app-select-search
-    [dsThietbi]="dsMayxuc"
-    [dsDonvi]="dsDonvi"
-    (eventSearchThietbi)="eventThietbi($event)"
-    (eventSearchDonvi)="eventDonvi($event)"
-  ></app-select-search>
+  <app-select-search [dsThietbi]="dsMayxuc" [dsDonvi]="dsDonvi" (eventSearchThietbi)="eventThietbi($event)"
+    (eventSearchDonvi)="eventDonvi($event)"></app-select-search>
 
   <button (click)="onThemmoi()" nz-button nzType="primary" nzPrimary>
     <span>Thêm</span>
@@ -15,21 +11,10 @@
   <c-col sm="12">
     <c-row>
       <c-col sm="12">
-        <nz-table
-          cTable
-          #columnTable
-          nzShowQuickJumper
-          nzShowSizeChanger
-          [nzData]="dataMayxucDetail"
-          [nzScroll]="{ x: '1100px' }"
-          [nzPageIndex]="pageIndex"
-          [nzPageSize]="pageSize"
-          [nzPageSizeOptions]="[3, 5, 10, 20]"
-          [nzTotal]="totalRow"
-          [nzFrontPagination]="false"
-          (nzPageIndexChange)="pageIndexChanged($event)"
-          (nzPageSizeChange)="pageSizeChange($event)"
-        >
+        <nz-table cTable #columnTable nzShowQuickJumper nzShowSizeChanger [nzData]="dataMayxucDetail"
+          [nzScroll]="{ x: '1100px' }" [nzPageIndex]="pageIndex" [nzPageSize]="pageSize"
+          [nzPageSizeOptions]="[3, 5, 10, 20]" [nzTotal]="totalRow" [nzFrontPagination]="false"
+          (nzPageIndexChange)="pageIndexChanged($event)" (nzPageSizeChange)="pageSizeChange($event)">
           <thead>
             <tr>
               <th nzLeft scope="col" style="width: 200px">Mã QL</th>
@@ -51,35 +36,14 @@
               <td>{{ item.ngayLap | date : "dd/MM/yyyy" }}</td>
               <td>{{ item.soLuong }}</td>
               <td>
-                <button
-                  nz-tooltip
-                  [nzTooltipTitle]="titleSua"
-                  [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
-                  nz-button
-                  nzType="primary"
-                  style="border-radius: 3px"
-                  [nzSize]="size"
-                  (click)="onEdit(item.id)"
-                >
-                  <nz-icon nzType="edit" style="color: #ffffff" /><span
-                    >Sửa</span
-                  >
+                <button nz-tooltip [nzTooltipTitle]="titleSua" [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button
+                  nzType="primary" style="border-radius: 3px" [nzSize]="size" (click)="onEdit(item.id)">
+                  <nz-icon nzType="edit" style="color: #ffffff" /><span>Sửa</span>
                 </button>
 
-                <button
-                  nz-tooltip
-                  [nzTooltipTitle]="titleXoa"
-                  [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
-                  nz-button
-                  nzType="primary"
-                  nzDanger
-                  style="border-radius: 3px"
-                  [nzSize]="size"
-                  (click)="showConfirm(item)"
-                >
-                  <nz-icon nzType="delete" style="color: #ffffff" /><span
-                    >Xóa</span
-                  >
+                <button nz-tooltip [nzTooltipTitle]="titleXoa" [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button
+                  nzType="primary" nzDanger style="border-radius: 3px" [nzSize]="size" (click)="showConfirm(item)">
+                  <nz-icon nzType="delete" style="color: #ffffff" /><span>Xóa</span>
                 </button>
                 <ng-template #titleSua let-thing>
                   <nz-icon nzType="edit" />
@@ -94,15 +58,11 @@
             }
           </tbody>
         </nz-table>
-        <div
-          class="d-flex justify-content-between"
-          style="margin-left: 30px; margin-bottom: 10px"
-        >
+        <div class="d-flex justify-content-between" style="margin-left: 30px; margin-bottom: 10px">
           <div>
             <strong>
               Tổng số thiết bị:
-              <span class="text-primary">{{ sumSoluong }}</span></strong
-            >
+              <span class="text-primary">{{ sumSoluong }}</span></strong>
           </div>
         </div>
       </c-col>
@@ -117,13 +77,9 @@
   <nz-icon nzType="customer-service" nzTheme="outline"></nz-icon>
 </ng-template>
 
-<c-modal
-  id="liveDemoModal"
-  backdrop="static"
-  size="xl"
-  [visible]="liveDemoVisible"
-  (visibleChange)="handleLiveDemoChange($event)"
->
+<!-- Modal -->
+<c-modal id="liveDemoModal" size="lg" backdrop="static" [visible]="liveDemoVisible"
+  (visibleChange)="handleLiveDemoChange($event)">
   <c-modal-header>
     <h5 cModalTitle>{{ title }}</h5>
     <button (click)="onClode()" cButtonClose></button>
@@ -131,220 +87,136 @@
   <c-modal-body>
     <c-row>
       <c-col xs="12">
-        <c-card class="mb-3">
-          <c-card-body>
-            <c-tabs
-              [activeItemKey]="0"
-              (activeItemKeyChange)="handleActiveItemChange($event)"
-            >
-              <c-tabs-list variant="underline-border">
-                <button cTab [itemKey]="0">Cập nhật máy xúc</button>
-                <button [hidden]="themoi" cTab [itemKey]="1">
-                  Nhật ký máy xúc
-                </button>
-                <button [hidden]="themoi" cTab [itemKey]="2">
-                  Thông số kỹ thuật
-                </button>
-              </c-tabs-list>
-              <c-tabs-content>
-                <c-tab-panel [itemKey]="0" class="p-3">
-                  @if(tonghopmayxucDetail){
-                  <form
-                    [formGroup]="Form"
-                    #customStylesForm="ngForm"
-                    (ngSubmit)="save()"
-                    [validated]="customStylesValidated"
-                    cForm
-                    class="row g-3 needs-validation"
-                  >
-                    <div>
-                      <input
-                        hidden="true"
-                        [(ngModel)]="tonghopmayxucDetail.id"
-                        formControlName="id"
-                        cFormControl
-                        id="id"
-                        type="number"
-                        value="Mark"
-                      />
-                    </div>
-                    <!-- Mã quản lý -->
-                    <c-col md="4">
-                      <label cLabel for="maQuanLy">Mã quản lý</label>
-                      <input
-                        [(ngModel)]="tonghopmayxucDetail.maQuanLy"
-                        formControlName="maQuanLy"
-                        cFormControl
-                        id="maQuanLy"
-                        required
-                        type="text"
-                        value="Mark"
-                      />
-                      <c-form-feedback [valid]="true"
-                        >Dữ liệu hợp lệ</c-form-feedback
-                      >
-                    </c-col>
-                    <!-- Thiết bị -->
-                    <c-col md="4">
-                      <label cLabel for="mayXucId">Thiết bị</label>
-                      <select
-                        [(ngModel)]="tonghopmayxucDetail.mayXucId"
-                        formControlName="mayXucId"
-                        cSelect
-                        id="mayXucId"
-                        required
-                      >
-                        <option value="">Chọn thiết bị...</option>
-                        @for (item of dsMayxuc ; track $index) {
-                        <option value="{{ item.id }}">
-                          {{ item.tenThietBi }}
-                        </option>
-                        }
-                      </select>
-                      <c-form-feedback [valid]="false"
-                        >Thiết bị phải chọn.</c-form-feedback
-                      >
-                    </c-col>
-                    <!-- Đơn vị -->
-                    <c-col md="4">
-                      <label cLabel for="phongBanId">Đơn vị</label>
-                      <select
-                        [(ngModel)]="tonghopmayxucDetail.phongBanId"
-                        formControlName="phongBanId"
-                        cSelect
-                        id="phongBanId"
-                        required
-                      >
-                        <option value="">Chọn đơn vị...</option>
-                        @for (item of dsDonvi ; track $index) {
-                        <option value="{{ item.id }}">
-                          {{ item.tenPhong }}
-                        </option>
-                        }
-                      </select>
-                      <c-form-feedback [valid]="false"
-                        >Đơn vị phải chọn.</c-form-feedback
-                      >
-                    </c-col>
-                    <!-- Vị trí lắp đặt -->
-                    <c-col md="4">
-                      <label cLabel for="viTriLapDat">Vị trí lắp đặt</label>
-                      <input
-                        [(ngModel)]="tonghopmayxucDetail.viTriLapDat"
-                        formControlName="viTriLapDat"
-                        cFormControl
-                        id="viTriLapDat"
-                        required
-                        type="text"
-                      />
+        <c-tabs [activeItemKey]="0" (activeItemKeyChange)="handleActiveItemChange($event)">
+          <c-tabs-list variant="underline-border">
+            <button cTab [itemKey]="0">Cập nhật máy xúc</button>
+            <button [hidden]="themoi" cTab [itemKey]="1">
+              Nhật ký máy xúc
+            </button>
+            <button [hidden]="themoi" cTab [itemKey]="2">
+              Thông số kỹ thuật
+            </button>
+          </c-tabs-list>
+          <c-tabs-content>
+            <c-tab-panel [itemKey]="0" class="p-3">
+              <form nz-form [formGroup]="Form" (ngSubmit)="save()">
+                <!-- hidden id  -->
+                <input [hidden]="true" type="number" formControlName="id" [(ngModel)]="tonghopmayxucDetail.id" />
+                <!-- Mã quản lý -->
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5">Mã quản lý</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input id="maQuanLy" nz-input cFormControl sizing="sm" formControlName="maQuanLy"
+                      [(ngModel)]="tonghopmayxucDetail.maQuanLy" />
+                  </nz-form-control>
+                </nz-form-item>
+                <!-- thiết bị -->
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5" nzFor="mayXucId" nzRequired>Thiết bị</nz-form-label>
+                  <nz-form-control [nzSpan]="16" nzErrorTip="thiết bị phải chọn">
+                    <select id="mayXucId" formControlName="mayXucId" [(ngModel)]="tonghopmayxucDetail.mayXucId"
+                      aria-label="Default select example" cSelect sizing="sm">
+                      <option>Chọn thiết bị</option>
+                      @for (item of dsMayxuc; track item.id) {
+                      <option value="{{ item.id }}">
+                        {{ item.tenThietBi }}
+                      </option>
+                      }
+                    </select>
+                  </nz-form-control>
+                </nz-form-item>
 
-                      <c-form-feedback [valid]="false"
-                        >Vị trí lắp đặt phải nhập.</c-form-feedback
-                      >
-                    </c-col>
-                    <!-- Ngày lắp -->
-                    <c-col md="4">
-                      <label cLabel for="ngayLap">Ngày lắp</label>
-                      <input
-                        [(ngModel)]="tonghopmayxucDetail.ngayLap"
-                        formControlName="ngayLap"
-                        cFormControl
-                        id="ngayLap"
-                        required
-                        type="date"
-                      />
-                      <c-form-feedback [valid]="false"
-                        >Ngày lắp đặt.</c-form-feedback
-                      >
-                    </c-col>
-                    <!-- Số lượng -->
-                    <c-col md="4">
-                      <label cLabel for="soLuong">Số lượng</label>
-                      <input
-                        [(ngModel)]="tonghopmayxucDetail.soLuong"
-                        formControlName="soLuong"
-                        cFormControl
-                        id="soLuong"
-                        required
-                        type="number"
-                      />
-                      <c-form-feedback [valid]="false"
-                        >Số lượng phải nhập.</c-form-feedback
-                      >
-                    </c-col>
-                    <!-- Tình trạng -->
-                    <c-col xs="4">
-                      <label cLabel for="tinhTrang">Tình trạng thiết bị</label>
-                      <input
-                        [(ngModel)]="tonghopmayxucDetail.tinhTrang"
-                        formControlName="tinhTrang"
-                        cFormControl
-                        id="tinhTrang"
-                        required
-                        type="text"
-                      />
-                    </c-col>
-                    <c-col xs="4">
-                      <label cLabel for="loaiThietBi">Loại thiết bị</label>
-                      <select
-                        [(ngModel)]="tonghopmayxucDetail.loaiThietBiId"
-                        formControlName="loaiThietBiId"
-                        cSelect
-                        id="loaiThietBi"
-                        required
-                      >
-                        <option value="">Chọn loại thiết bị...</option>
-                        @for (item of dsLoai ; track $index) {
-                        <option value="{{ item.id }}">
-                          {{ item.tenLoai }}
-                        </option>
-                        }
-                      </select>
-                    </c-col>
+                <!-- Đơn vị -->
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5">Đơn vị</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <select id="phongBanId" formControlName="phongBanId" [(ngModel)]="tonghopmayxucDetail.phongBanId"
+                      cSelect sizing="sm">
+                      <option>Chọn đơn vị</option>
+                      @for (item of dsDonvi; track item.id) {
+                      <option value="{{ item.id }}">{{ item.tenPhong }}</option>
+                      }
+                    </select>
+                  </nz-form-control>
+                </nz-form-item>
+                <!-- Vị trí lắp đặt -->
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5">Vị trí lắp đặt</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input id="viTriLapDat" nz-input cFormControl sizing="sm" formControlName="viTriLapDat"
+                      [(ngModel)]="tonghopmayxucDetail.viTriLapDat" />
+                  </nz-form-control>
+                </nz-form-item>
+                <!-- Ngày lắp -->
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5">Ngày lắp</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input id="ngayLap" nz-input cFormControl sizing="sm" formControlName="ngayLap"
+                      [(ngModel)]="tonghopmayxucDetail.ngayLap" type="date" />
+                  </nz-form-control>
+                </nz-form-item>
+                <!-- Số lượng -->
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5">Số lượng</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input id="soLuong" nz-input cFormControl sizing="sm" formControlName="soLuong"
+                      [(ngModel)]="tonghopmayxucDetail.soLuong" type="number" />
+                  </nz-form-control>
+                </nz-form-item>
+                <!-- Tình trạng -->
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5">Tình trạng thiết bị</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input id="tinhTrang" nz-input cFormControl sizing="sm" formControlName="tinhTrang"
+                      [(ngModel)]="tonghopmayxucDetail.tinhTrang" />
+                  </nz-form-control>
+                </nz-form-item>
 
-                    <!-- Ghi chú -->
-                    <c-col xs="4">
-                      <label cLabel for="ghiChu">Ghi chú</label>
-                      <input
-                        [(ngModel)]="tonghopmayxucDetail.ghiChu"
-                        formControlName="ghiChu"
-                        cFormControl
-                        id="ghiChu"
-                        required
-                        type="text"
-                      />
-                    </c-col>
-                    <c-col xs="12">
-                      <button
-                        [disabled]="customStylesForm.form.valid"
-                        cButton
-                        class="me-1"
-                        color="primary"
-                        type="submit"
-                      >
-                        Lưu lại
-                      </button>
-                      <button cButton color="danger" (click)="onClode()">
-                        Đóng
-                      </button>
-                    </c-col>
-                  </form>
-                  }
-                </c-tab-panel>
-                <c-tab-panel [itemKey]="1" class="p-3">
-                  <app-nhatkymayxuc-tab
-                    [TonghopmayxucDetail]="tonghopmayxucDetail"
-                  ></app-nhatkymayxuc-tab>
-                </c-tab-panel>
-                <c-tab-panel [itemKey]="2" class="p-3">
-                  <app-thongsomayxuc-tab
-                    [TonghopmayxucDetail]="tonghopmayxucDetail"
-                  ></app-thongsomayxuc-tab>
-                </c-tab-panel>
-              </c-tabs-content>
-            </c-tabs>
-          </c-card-body>
-        </c-card>
+                <!-- loại thiết bị -->
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5">Loại thiết bị</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <select id="loaiThietBiId" formControlName="loaiThietBiId"
+                      [(ngModel)]="tonghopmayxucDetail.loaiThietBiId" cSelect sizing="sm">
+                      <option>Chọn chết..</option>
+                      @for (item of dsLoai; track item.id) {
+                      <option value="{{ item.id }}">{{ item.tenLoai }}</option>
+                      }
+                    </select>
+                  </nz-form-control>
+                </nz-form-item>
+
+                <!-- Ghi chú -->
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5">Ghi chú</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input id="ghiChu" nz-input cFormControl sizing="sm" formControlName="ghiChu"
+                      [(ngModel)]="tonghopmayxucDetail.ghiChu" />
+                  </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                  <nz-form-label class="hide" [nzSpan]="5"></nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <button nz-button nzType="primary" nzPrimary type="submit">
+                      Lưu lại
+                    </button>
+                    <button nz-button nzType="default" nzPrimary (click)="onClode()">
+                      Đóng
+                    </button>
+                  </nz-form-control>
+                </nz-form-item>
+              </form>
+            </c-tab-panel>
+            <c-tab-panel [itemKey]="1" class="p-3">
+              <app-nhatkymayxuc-tab [TonghopmayxucDetail]="tonghopmayxucDetail"></app-nhatkymayxuc-tab>
+
+            </c-tab-panel>
+            <c-tab-panel [itemKey]="2" class="p-3">
+              <app-thongsomayxuc-tab [TonghopmayxucDetail]="tonghopmayxucDetail"></app-thongsomayxuc-tab>
+            </c-tab-panel>
+          </c-tabs-content>
+        </c-tabs>
       </c-col>
     </c-row>
   </c-modal-body>

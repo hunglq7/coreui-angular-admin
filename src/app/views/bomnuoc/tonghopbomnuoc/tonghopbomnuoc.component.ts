@@ -1,6 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
 import { NhatkybomnuocTabComponent } from '../../bomnuoc/nhatkybomnuoc-tab/nhatkybomnuoc-tab.component';
 import { ThongsobomnuocTabComponent } from '../../bomnuoc/thongsobomnuoc-tab/thongsobomnuoc-tab.component';
 import {
@@ -12,32 +11,22 @@ import {
 } from '@angular/forms';
 import {
   ButtonCloseDirective,
-  ButtonDirective,
+  ColComponent,
+  DropdownModule,
+  FormControlDirective,
+  FormSelectDirective,
   ModalBodyComponent,
   ModalComponent,
   ModalHeaderComponent,
   ModalTitleDirective,
-  ThemeDirective,
   RowComponent,
-  ColComponent,
-  TextColorDirective,
-  CardComponent,
-  CardHeaderComponent,
-  CardBodyComponent,
-  TableDirective,
-  TabDirective,
-  FormDirective,
-  FormLabelDirective,
-  FormControlDirective,
-  FormFeedbackComponent,
-  FormSelectDirective,
-  DropdownModule,
   SharedModule,
+  TabDirective,
   TabPanelComponent,
   TabsComponent,
   TabsContentComponent,
   TabsListComponent,
-  GutterDirective,
+  ThemeDirective,
 } from '@coreui/angular';
 import { NzButtonModule, NzButtonSize } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -65,12 +54,8 @@ import { SelectSearchComponent } from '../../../components/nav-select-search/sel
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    FormDirective,
-    FormLabelDirective,
     FormControlDirective,
-    FormFeedbackComponent,
     FormSelectDirective,
-    ButtonDirective,
     ModalComponent,
     ModalHeaderComponent,
     ModalTitleDirective,
@@ -79,24 +64,16 @@ import { SelectSearchComponent } from '../../../components/nav-select-search/sel
     ModalBodyComponent,
     RowComponent,
     ColComponent,
-    TextColorDirective,
-    CardComponent,
-    CardHeaderComponent,
-    CardBodyComponent,
     PaginationModule,
     DropdownModule,
-    TableDirective,
     SharedModule,
     TabDirective,
     TabPanelComponent,
     TabsComponent,
     TabsContentComponent,
     TabsListComponent,
-    GutterDirective,
-    FormsModule,
-    NhatkybomnuocTabComponent,
-    ThongsobomnuocTabComponent,
     SelectSearchComponent,
+    FormsModule,
     NzButtonModule,
     NzIconModule,
     NzInputModule,
@@ -107,6 +84,8 @@ import { SelectSearchComponent } from '../../../components/nav-select-search/sel
     NzModalModule,
     NzToolTipModule,
     NzFormModule,
+    NhatkybomnuocTabComponent,
+    ThongsobomnuocTabComponent,
   ],
   templateUrl: './tonghopbomnuoc.component.html',
   styleUrl: './tonghopbomnuoc.component.scss',
@@ -145,7 +124,6 @@ export class TonghopbomnuocComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private toastr: ToastrService,
-    private dialog: MatDialog,
     private fb: FormBuilder,
     private modal: NzModalService
   ) {}
@@ -330,7 +308,7 @@ export class TonghopbomnuocComponent implements OnInit {
     });
   }
 
-  handleLiveDemoChange(event: boolean) {
+  handleLiveDemoChange(event: any) {
     this.liveDemoVisible = event;
   }
 

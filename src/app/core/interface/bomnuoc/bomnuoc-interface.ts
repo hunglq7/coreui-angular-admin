@@ -35,3 +35,13 @@ export interface TongHopBomNuocDetail {
   tinhTrangThietBi: string;
   ghiChu: string;
 }
+
+export interface NhatKyBomNuocDetail {
+  id: number;
+  tonghopbomnuocId: number;
+  ngayLap: string;
+  donVi: string;
+  viTri: string;
+  trangThai: string;
+  ghiChu: string;
+}
