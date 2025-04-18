@@ -114,7 +114,7 @@ export const navItems: INavData[] = [
         icon: 'nav-icon-bullet',
       },
       {
-        name: 'Tổng hợp cáp điện',
+        name: 'Cập nhật cáp điện',
         url: '/capdien/tonghopcapdien',
         icon: 'nav-icon-bullet',
       },
@@ -131,7 +131,7 @@ export const navItems: INavData[] = [
         icon: 'nav-icon-bullet',
       },
       {
-        name: 'Tổng hợp ba lăng',
+        name: 'Cập nhật ba lăng',
         url: '/balang/tonghopbalang',
         icon: 'nav-icon-bullet',
       },
@@ -148,7 +148,7 @@ export const navItems: INavData[] = [
         icon: 'nav-icon-bullet',
       },
       {
-        name: 'Tổng hợp khoan',
+        name: 'Cập nhật khoan',
         url: '/khoan/tonghopkhoan',
         icon: 'nav-icon-bullet',
       },
@@ -170,7 +170,7 @@ export const navItems: INavData[] = [
         icon: 'nav-icon-bullet',
       },
       {
-        name: 'Tổng hợp máy cào',
+        name: 'Cập nhật máy cào',
         url: '/maycao/tonghopmaycao',
         icon: 'nav-icon-bullet',
       },
@@ -192,7 +192,7 @@ export const navItems: INavData[] = [
         icon: 'nav-icon-bullet',
       },
       {
-        name: 'Tổng hợp neo',
+        name: 'Cập nhật neo',
         url: '/neo/tonghopneo',
         icon: 'nav-icon-bullet',
       },

@@ -2,6 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzFormModule } from 'ng-zorro-antd/form';
 import {
   ReactiveFormsModule,
   FormsModule,
@@ -40,30 +41,11 @@ import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
 import * as XLSX from 'xlsx';
+import {
+  Tonghopkhoan,
+  TonghopkhoanDetail,
+} from '../../../core/interface/Khoan/khoan-interface';
 
-export interface Tonghopkhoan {
-  id: number;
-  tenThietBi: string;
-  tenDonVi: string;
-  donViTinh: string;
-  soLuong: number;
-  ngayLap: Date;
-  viTriLapDat: string;
-  tinhTrangKyThuat: string;
-  ghiChu: string;
-}
-
-export interface TonghopkhoanDetail {
-  id: number;
-  khoanId: number;
-  donViId: number;
-  donViTinh: string;
-  soLuong: number;
-  ngayLap: string;
-  viTriLapDat: string;
-  tinhTrangKyThuat: string;
-  ghiChu: string;
-}
 @Component({
   selector: 'app-tonghopkhoan',
   imports: [
@@ -96,6 +78,7 @@ export interface TonghopkhoanDetail {
     NzFloatButtonModule,
     NzModalModule,
     NzToolTipModule,
+    NzFormModule,
   ],
   templateUrl: './tonghopkhoan.component.html',
   styleUrl: './tonghopkhoan.component.scss',

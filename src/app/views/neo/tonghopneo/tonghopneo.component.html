@@ -1,12 +1,8 @@
 <c-col sm="12">
   <c-card class="mb-3">
     <c-card-header ngPreserveWhitespaces>
-      <app-select-search
-        [dsThietbi]="dsNeo"
-        [dsDonvi]="dsDonvi"
-        (eventSearchThietbi)="eventThietbi($event)"
-        (eventSearchDonvi)="eventDonvi($event)"
-      ></app-select-search>
+      <app-select-search [dsThietbi]="dsNeo" [dsDonvi]="dsDonvi" (eventSearchThietbi)="eventThietbi($event)"
+        (eventSearchDonvi)="eventDonvi($event)"></app-select-search>
       <button (click)="onThemmoi()" nz-button nzType="primary" nzPrimary>
         <span>Thêm</span>
       </button>
@@ -20,21 +16,10 @@
           <c-card-body class="table-responsive">
             <c-row>
               <c-col sm="12">
-                <nz-table
-                  cTable
-                  #columnTable
-                  nzShowQuickJumper
-                  nzShowSizeChanger
-                  [nzData]="dataNeo"
-                  [nzScroll]="{ x: '1100px' }"
-                  [nzPageIndex]="pageIndex"
-                  [nzPageSize]="pageSize"
-                  [nzPageSizeOptions]="[3, 5, 10, 20]"
-                  [nzTotal]="totalRow"
-                  [nzFrontPagination]="false"
-                  (nzPageIndexChange)="pageIndexChanged($event)"
-                  (nzPageSizeChange)="pageSizeChange($event)"
-                >
+                <nz-table cTable #columnTable nzShowQuickJumper nzShowSizeChanger [nzData]="dataNeo"
+                  [nzScroll]="{ x: '1100px' }" [nzPageIndex]="pageIndex" [nzPageSize]="pageSize"
+                  [nzPageSizeOptions]="[3, 5, 10, 20]" [nzTotal]="totalRow" [nzFrontPagination]="false"
+                  (nzPageIndexChange)="pageIndexChanged($event)" (nzPageSizeChange)="pageSizeChange($event)">
                   <thead>
                     <tr>
                       <th scope="col">Thiết bị</th>
@@ -56,34 +41,16 @@
                       <td>{{ item.viTriLapDat }}</td>
                       <td>{{ item.tinhTrangThietBi }}</td>
                       <td>
-                        <button
-                          nz-tooltip
-                          [nzTooltipTitle]="titleSua"
-                          [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
-                          nz-button
-                          nzType="default"
-                          [nzSize]="size"
-                          (click)="onEdit(item.id)"
-                        >
-                          <nz-icon
-                            nzType="edit"
-                            style="color: rgb(16, 142, 233)"
-                          />
+                        <button nz-tooltip [nzTooltipTitle]="titleSua" [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+                          nz-button nzType="primary" style="border-radius: 3px;" [nzSize]="size"
+                          (click)="onEdit(item.id)">
+                          <nz-icon nzType="edit" style="color: #ffffff" /><span>Sửa</span>
                         </button>
 
-                        <button
-                          nz-tooltip
-                          [nzTooltipTitle]="titleXoa"
-                          [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
-                          nz-button
-                          nzType="default"
-                          [nzSize]="size"
-                          (click)="onDelete(item)"
-                        >
-                          <nz-icon
-                            nzType="delete"
-                            style="color: rgb(255, 0, 0)"
-                          />
+                        <button nz-tooltip [nzTooltipTitle]="titleXoa" [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+                          nz-button nzType="primary" style="border-radius: 3px;" [nzSize]="size"
+                          (click)="onDelete(item)" nzDanger>
+                          <nz-icon nzType="delete" style="color: #ffffff" /><span>Xóa</span>
                         </button>
 
                         <ng-template #titleSua let-thing>
@@ -108,14 +75,8 @@
   </c-card>
 </c-col>
 <!-- modal them neo -->
-<c-modal
-  [(visible)]="liveDemoVisible"
-  centered="true"
-  [size]="'xl'"
-  [backdrop]="'static'"
-  [keyboard]="false"
-  [scrollable]="true"
->
+<c-modal [(visible)]="liveDemoVisible" centered="true" [size]="'xl'" [backdrop]="'static'" [keyboard]="false"
+  [scrollable]="true">
   <c-modal-header>
     <h5 cModalTitle>{{ title }}</h5>
     <button (click)="onClode()" cButtonClose></button>
@@ -125,10 +86,7 @@
       <c-col xs="12">
         <c-card class="mb-3">
           <c-card-body>
-            <c-tabs
-              [activeItemKey]="0"
-              (activeItemKeyChange)="handleActiveItemChange($event)"
-            >
+            <c-tabs [activeItemKey]="0" (activeItemKeyChange)="handleActiveItemChange($event)">
               <c-tabs-list variant="underline-border">
                 <button cTab [itemKey]="0">Cập nhật neo</button>
                 <button [hidden]="themoi" cTab [itemKey]="1">
@@ -142,160 +100,90 @@
                 <c-tab-panel [itemKey]="0" class="p-3">
                   <form [formGroup]="Form" (ngSubmit)="save()">
                     @if(!themoi){
-                    <input
-                      hidden="true"
-                      [(ngModel)]="dataNeoDetail.id"
-                      formControlName="id"
-                      cFormControl
-                      id="id"
-                      type="number"
-                      value="Mark"
-                    />
+                    <input hidden="true" [(ngModel)]="dataNeoDetail.id" formControlName="id" cFormControl id="id"
+                      type="number" value="Mark" />
                     }
 
                     <div class="mb-3 row">
-                      <label for="neoId" class="col-sm-2 col-form-label"
-                        >Neo</label
-                      >
+                      <label for="neoId" class="col-sm-2 col-form-label">Neo</label>
                       <div class="col-sm-10">
-                        <select
-                          id="neoId"
-                          class="form-control"
-                          [(ngModel)]="dataNeoDetail.neoId"
-                          formControlName="neoId"
-                        >
+                        <select id="neoId" class="form-control" [(ngModel)]="dataNeoDetail.neoId"
+                          formControlName="neoId">
                           <option *ngFor="let neo of dsNeo" [value]="neo.id">
                             {{ neo.tenThietBi }}
                           </option>
                         </select>
-                        <div
-                          *ngIf="
+                        <div *ngIf="
                             Form.get('neoId')?.invalid &&
                             Form.get('neoId')?.touched
-                          "
-                          class="text-danger"
-                        >
+                          " class="text-danger">
                           Vui lòng chọn neo.
                         </div>
                       </div>
                     </div>
 
                     <div class="mb-3 row">
-                      <label for="donViId" class="col-sm-2 col-form-label"
-                        >Đơn vị</label
-                      >
+                      <label for="donViId" class="col-sm-2 col-form-label">Đơn vị</label>
                       <div class="col-sm-10">
-                        <select
-                          id="donViId"
-                          class="form-control"
-                          [(ngModel)]="dataNeoDetail.donViId"
-                          formControlName="donViId"
-                        >
-                          <option
-                            *ngFor="let donVi of dsDonvi"
-                            [value]="donVi.id"
-                          >
+                        <select id="donViId" class="form-control" [(ngModel)]="dataNeoDetail.donViId"
+                          formControlName="donViId">
+                          <option *ngFor="let donVi of dsDonvi" [value]="donVi.id">
                             {{ donVi.tenPhong }}
                           </option>
                         </select>
-                        <div
-                          *ngIf="
+                        <div *ngIf="
                             Form.get('donViId')?.invalid &&
                             Form.get('donViId')?.touched
-                          "
-                          class="text-danger"
-                        >
+                          " class="text-danger">
                           Vui lòng chọn đơn vị.
                         </div>
                       </div>
                     </div>
 
                     <div class="mb-3 row">
-                      <label for="viTriLapDat" class="col-sm-2 col-form-label"
-                        >Vị trí lắp đặt</label
-                      >
+                      <label for="viTriLapDat" class="col-sm-2 col-form-label">Vị trí lắp đặt</label>
                       <div class="col-sm-10">
-                        <input
-                          id="viTriLapDat"
-                          type="text"
-                          class="form-control"
-                          [(ngModel)]="dataNeoDetail.viTriLapDat"
-                          formControlName="viTriLapDat"
-                        />
+                        <input id="viTriLapDat" type="text" class="form-control" [(ngModel)]="dataNeoDetail.viTriLapDat"
+                          formControlName="viTriLapDat" />
                       </div>
                     </div>
 
                     <div class="mb-3 row">
-                      <label for="ngayLap" class="col-sm-2 col-form-label"
-                        >Ngày lắp</label
-                      >
+                      <label for="ngayLap" class="col-sm-2 col-form-label">Ngày lắp</label>
                       <div class="col-sm-10">
-                        <input
-                          id="ngayLap"
-                          type="date"
-                          class="form-control"
-                          [(ngModel)]="dataNeoDetail.ngayLap"
-                          formControlName="ngayLap"
-                        />
+                        <input id="ngayLap" type="date" class="form-control" [(ngModel)]="dataNeoDetail.ngayLap"
+                          formControlName="ngayLap" />
                       </div>
                     </div>
 
                     <div class="mb-3 row">
-                      <label for="soLuong" class="col-sm-2 col-form-label"
-                        >Số lượng</label
-                      >
+                      <label for="soLuong" class="col-sm-2 col-form-label">Số lượng</label>
                       <div class="col-sm-10">
-                        <input
-                          id="soLuong"
-                          type="number"
-                          class="form-control"
-                          [(ngModel)]="dataNeoDetail.soLuong"
-                          formControlName="soLuong"
-                        />
+                        <input id="soLuong" type="number" class="form-control" [(ngModel)]="dataNeoDetail.soLuong"
+                          formControlName="soLuong" />
                       </div>
                     </div>
 
                     <div class="mb-3 row">
-                      <label
-                        for="tinhTrangThietBi"
-                        class="col-sm-2 col-form-label"
-                        >Tình trạng thiết bị</label
-                      >
+                      <label for="tinhTrangThietBi" class="col-sm-2 col-form-label">Tình trạng thiết bị</label>
                       <div class="col-sm-10">
-                        <input
-                          id="tinhTrangThietBi"
-                          type="text"
-                          class="form-control"
-                          [(ngModel)]="dataNeoDetail.tinhTrangThietBi"
-                          formControlName="tinhTrangThietBi"
-                        />
+                        <input id="tinhTrangThietBi" type="text" class="form-control"
+                          [(ngModel)]="dataNeoDetail.tinhTrangThietBi" formControlName="tinhTrangThietBi" />
                       </div>
                     </div>
 
                     <div class="mb-3 row">
-                      <label for="ghiChu" class="col-sm-2 col-form-label"
-                        >Ghi chú</label
-                      >
+                      <label for="ghiChu" class="col-sm-2 col-form-label">Ghi chú</label>
                       <div class="col-sm-10">
-                        <input
-                          id="ghiChu"
-                          type="text"
-                          class="form-control"
-                          [(ngModel)]="dataNeoDetail.ghiChu"
-                          formControlName="ghiChu"
-                        />
+                        <input id="ghiChu" type="text" class="form-control" [(ngModel)]="dataNeoDetail.ghiChu"
+                          formControlName="ghiChu" />
                       </div>
                     </div>
 
                     <div class="mb-3 row">
                       <div class="col-sm-2 col-form-label"></div>
                       <div class="col-sm-10">
-                        <button
-                          type="submit"
-                          nz-button
-                          nzType="primary"
-                          [disabled]="Form.invalid"
-                        >
+                        <button type="submit" nz-button nzType="primary" [disabled]="Form.invalid">
                           Lưu
                         </button>
                         <button nz-button nzType="default" (click)="onReset()">
@@ -306,14 +194,10 @@
                   </form>
                 </c-tab-panel>
                 <c-tab-panel [itemKey]="1" class="p-3">
-                  <app-nhatkyneo-tab
-                    [TonghopneoDetail]="dataNeoDetail"
-                  ></app-nhatkyneo-tab>
+                  <app-nhatkyneo-tab [TonghopneoDetail]="dataNeoDetail"></app-nhatkyneo-tab>
                 </c-tab-panel>
                 <c-tab-panel [itemKey]="2" class="p-3">
-                  <app-thongsoneo-tab
-                    [TonghopneoDetail]="dataNeoDetail"
-                  ></app-thongsoneo-tab>
+                  <app-thongsoneo-tab [TonghopneoDetail]="dataNeoDetail"></app-thongsoneo-tab>
                 </c-tab-panel>
               </c-tabs-content>
             </c-tabs>

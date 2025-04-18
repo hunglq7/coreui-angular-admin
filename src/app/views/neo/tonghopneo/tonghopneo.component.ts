@@ -29,6 +29,10 @@ import {
   TabsContentComponent,
   TabsListComponent,
 } from '@coreui/angular';
+import {
+  TongHopNeo,
+  TonghopneoDetail,
+} from '../../../core/interface/neo/neo-interface';
 
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
@@ -45,28 +49,6 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { SelectSearchComponent } from '../../../components/nav-select-search/select-search.component';
 import { ThongsoneoTabComponent } from '../thongsoneo-tab/thongsoneo-tab.component';
 import { NhatkyneoTabComponent } from '../nhatkyneo-tab/nhatkyneo-tab.component';
-
-export interface TonghopneoDetail {
-  id: number;
-  neoId: number;
-  donViId: number;
-  viTriLapDat: string;
-  ngayLap: string;
-  soLuong: number;
-  tinhTrangThietBi: string;
-  ghiChu: string;
-}
-
-export interface TongHopNeo {
-  id: number;
-  tenThietBi: string;
-  tenDonVi: string;
-  viTriLapDat: string;
-  ngayLap: string;
-  soLuong: number;
-  tinhTrangThietBi: string;
-  ghiChu: string;
-}
 
 @Component({
   selector: 'app-tonghopneo',

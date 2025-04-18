@@ -22,16 +22,15 @@
                   (nzPageIndexChange)="pageIndexChanged($event)" (nzPageSizeChange)="pageSizeChange($event)">
                   <thead>
                     <tr>
-                      <th nzLeft scope="col">Mã quản lý</th>
-                      <th nzLeft scope="col">Thiết bị</th>
-                      <th scope="col">Đơn vị</th>
-                      <th scope="col">Ngày lắp</th>
+                      <th nzLeft scope="col" style="width: 120px;">Mã quản lý</th>
+                      <th nzLeft scope="col" style="width: 120px;">Thiết bị</th>
+                      <th scope="col" style="width: 120px;">Đơn vị</th>
+                      <th scope="col" style="width: 120px;">Ngày lắp</th>
                       <th scope="col">Số lượng</th>
                       <th scope="col">Vị trí lắp đặt</th>
                       <th scope="col">Chiều dài máy</th>
                       <th scope="col">SL Xích</th>
                       <th scope="col">SL cầu máng</th>
-                      <th scope="col">Tình trạng TB</th>
                       <th scope="col">Hành động</th>
                     </tr>
                   </thead>
@@ -47,13 +46,17 @@
                       <td>{{ item.chieuDaiMay }}</td>
                       <td>{{ item.soLuongXich }}</td>
                       <td>{{ item.soLuongCauMang }}</td>
-                      <td>{{ item.tinhTrangThietBi }}</td>
                       <td>
                         <button nz-tooltip [nzTooltipTitle]="titleSua" [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
-                          nz-button nzType="default" [nzSize]="size" (click)="onEdit(item.id)">
-                          <nz-icon nzType="edit" style="color: rgb(16, 142, 233)" />
+                          nz-button nzType="primary" style="border-radius: 3px;" [nzSize]="size"
+                          (click)="onEdit(item.id)">
+                          <nz-icon nzType="edit" style="color: #ffffff" /><span>Sửa</span>
                         </button>
-
+                        <button nz-tooltip [nzTooltipTitle]="titleXoa" [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+                          nz-button nzType="primary" style="border-radius: 3px;" nzDanger [nzSize]="size"
+                          (click)="onDelete(item)">
+                          <nz-icon nzType="delete" style="color: #ffffff" /><span>Xóa</span>
+                        </button>
                         <ng-template #titleSua let-thing>
                           <nz-icon nzType="edit" />
                           <span>Sửa bản ghi</span>
@@ -63,10 +66,7 @@
                           <span>Xóa bản ghi</span>
                         </ng-template>
 
-                        <button nz-tooltip [nzTooltipTitle]="titleXoa" [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
-                          nz-button nzType="default" [nzSize]="size" (click)="onDelete(item)">
-                          <nz-icon nzType="delete" style="color: rgb(255, 0, 0)" />
-                        </button>
+
                       </td>
                     </tr>
                     }

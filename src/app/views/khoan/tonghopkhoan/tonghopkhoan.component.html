@@ -44,8 +44,14 @@
                     <td>{{ item.tinhTrangKyThuat }}</td>
                     <td>
                       <button nz-tooltip [nzTooltipTitle]="titleSua" [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
-                        nz-button nzType="default" [nzSize]="size" (click)="onEdit(item.id)">
-                        <nz-icon nzType="edit" style="color: rgb(16, 142, 233)" />
+                        nz-button nzType="primary" style="border-radius: 3px;" [nzSize]="size"
+                        (click)="onEdit(item.id)">
+                        <nz-icon nzType="edit" style="color: #ffffff" /><span>Sửa</span>
+                      </button>
+                      <button nz-tooltip [nzTooltipTitle]="titleXoa" [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
+                        nz-button nzType="primary" style="border-radius: 3px;" [nzSize]="size" nzDanger
+                        (click)="showConfirm(item)">
+                        <nz-icon nzType="delete" style="color: #ffffff" /><span>Xóa</span>
                       </button>
                       <ng-template #titleSua let-thing>
                         <nz-icon nzType="edit" />
@@ -56,10 +62,7 @@
                         <span>Xóa bản ghi</span>
                       </ng-template>
 
-                      <button nz-tooltip [nzTooltipTitle]="titleXoa" [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
-                        nz-button nzType="default" [nzSize]="size" (click)="showConfirm(item)">
-                        <nz-icon nzType="delete" style="color: rgb(255, 0, 0)" />
-                      </button>
+
                     </td>
                   </tr>
                   }
@@ -88,7 +91,8 @@
 </ng-template>
 
 <!-- Model -->
-<c-modal id="liveDemoModal" [visible]="liveDemoVisible" backdrop="static"
+
+<c-modal id="liveDemoModal" size="lg" [visible]="liveDemoVisible" backdrop="static"
   (visibleChange)="handleLiveDemoChange($event)">
   <c-modal-header>
     <h5 cModalTitle>{{ title }}</h5>
@@ -96,84 +100,105 @@
   </c-modal-header>
   <c-modal-body>
     <form [formGroup]="Form" (ngSubmit)="save()">
+      @if(!themoi){
       <input hidden="true" [(ngModel)]="khoanDetail.id" formControlName="id" cFormControl id="id" type="number"
         value="Mark" />
+      }
 
-      <div class="form-group">
-        <label for="khoanId">Khoan</label>
-        <select [(ngModel)]="khoanDetail.khoanId" id="khoanId" class="form-control" formControlName="khoanId">
-          <option *ngFor="let khoan of dsKhoan" [value]="khoan.id">
-            {{ khoan.tenThietBi }}
-          </option>
-        </select>
-        <div *ngIf="Form.get('khoanId')?.invalid && Form.get('khoanId')?.touched" class="text-danger">
-          Vui lòng chọn khoan.
-        </div>
-      </div>
+      <!-- thiết bị -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5" nzFor="khoanId" nzRequired>Thiết bị</nz-form-label>
+        <nz-form-control [nzSpan]="16" nzErrorTip="thiết bị phải chọn">
+          <select id="khoanId" formControlName="khoanId" [(ngModel)]="khoanDetail.khoanId"
+            aria-label="Default select example" cSelect sizing="sm">
+            <option>Chọn thiết bị</option>
+            @for (item of dsKhoan; track item.id) {
+            <option value="{{ item.id }}">
+              {{ item.tenThietBi }}
+            </option>
+            }
+          </select>
+        </nz-form-control>
+      </nz-form-item>
 
-      <div class="form-group">
-        <label for="donViId">Đơn vị</label>
-        <select [(ngModel)]="khoanDetail.donViId" id="donViId" class="form-control" formControlName="donViId">
-          <option *ngFor="let donVi of dsDonvi" [value]="donVi.id">
-            {{ donVi.tenPhong }}
-          </option>
-        </select>
-        <div *ngIf="Form.get('donViId')?.invalid && Form.get('donViId')?.touched" class="text-danger">
-          Vui lòng chọn đơn vị.
-        </div>
-      </div>
+      <!-- Đơn vị -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">Đơn vị</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <select id="donViId" formControlName="donViId" [(ngModel)]="khoanDetail.donViId" cSelect sizing="sm">
+            <option>Chọn đơn vị</option>
+            @for (item of dsDonvi; track item.id) {
+            <option value="{{ item.id }}">{{ item.tenPhong }}</option>
+            }
+          </select>
+        </nz-form-control>
+      </nz-form-item>
 
-      <div class="form-group">
-        <label for="donViTinh">Đơn vị tính</label>
-        <input id="donViTinh" type="text" class="form-control" [(ngModel)]="khoanDetail.donViTinh"
-          formControlName="donViTinh" />
-        <div *ngIf="
-            Form.get('donViTinh')?.invalid && Form.get('donViTinh')?.touched
-          " class="text-danger">
-          Vui lòng nhập đơn vị tính.
-        </div>
-      </div>
+      <!-- Đơn vị tính -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">Đơn vị tính</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <input id="donViTinh" nz-input cFormControl sizing="sm" formControlName="donViTinh"
+            [(ngModel)]="khoanDetail.donViTinh" />
+        </nz-form-control>
+      </nz-form-item>
 
-      <div class="form-group">
-        <label for="soLuong">Số lượng</label>
-        <input id="soLuong" type="number" class="form-control" [(ngModel)]="khoanDetail.soLuong"
-          formControlName="soLuong" />
-        <div *ngIf="Form.get('soLuong')?.invalid && Form.get('soLuong')?.touched" class="text-danger">
-          Vui lòng nhập số lượng lớn hơn 0.
-        </div>
-      </div>
+      <!-- Số lượng -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">Số lượng</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <input id="soLuong" nz-input cFormControl sizing="sm" formControlName="soLuong" type="number"
+            [(ngModel)]="khoanDetail.soLuong" />
+        </nz-form-control>
+      </nz-form-item>
 
-      <div class="form-group">
-        <label for="ngayLap">Ngày lắp</label>
-        <input id="ngayLap" type="date" class="form-control" [(ngModel)]="khoanDetail.ngayLap"
-          formControlName="ngayLap" />
-        <div *ngIf="Form.get('ngayLap')?.invalid && Form.get('ngayLap')?.touched" class="text-danger">
-          Vui lòng chọn ngày lắp.
-        </div>
-      </div>
+      <!-- Ngày lắp -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">Ngày lắp</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <input id="ngayLap" nz-input cFormControl sizing="sm" formControlName="ngayLap"
+            [(ngModel)]="khoanDetail.ngayLap" type="date" />
+        </nz-form-control>
+      </nz-form-item>
 
-      <div class="form-group">
-        <label for="viTriLapDat">Vị trí lắp đặt</label>
-        <input id="viTriLapDat" type="text" class="form-control" [(ngModel)]="khoanDetail.viTriLapDat"
-          formControlName="viTriLapDat" />
-      </div>
+      <!-- Vị trí lắp đặt -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">Vị trí lắp đặt</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <input id="viTriLapDat" nz-input cFormControl sizing="sm" formControlName="viTriLapDat"
+            [(ngModel)]="khoanDetail.viTriLapDat" />
+        </nz-form-control>
+      </nz-form-item>
 
-      <div class="form-group">
-        <label for="tinhTrangKyThuat">Tình trạng kỹ thuật</label>
-        <input id="tinhTrangKyThuat" type="text" class="form-control" [(ngModel)]="khoanDetail.tinhTrangKyThuat"
-          formControlName="tinhTrangKyThuat" />
-      </div>
+      <!-- Tình trạng kỹ thuật -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">Tình trạng kỹ thuật</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <input id="tinhTrangKyThuat" nz-input cFormControl sizing="sm" formControlName="tinhTrangKyThuat"
+            [(ngModel)]="khoanDetail.tinhTrangKyThuat" />
+        </nz-form-control>
+      </nz-form-item>
 
-      <div class="form-group">
-        <label for="ghiChu">Ghi chú</label>
-        <textarea id="ghiChu" class="form-control" [(ngModel)]="khoanDetail.ghiChu" formControlName="ghiChu"></textarea>
-      </div>
-      <div style="margin-top: 10px">
-        <button nz-button nzType="primary" [disabled]="Form.invalid">
-          Lưu
-        </button>
-        <button nz-button nzType="default">Cancel</button>
-      </div>
+      <!-- Ghi chú -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">Ghi chú</nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <input id="ghiChu" nz-input cFormControl sizing="sm" formControlName="ghiChu"
+            [(ngModel)]="khoanDetail.ghiChu" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label class="hide" [nzSpan]="5"></nz-form-label>
+        <nz-form-control [nzSpan]="16">
+          <button nz-button nzType="primary" nzPrimary type="submit">
+            Lưu lại
+          </button>
+          <button nz-button nzType="default" nzPrimary (click)="onClode()">
+            Đóng
+          </button>
+        </nz-form-control>
+      </nz-form-item>
     </form>
   </c-modal-body>
 </c-modal>

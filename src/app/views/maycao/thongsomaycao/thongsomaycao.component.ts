@@ -42,41 +42,25 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { ThietbiSearchComponent } from '../../../components/nav-thietbi-search/thietbi-search.component';
-
-export interface ThongsokythuatMayCao {
-  id: number;
-  tenThietBi: string;
-  noiDung: string;
-  donViTinh: string;
-  thongSo: string;
-}
-
-export interface ThongsokythuatMayCaoDetail {
-  id: number;
-  mayCaoId: number;
-  noiDung: string;
-  donViTinh: string;
-  thongSo: string;
-}
+import { NzFormModule } from 'ng-zorro-antd/form';
+import {
+  ThongsokythuatMayCao,
+  ThongsokythuatMayCaoDetail,
+} from '../../../core/interface/maycao/maycao-interface';
 @Component({
   selector: 'app-thongsomaycao',
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    FormDirective,
-    FormLabelDirective,
     FormControlDirective,
-    FormFeedbackComponent,
     FormSelectDirective,
-    ButtonDirective,
     ModalComponent,
     ModalHeaderComponent,
     ModalTitleDirective,
     ThemeDirective,
     ButtonCloseDirective,
     ModalBodyComponent,
-    ModalFooterComponent,
     RowComponent,
     ColComponent,
     TextColorDirective,
@@ -94,6 +78,7 @@ export interface ThongsokythuatMayCaoDetail {
     NzCascaderModule,
     NzTableModule,
     NzToolTipModule,
+    NzFormModule,
     ThietbiSearchComponent,
   ],
   templateUrl: './thongsomaycao.component.html',
@@ -282,7 +267,7 @@ export class ThongsomaycaoComponent implements OnInit {
   }
 
   public pageIndexChanged(event: any): void {
-    this.pageIndex = event.page;
+    this.pageIndex = event;
     this.loadData();
   }
 
