@@ -72,7 +72,6 @@ export class LoginComponent implements OnInit {
       .loginWithUserCredentials(this.form.value.email, this.form.value.password)
       .subscribe({
         next: (data: any) => {
-          console.log(data);
           this.router.navigate(['dashboard']);
         },
         error: () => {

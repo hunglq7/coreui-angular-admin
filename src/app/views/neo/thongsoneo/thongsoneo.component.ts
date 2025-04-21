@@ -40,6 +40,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzFormModule } from 'ng-zorro-antd/form';
 import { ThietbiSearchComponent } from '../../../components/nav-thietbi-search/thietbi-search.component';
 export interface ThongsoNeo {
   id: number;
@@ -62,10 +63,7 @@ export interface ThongsoNeoDetail {
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    FormDirective,
-    FormLabelDirective,
     FormControlDirective,
-    FormFeedbackComponent,
     FormSelectDirective,
     ModalComponent,
     ModalHeaderComponent,
@@ -73,7 +71,6 @@ export interface ThongsoNeoDetail {
     ThemeDirective,
     ButtonCloseDirective,
     ModalBodyComponent,
-    ModalFooterComponent,
     RowComponent,
     ColComponent,
     TextColorDirective,
@@ -91,6 +88,7 @@ export interface ThongsoNeoDetail {
     NzCascaderModule,
     NzTableModule,
     NzToolTipModule,
+    NzFormModule,
     ThietbiSearchComponent,
   ],
   templateUrl: './thongsoneo.component.html',
