@@ -64,11 +64,12 @@
               [nzTooltipTitle]="titleSua"
               [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
               nz-button
-              nzType="default"
+              nzType="primary"
+              style="border-radius: 3px"
               [nzSize]="size"
               (click)="onEdit(item.id)"
             >
-              <nz-icon nzType="edit" style="color: rgb(16, 142, 233)" />
+              <nz-icon nzType="edit" style="color: #ffffff" /><span>Sửa</span>
             </button>
 
             <button
@@ -76,11 +77,13 @@
               [nzTooltipTitle]="titleXoa"
               [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
               nz-button
-              nzType="default"
+              nzType="primary"
+              style="border-radius: 3px"
               [nzSize]="size"
+              nzDanger
               (click)="onDelete(item.id)"
             >
-              <nz-icon nzType="delete" style="color: rgb(255, 0, 0)" />
+              <nz-icon nzType="delete" style="color: #ffffff" /><span>Xóa</span>
             </button>
 
             <ng-template #titleSua let-thing>
