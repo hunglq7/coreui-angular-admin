@@ -199,6 +199,28 @@ export const navItems: INavData[] = [
     ],
   },
   {
+    name: 'Camera',
+    url: '/camera',
+    iconComponent: { name: 'cil-description' },
+    children: [
+      {
+        name: 'Danh mục camera',
+        url: '/camera/danhmuccamera',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Nhật ký camera',
+        url: '/camera/nhatkycamera',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Cập nhật camera',
+        url: '/camera/tonghopcamera',
+        icon: 'nav-icon-bullet',
+      },
+    ],
+  },
+  {
     name: 'Cập nhật máy tính',
     iconComponent: { name: 'cil-chart-pie' },
     url: '/tonghopmaytinh',

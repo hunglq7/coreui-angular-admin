@@ -79,6 +79,11 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./views/tonghopmaytinh/routes').then((m) => m.routes),
       },
+      {
+        path: 'camera',
+        loadChildren: () =>
+          import('./views/camera/routes').then((m) => m.routes),
+      },
     ],
   },
   {
