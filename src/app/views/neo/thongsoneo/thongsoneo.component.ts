@@ -275,7 +275,7 @@ export class ThongsoneoComponent implements OnInit {
   }
 
   public pageIndexChanged(event: any): void {
-    this.pageIndex = event.page;
+    this.pageIndex = event;
     this.loadData();
   }
 

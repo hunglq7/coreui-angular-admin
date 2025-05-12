@@ -252,7 +252,7 @@ export class TonghopneoComponent implements OnInit {
   }
 
   public pageSizeChange(event: any): void {
-    this.pageSize = event.pageSize;
+    this.pageSize = event;
     this.loadTonghopNeo();
   }
 
