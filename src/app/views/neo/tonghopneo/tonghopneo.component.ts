@@ -247,7 +247,7 @@ export class TonghopneoComponent implements OnInit {
   }
 
   public pageIndexChanged(event: any): void {
-    this.pageIndex = event.page;
+    this.pageIndex = event;
     this.loadTonghopNeo();
   }
 
