@@ -274,7 +274,7 @@ export class TonghopmaycaoComponent implements OnInit {
   }
 
   public pageIndexChanged(event: any): void {
-    this.pageIndex = event.page;
+    this.pageIndex = event;
     this.loadTonghopMaycao();
   }
   pageSizeChange(event: number): void {
