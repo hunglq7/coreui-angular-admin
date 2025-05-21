@@ -199,6 +199,28 @@ export const navItems: INavData[] = [
     ],
   },
   {
+    name: 'Băng tải',
+    url: '/bangtai',
+    iconComponent: { name: 'cil-description' },
+    children: [
+      {
+        name: 'Danh mục băng tải',
+        url: '/bangtai/danhmucbangtai',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Thông số kỹ thuật',
+        url: '/neo/thongsoneo',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Cập nhật neo',
+        url: '/neo/tonghopneo',
+        icon: 'nav-icon-bullet',
+      },
+    ],
+  },
+  {
     name: 'Camera',
     url: '/camera',
     iconComponent: { name: 'cil-description' },

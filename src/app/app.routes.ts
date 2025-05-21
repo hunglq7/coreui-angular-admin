@@ -65,6 +65,11 @@ export const routes: Routes = [
         loadChildren: () => import('./views/neo/routes').then((m) => m.routes),
       },
       {
+        path: 'bangtai',
+        loadChildren: () =>
+          import('./views/bangtai/routes').then((m) => m.routes),
+      },
+      {
         path: 'danhmuc',
         loadChildren: () =>
           import('./views/danhmuc/routes').then((m) => m.routes),
