@@ -23,6 +23,16 @@ export const routes: Routes = [
           title: 'Danh mục băng tải',
         },
       },
+      {
+        path: 'thongsobangtai',
+        loadComponent: () =>
+          import('./thongsobangtai/thongsobangtai.component').then(
+            (m) => m.ThongsobangtaiComponent
+          ),
+        data: {
+          title: 'Thông số băng tải',
+        },
+      },
     ],
   },
 ];

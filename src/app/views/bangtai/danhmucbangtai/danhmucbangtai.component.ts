@@ -121,9 +121,8 @@ export class DanhmucbangtaiComponent implements OnInit {
 
   save() {
     const selectedRows = this.gridApi.getSelectedRows();
-    console.log(JSON.stringify(selectedRows));
     this.dataService
-      .put('/api/Danhmucbangtai/UpdateMultiple', selectedRows)
+      .post('/api/Danhmucbangtai/UpdateMultiple', selectedRows)
       .subscribe({
         next: (data) => {
           this.loadData();
@@ -148,6 +147,7 @@ export class DanhmucbangtaiComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         const selectedRows = this.gridApi.getSelectedRows();
+        console.log(JSON.stringify(selectedRows));
         this.dataService
           .post('/api/Danhmucbangtai/DeleteMultipale', selectedRows)
           .subscribe({

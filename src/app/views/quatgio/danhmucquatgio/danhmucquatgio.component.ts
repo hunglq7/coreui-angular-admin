@@ -113,7 +113,6 @@ export class DanhmucquatgioComponent implements OnInit {
 
   save() {
     const selectedRows = this.gridApi.getSelectedRows();
-
     this.dataService
       .put('/api/Danhmucquatgio/UpdateMultiple', selectedRows)
       .subscribe({

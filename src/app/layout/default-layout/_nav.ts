@@ -210,7 +210,7 @@ export const navItems: INavData[] = [
       },
       {
         name: 'Thông số kỹ thuật',
-        url: '/neo/thongsoneo',
+        url: '/bangtai/thongsobangtai',
         icon: 'nav-icon-bullet',
       },
       {
