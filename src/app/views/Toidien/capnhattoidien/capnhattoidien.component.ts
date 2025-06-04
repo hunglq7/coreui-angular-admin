@@ -43,6 +43,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { SelectSearchComponent } from '../../../components/nav-select-search/select-search.component';
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
@@ -71,6 +72,7 @@ export interface TonghoptoitrucDetail {
   mucDichSuDung: string;
   soLuong: number;
   tinhTrangThietBi: string;
+  duPhong: boolean;
   ghiChu: string;
 }
 
@@ -112,6 +114,7 @@ export interface TonghoptoitrucDetail {
     NzModalModule,
     NzToolTipModule,
     NzFormModule,
+    NzSwitchModule,
   ],
 
   templateUrl: './capnhattoidien.component.html',
@@ -131,6 +134,7 @@ export class CapnhattoidienComponent implements OnInit {
   filterKeyword = '';
   keywordThietbi: number = 0;
   keywordDonvi: number = 0;
+  keywordDuPhong: boolean = false;
   toitrucs: Tonghoptoitruc[] = [];
   toitrucDetail: TonghoptoitrucDetail = {
     id: 0,
@@ -142,6 +146,7 @@ export class CapnhattoidienComponent implements OnInit {
     mucDichSuDung: '',
     soLuong: 0,
     tinhTrangThietBi: '',
+    duPhong: false,
     ghiChu: '',
   };
   dsToitruc: any[] = [];
@@ -194,6 +199,7 @@ export class CapnhattoidienComponent implements OnInit {
       mucDichSuDung: new FormControl(''),
       soLuong: new FormControl('', [Validators.required]),
       tinhTrangThietBi: new FormControl(''),
+      duPhong: new FormControl(false),
       ghiChu: new FormControl(''),
     });
   }
@@ -244,6 +250,7 @@ export class CapnhattoidienComponent implements OnInit {
       mucDichSuDung: items.mucDichSuDung,
       soLuong: items.soLuong,
       tinhTrangThietBi: items.tinhTrangThietBi,
+      duPhong: items.duPhong,
       ghiChu: items.ghiChu,
     });
   }
@@ -271,12 +278,15 @@ export class CapnhattoidienComponent implements OnInit {
           this.keywordThietbi +
           '&donviId=' +
           this.keywordDonvi +
+          '&DuPhong=' +
+          this.keywordDuPhong +
           '&PageIndex=' +
           this.pageIndex +
           '&PageSize=' +
           this.pageSize
       )
       .subscribe((data: any) => {
+        console.log(data);
         this.toitrucs = data.items;
         this.pageSize = data.pageSize;
         this.pageIndex = data.pageIndex;
@@ -341,6 +351,7 @@ export class CapnhattoidienComponent implements OnInit {
 
   save() {
     if (this.themoi) {
+      console.log(this.Form.value);
       this.dataService.post('/api/Tonghoptoitruc', this.Form.value).subscribe({
         next: () => {
           this.loadTonghoptoitruc();

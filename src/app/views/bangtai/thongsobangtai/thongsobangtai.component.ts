@@ -130,7 +130,6 @@ export class ThongsobangtaiComponent implements OnInit {
 
   private loadFormData(items: ThongSoKyThuatBangTai) {
     this.entity = items;
-    console.log(this.entity);
     this.Form.setValue({
       id: items.id,
       bangTaiId: items.bangTaiId,
@@ -162,7 +161,6 @@ export class ThongsobangtaiComponent implements OnInit {
     this.dataService.get('/api/Danhmucbangtai').subscribe({
       next: (data: any) => {
         this.dsDanhmucBangtai = data;
-        console.log(this.dsDanhmucBangtai);
       },
     });
   }

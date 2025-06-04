@@ -45,6 +45,12 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         <nz-option [nzLabel]="item.tenPhong" [nzValue]="item.id"></nz-option>
         }
       </nz-select>
+      <nz-checkbox
+        [(ngModel)]="keywordDuPhong"
+        nzValue="true"
+        nzCheckedChildren="Dự phòng"
+        nzUnCheckedChildren="Không dự phòng"
+      ></nz-checkbox>
     </nz-input-group>
 
     <ng-template #suffixIconButton>
@@ -69,12 +75,16 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 export class SelectSearchComponent {
   @Input() dsThietbi: any[] = [];
   @Input() dsDonvi: any[] = [];
+  @Input() DuPhong: any[] = [];
   @Output() eventSearchThietbi = new EventEmitter<any>();
   @Output() eventSearchDonvi = new EventEmitter<any>();
+  @Output() eventSearchDuPhong = new EventEmitter<any>();
   keywordThietbi: number = 0;
   keywordDonvi: number = 0;
+  keywordDuPhong: Boolean = false;
   search() {
     this.eventSearchThietbi.emit(this.keywordThietbi);
     this.eventSearchDonvi.emit(this.keywordDonvi);
+    this.eventSearchDuPhong.emit(this.keywordDuPhong);
   }
 }
