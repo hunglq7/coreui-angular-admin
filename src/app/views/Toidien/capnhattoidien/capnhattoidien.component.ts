@@ -146,7 +146,7 @@ export class CapnhattoidienComponent implements OnInit {
     mucDichSuDung: '',
     soLuong: 0,
     tinhTrangThietBi: '',
-    duPhong: false,
+    duPhong: this.keywordDuPhong,
     ghiChu: '',
   };
   dsToitruc: any[] = [];
@@ -351,7 +351,7 @@ export class CapnhattoidienComponent implements OnInit {
 
   save() {
     if (this.themoi) {
-      console.log(this.Form.value);
+      alert(JSON.stringify(this.Form.value));
       this.dataService.post('/api/Tonghoptoitruc', this.Form.value).subscribe({
         next: () => {
           this.loadTonghoptoitruc();

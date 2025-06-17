@@ -315,6 +315,7 @@ export class TonghopmayxucComponent implements OnInit {
   }
   onDelete(id: number) {
     this.Id = id;
+    console.log('Id:', this.Id);
     this.dataService.delete('/api/Tonghopmayxuc/' + this.Id).subscribe({
       next: () => {
         this.loadTonghopMayxuc();
