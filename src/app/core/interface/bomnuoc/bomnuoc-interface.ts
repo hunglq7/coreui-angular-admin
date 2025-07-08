@@ -21,6 +21,7 @@ export interface TongHopBomNuoc {
   ngayLap: string;
   soLuong: number;
   tinhTrangThietBi: string;
+  duPhong: boolean;
   ghiChu: string;
 }
 
@@ -33,6 +34,7 @@ export interface TongHopBomNuocDetail {
   ngayLap: string;
   soLuong: number;
   tinhTrangThietBi: string;
+  duPhong: boolean;
   ghiChu: string;
 }
 

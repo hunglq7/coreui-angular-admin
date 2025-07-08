@@ -121,6 +121,23 @@ export const navItems: INavData[] = [
     ],
   },
   {
+    name: 'Rơ le',
+    url: '/role',
+    iconComponent: { name: 'cil-description' },
+    children: [
+      {
+        name: 'Danh mục rơ le',
+        url: '/role/danhmucrole',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Cập nhật rơ le',
+        url: '/role/tonghoprole',
+        icon: 'nav-icon-bullet',
+      },
+    ],
+  },
+  {
     name: 'Ba lăng',
     url: '/balang',
     iconComponent: { name: 'cil-description' },

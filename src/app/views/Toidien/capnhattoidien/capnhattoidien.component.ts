@@ -27,7 +27,11 @@ import {
   SharedModule,
   FormModule,
 } from '@coreui/angular';
-
+import {
+  FormCheckComponent,
+  FormCheckInputDirective,
+  FormCheckLabelDirective,
+} from '@coreui/angular';
 // Tab
 import {
   TabPanelComponent,
@@ -59,6 +63,7 @@ export interface Tonghoptoitruc {
   ngayLap: string;
   mucDichSuDung: string;
   soLuong: number;
+  duPhong: boolean;
   tinhTrangThietBi: string;
 }
 
@@ -115,6 +120,9 @@ export interface TonghoptoitrucDetail {
     NzToolTipModule,
     NzFormModule,
     NzSwitchModule,
+    FormCheckComponent,
+    FormCheckInputDirective,
+    FormCheckLabelDirective,
   ],
 
   templateUrl: './capnhattoidien.component.html',
@@ -199,7 +207,7 @@ export class CapnhattoidienComponent implements OnInit {
       mucDichSuDung: new FormControl(''),
       soLuong: new FormControl('', [Validators.required]),
       tinhTrangThietBi: new FormControl(''),
-      duPhong: new FormControl(false),
+      duPhong: new FormControl(''),
       ghiChu: new FormControl(''),
     });
   }
@@ -234,6 +242,7 @@ export class CapnhattoidienComponent implements OnInit {
           '-' +
           ('0' + myDate.getDate()).slice(-2);
         this.toitrucDetail.ngayLap = myDateString;
+        this.toitrucDetail.duPhong = this.keywordDuPhong;
         this.loadFormData(this.toitrucDetail);
       },
     });
@@ -254,7 +263,9 @@ export class CapnhattoidienComponent implements OnInit {
       ghiChu: items.ghiChu,
     });
   }
-
+  clickSwitch() {
+    this.keywordDuPhong = !this.keywordDuPhong;
+  }
   getDataDonvi() {
     this.dataService.get('/api/Phongban').subscribe({
       next: (data: any) => {
@@ -278,15 +289,12 @@ export class CapnhattoidienComponent implements OnInit {
           this.keywordThietbi +
           '&donviId=' +
           this.keywordDonvi +
-          '&DuPhong=' +
-          this.keywordDuPhong +
           '&PageIndex=' +
           this.pageIndex +
           '&PageSize=' +
           this.pageSize
       )
       .subscribe((data: any) => {
-        console.log(data);
         this.toitrucs = data.items;
         this.pageSize = data.pageSize;
         this.pageIndex = data.pageIndex;
@@ -351,13 +359,12 @@ export class CapnhattoidienComponent implements OnInit {
 
   save() {
     if (this.themoi) {
-      alert(JSON.stringify(this.Form.value));
       this.dataService.post('/api/Tonghoptoitruc', this.Form.value).subscribe({
         next: () => {
-          this.loadTonghoptoitruc();
           this.toastr.success('Lưu dữ liệu thành công', 'Success');
           this.liveDemoVisible = !this.liveDemoVisible;
           this.Form.reset();
+          this.loadTonghoptoitruc();
         },
         error: () => {
           this.toastr.error('Lưu dữ liệu thất bại', 'Error');
@@ -366,10 +373,10 @@ export class CapnhattoidienComponent implements OnInit {
     } else {
       this.dataService.put('/api/Tonghoptoitruc', this.Form.value).subscribe({
         next: () => {
-          this.loadTonghoptoitruc();
           this.toastr.success('Lưu dữ liệu thành công', 'Success');
           this.liveDemoVisible = !this.liveDemoVisible;
           this.Form.reset();
+          this.loadTonghoptoitruc();
         },
         error: () => {
           this.toastr.error('Lưu dữ liệu thất bại', 'Error');

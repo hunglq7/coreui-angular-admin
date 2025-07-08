@@ -42,7 +42,7 @@
                 </button>
 
                 <button nz-tooltip [nzTooltipTitle]="titleXoa" [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button
-                  nzType="primary" nzDanger style="border-radius: 3px" [nzSize]="size" (click)="showConfirm(item)">
+                  nzType="primary" nzDanger style="border-radius: 3px" [nzSize]="size" (click)="showConfirm(item.id)">
                   <nz-icon nzType="delete" style="color: #ffffff" /><span>Xóa</span>
                 </button>
                 <ng-template #titleSua let-thing>
@@ -171,6 +171,21 @@
                       [(ngModel)]="dataDetail.tinhTrangThietBi" />
                   </nz-form-control>
                 </nz-form-item>
+
+                <!-- Thiết bị dự phòng -->
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5">TB Dự phòng</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <c-form-check [switch]="dataDetail.duPhong">
+                      <input cFormCheckInput checked sizing="lg" type="checkbox" [(ngModel)]="dataDetail.duPhong"
+                        formControlName="duPhong" />
+                      <label cFormCheckLabel>{{
+                        dataDetail.duPhong ? "Kích hoạt" : "Hủy kích hoạt"
+                        }}</label>
+                    </c-form-check>
+                  </nz-form-control>
+                </nz-form-item>
+
 
                 <!-- Ghi chú -->
                 <nz-form-item>

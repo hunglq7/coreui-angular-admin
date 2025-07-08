@@ -28,6 +28,11 @@ import {
   TabsListComponent,
   ThemeDirective,
 } from '@coreui/angular';
+import {
+  FormCheckComponent,
+  FormCheckInputDirective,
+  FormCheckLabelDirective,
+} from '@coreui/angular';
 import { NzButtonModule, NzButtonSize } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
@@ -86,6 +91,9 @@ import { SelectSearchComponent } from '../../../components/nav-select-search/sel
     NzFormModule,
     NhatkybomnuocTabComponent,
     ThongsobomnuocTabComponent,
+    FormCheckComponent,
+    FormCheckInputDirective,
+    FormCheckLabelDirective,
   ],
   templateUrl: './tonghopbomnuoc.component.html',
   styleUrl: './tonghopbomnuoc.component.scss',
@@ -103,6 +111,7 @@ export class TonghopbomnuocComponent implements OnInit {
   pageDisplay = 10;
   keywordThietbi: number = 0;
   keywordDonvi: number = 0;
+  keywordDuPhong: boolean = false;
   data: TongHopBomNuoc[] = [];
   dataDetail: TongHopBomNuocDetail = {
     id: 0,
@@ -113,6 +122,7 @@ export class TonghopbomnuocComponent implements OnInit {
     ngayLap: '',
     soLuong: 1,
     tinhTrangThietBi: '',
+    duPhong: this.keywordDuPhong,
     ghiChu: '',
   };
   danhSach: any[] = [];
@@ -149,6 +159,7 @@ export class TonghopbomnuocComponent implements OnInit {
       ngayLap: new Date(),
       soLuong: 1,
       tinhTrangThietBi: [''],
+      duPhong: [''],
       ghiChu: [''],
     });
   }
@@ -186,7 +197,9 @@ export class TonghopbomnuocComponent implements OnInit {
       },
     });
   }
-
+  clickSwitch() {
+    this.keywordDuPhong = !this.keywordDuPhong;
+  }
   addNew() {
     this.dataService.getById('/api/Tonghopbomnuoc/' + 0).subscribe({
       next: (data) => {
@@ -200,6 +213,7 @@ export class TonghopbomnuocComponent implements OnInit {
           '-' +
           ('0' + myDate.getDate()).slice(-2);
         this.dataDetail.ngayLap = myDateString;
+        this.dataDetail.duPhong = this.keywordDuPhong;
         this.loadFormData(this.dataDetail);
       },
     });
@@ -216,6 +230,7 @@ export class TonghopbomnuocComponent implements OnInit {
       ngayLap: entity.ngayLap,
       soLuong: entity.soLuong,
       tinhTrang: entity.tinhTrangThietBi,
+      duPhong: entity.duPhong,
       ghiChu: entity.ghiChu,
     });
   }
@@ -314,6 +329,7 @@ export class TonghopbomnuocComponent implements OnInit {
 
   save() {
     if (this.themoi) {
+      alert(JSON.stringify(this.Form.value));
       this.dataService.post('/api/Tonghopbomnuoc', this.Form.value).subscribe({
         next: () => {
           this.loadTonghopBomnuoc();
@@ -326,6 +342,7 @@ export class TonghopbomnuocComponent implements OnInit {
         },
       });
     } else {
+      alert(JSON.stringify(this.Form.value));
       this.dataService
         .put('/api/Tonghopbomnuoc/update', this.Form.value)
         .subscribe({

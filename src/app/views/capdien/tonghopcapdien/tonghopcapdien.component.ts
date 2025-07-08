@@ -22,12 +22,18 @@ import {
   DropdownModule,
   SharedModule,
 } from '@coreui/angular';
+import {
+  FormCheckComponent,
+  FormCheckInputDirective,
+  FormCheckLabelDirective,
+} from '@coreui/angular';
 import { NzButtonModule, NzButtonSize } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -73,6 +79,10 @@ import {
     NzModalModule,
     NzToolTipModule,
     NzFormModule,
+    NzSwitchModule,
+    FormCheckComponent,
+    FormCheckInputDirective,
+    FormCheckLabelDirective,
   ],
   templateUrl: './tonghopcapdien.component.html',
   styleUrl: './tonghopcapdien.component.scss',
