@@ -1,0 +1,192 @@
+<c-col sm="12">
+    <app-select-search [dsThietbi]="dsRole" [dsDonvi]="dsPhongBan" (eventSearchThietbi)="eventThietbi($event)"
+        (eventSearchDonvi)="eventDonvi($event)"></app-select-search>
+
+    <button (click)="onThemmoi()" nz-button nzType="primary" nzPrimary>
+        <span>Thêm</span>
+    </button>
+    <button (click)="exportexcel()" nz-button nzType="default" nzPrimary>
+        Xuất Excel
+    </button>
+    <c-col sm="12">
+        <c-row>
+            <c-col sm="12">
+                <nz-table cTable #columnTable nzShowQuickJumper nzShowSizeChanger [nzData]="dataView"
+                    [nzScroll]="{ x: '1100px' }" [nzPageIndex]="pageIndex" [nzPageSize]="pageSize"
+                    [nzPageSizeOptions]="[3, 5, 10, 20]" [nzTotal]="totalRow" [nzFrontPagination]="false"
+                    (nzPageIndexChange)="pageIndexChanged($event)" (nzPageSizeChange)="pageSizeChange($event)">
+                    <thead>
+                        <tr>
+                            <th nzLeft scope="col" style="width: 100px">Role</th>
+                            <th scope="col" style="width: 200px">Phòng ban</th>
+                            <th scope="col" style="width: 200px">Vị trí lắp đặt</th>
+                            <th scope="col" style="width: 120px;">Ngày lắp</th>
+                            <th scope="col" style="width: 100px;">Số lượng</th>
+                            <th scope="col" style="width: 140px;">Tình trạng thiết bị</th>
+                            <th scope="col">Dự phòng</th>
+                            <th scope="col">Làm việc</th>
+                            <th scope="col">Ghi chú</th>
+                            <th scope="col">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (item of dataView; track $index) {
+                        <tr>
+                            <td nzLeft>{{ item.tenThietBi }}</td>
+                            <td>{{ item.tenPhong }}</td>
+                            <td>{{ item.tenViTriLapDat }}</td>
+                            <td>{{ item.ngayLap | date : "dd/MM/yyyy" }}</td>
+                            <td>{{ item.soLuong }}</td>
+                            <td>{{ item.tinhTrangThietBi }}</td>
+                            <td>{{ item.duPhong ? 'Có' : 'Không' }}</td>
+                            <td>{{ item.lamViec ? 'Có' : 'Không' }}</td>
+                            <td>{{ item.ghiChu }}</td>
+                            <td>
+                                <button nz-tooltip [nzTooltipTitle]="titleSua"
+                                    [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button nzType="primary"
+                                    style="border-radius: 3px" [nzSize]="size" (click)="onEdit(item.id)">
+                                    <nz-icon nzType="edit" style="color: #ffffff" /><span>Sửa</span>
+                                </button>
+                                <button nz-tooltip [nzTooltipTitle]="titleXoa"
+                                    [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button nzType="primary" nzDanger
+                                    style="border-radius: 3px" [nzSize]="size" (click)="showConfirm(item)">
+                                    <nz-icon nzType="delete" style="color: #ffffff" /><span>Xóa</span>
+                                </button>
+                                <ng-template #titleSua let-thing>
+                                    <nz-icon nzType="edit" />
+                                    <span>Sửa bản ghi</span>
+                                </ng-template>
+                                <ng-template #titleXoa let-thing>
+                                    <nz-icon nzType="delete" />
+                                    <span>Xóa bản ghi</span>
+                                </ng-template>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </nz-table>
+                <div class="d-flex justify-content-between" style="margin-left: 30px; margin-bottom: 10px">
+                    <div>
+                        <strong>
+                            Tổng số role:
+                            <span class="text-primary">{{ sumSoluong }}</span></strong>
+                    </div>
+                </div>
+            </c-col>
+        </c-row>
+    </c-col>
+</c-col>
+
+<!-- Model -->
+<c-modal id="liveDemoModal" size="lg" backdrop="static" [visible]="visible"
+    (visibleChange)="handleLiveDemoChange($event)">
+    <c-modal-header>
+        <h5 cModalTitle>{{ title }}</h5>
+        <button (click)="toggle()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <c-row>
+            <c-col xs="12">
+                <form nz-form [formGroup]="Form" (ngSubmit)="save()">
+                    <input hidden="true" [(ngModel)]="dataDetail.id" formControlName="id" cFormControl type="number" />
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="5" nzFor="roleId" nzRequired>Role</nz-form-label>
+                        <nz-form-control [nzSpan]="16" nzErrorTip="Role phải chọn">
+                            <select id="roleId" formControlName="roleId" [(ngModel)]="dataDetail.roleId"
+                                aria-label="Default select example" cSelect sizing="sm">
+                                <option>Chọn role</option>
+                                @for (item of dsRole; track item.id) {
+                                <option value="{{ item.id }}">
+                                    {{ item.tenThietBi }}
+                                </option>
+                                }
+                            </select>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="5">Phòng ban</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <select id="phongBanId" formControlName="phongBanId" [(ngModel)]="dataDetail.phongBanId"
+                                cSelect sizing="sm">
+                                <option>Chọn phòng ban</option>
+                                @for (item of dsPhongBan; track item.id) {
+                                <option value="{{ item.id }}">{{ item.tenPhong }}</option>
+                                }
+                            </select>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="5">Vị trí lắp đặt</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input id="viTriLapDat" nz-input cFormControl sizing="sm" formControlName="viTriLapDat"
+                                [(ngModel)]="dataDetail.viTriLapDat" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="5">Ngày lắp</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input id="ngayLap" nz-input cFormControl sizing="sm" formControlName="ngayLap" type="date"
+                                [(ngModel)]="dataDetail.ngayLap" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="5">Số lượng</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input id="soLuong" nz-input cFormControl sizing="sm" formControlName="soLuong"
+                                [(ngModel)]="dataDetail.soLuong" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="5">Tình trạng thiết bị</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input id="tinhTrangThietBi" nz-input cFormControl sizing="sm"
+                                formControlName="tinhTrangThietBi" [(ngModel)]="dataDetail.tinhTrangThietBi" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="5">Dự phòng</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <c-form-check [switch]="dataDetail.duPhong">
+                                <input cFormCheckInput checked sizing="lg" type="checkbox"
+                                    [(ngModel)]="dataDetail.duPhong" formControlName="duPhong" />
+                                <label cFormCheckLabel>{{
+                                    dataDetail.duPhong ? "Kích hoạt" : "Hủy kích hoạt"
+                                    }}</label>
+                            </c-form-check>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="5">Làm việc</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <c-form-check [switch]="dataDetail.lamViec">
+                                <input cFormCheckInput checked sizing="lg" type="checkbox"
+                                    [(ngModel)]="dataDetail.lamViec" formControlName="lamViec" />
+                                <label cFormCheckLabel>{{
+                                    dataDetail.lamViec ? "Kích hoạt" : "Hủy kích hoạt"
+                                    }}</label>
+                            </c-form-check>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="5">Ghi chú</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <input id="ghiChu" nz-input cFormControl sizing="sm" formControlName="ghiChu"
+                                [(ngModel)]="dataDetail.ghiChu" />
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-label class="hide" [nzSpan]="5"></nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                            <button nz-button nzType="primary" nzPrimary type="submit">
+                                Lưu lại
+                            </button>
+                            <button nz-button nzType="default" nzPrimary (click)="onClode()">
+                                Đóng
+                            </button>
+                        </nz-form-control>
+                    </nz-form-item>
+                </form>
+            </c-col>
+        </c-row>
+    </c-modal-body>
+</c-modal>

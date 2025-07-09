@@ -50,6 +50,11 @@ export const routes: Routes = [
         loadChildren: () => import('./views/role/routes').then((m) => m.routes),
       },
       {
+        path: 'bienap',
+        loadChildren: () =>
+          import('./views/Bienap/routes').then((m) => m.routes),
+      },
+      {
         path: 'balang',
         loadChildren: () =>
           import('./views/balang/routes').then((m) => m.routes),

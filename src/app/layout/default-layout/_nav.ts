@@ -138,6 +138,23 @@ export const navItems: INavData[] = [
     ],
   },
   {
+    name: 'Biến áp',
+    url: '/bienap',
+    iconComponent: { name: 'cil-description' },
+    children: [
+      {
+        name: 'Danh mục biến áp',
+        url: '/bienap/danhmucbienap',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Thông số biến áp',
+        url: '/bienap/thongsobienap',
+        icon: 'nav-icon-bullet',
+      },
+    ],
+  },
+  {
     name: 'Ba lăng',
     url: '/balang',
     iconComponent: { name: 'cil-description' },
