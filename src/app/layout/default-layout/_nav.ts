@@ -255,6 +255,18 @@ export const navItems: INavData[] = [
     ],
   },
   {
+    name: 'Áp to mát & khởi động từ',
+    url: '/aptomatkhoidongtu',
+    iconComponent: { name: 'cil-description' },
+    children: [
+      {
+        name: 'Danh mục áp to mát & khởi động từ',
+        url: '/aptomatkhoidongtu/danhmucaptomatkhoidongtu',
+        icon: 'nav-icon-bullet',
+      },
+    ],
+  },
+  {
     name: 'Camera',
     url: '/camera',
     iconComponent: { name: 'cil-description' },

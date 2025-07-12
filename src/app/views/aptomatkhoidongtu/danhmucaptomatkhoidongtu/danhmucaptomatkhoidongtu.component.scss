@@ -1,0 +1,29 @@
+// Custom styles for danhmucaptomatkhoidongtu component
+.ag-theme-alpine {
+  --ag-header-height: 50px;
+  --ag-row-height: 40px;
+  --ag-header-foreground-color: #333;
+  --ag-header-background-color: #f8f9fa;
+  --ag-odd-row-background-color: #f8f9fa;
+  --ag-row-hover-color: #e9ecef;
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+.justify-content-between {
+  justify-content: space-between !important;
+}
+
+.mb-3 {
+  margin-bottom: 1rem !important;
+}
+
+.me-2 {
+  margin-right: 0.5rem !important;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem !important;
+} 

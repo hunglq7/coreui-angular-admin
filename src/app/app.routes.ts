@@ -79,6 +79,11 @@ export const routes: Routes = [
           import('./views/bangtai/routes').then((m) => m.routes),
       },
       {
+        path: 'aptomatkhoidongtu',
+        loadChildren: () =>
+          import('./views/aptomatkhoidongtu/routes').then((m) => m.routes),
+      },
+      {
         path: 'danhmuc',
         loadChildren: () =>
           import('./views/danhmuc/routes').then((m) => m.routes),

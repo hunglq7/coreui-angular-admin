@@ -1,0 +1,35 @@
+<c-row>
+    <c-col xs="12">
+        <c-card class="mb-4">
+            <c-card-header>
+                <strong>Danh mục Aptomat Khởi động từ</strong>
+            </c-card-header>
+            <c-card-body>
+                <div class="d-flex justify-content-between mb-3">
+                    <div>
+                        <button cButton color="primary" class="me-2" (click)="onAddRow()">
+                            Thêm mới
+                        </button>
+                        <button cButton color="success" class="me-2" (click)="save()">
+                            Lưu
+                        </button>
+                        <button cButton color="danger" class="me-2" (click)="confirmDelete()">
+                            Xóa
+                        </button>
+                        <button cButton color="info" class="me-2" (click)="exportexcel()">
+                            Xuất Excel
+                        </button>
+                    </div>
+                    <div>
+                        <app-nav-import-excel (fileSelected)="importexcel($event)"></app-nav-import-excel>
+                    </div>
+                </div>
+
+                <ag-grid-angular style="width: 100%; height: 500px" class="ag-theme-alpine" [columnDefs]="colDefs"
+                    [rowData]="data" [rowSelection]="rowSelection" [defaultColDef]="defaulColDef"
+                    (gridReady)="onGridReady($event)" [animateRows]="true" [suppressRowClickSelection]="true">
+                </ag-grid-angular>
+            </c-card-body>
+        </c-card>
+    </c-col>
+</c-row>
