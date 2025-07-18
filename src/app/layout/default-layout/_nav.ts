@@ -267,6 +267,23 @@ export const navItems: INavData[] = [
     ],
   },
   {
+    name: 'Giá & Cột thủy lực',
+    url: '/giacotthuyluc',
+    iconComponent: { name: 'cil-description' },
+    children: [
+      {
+        name: 'Danh mục giá & Cột thủy lực',
+        url: '/giacotthuyluc/danhmucgiacotthuyluc',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Cập nhật giá & cột thủy lực',
+        url: '/giacotthuyluc/tonghopgiacotthuyluc',
+        icon: 'nav-icon-bullet',
+      },
+    ],
+  },
+  {
     name: 'Camera',
     url: '/camera',
     iconComponent: { name: 'cil-description' },

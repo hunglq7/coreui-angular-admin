@@ -88,7 +88,10 @@
         <button color="primary" cButton size="sm">Cập nhật</button>
       </c-card-body>
       <c-card-footer>
-        <small class="text-medium-emphasis">Tổng số bản ghi <strong>3</strong></small>
+        <div class="d-flex justify-content-between">
+          <small class="text-medium-emphasis">Tổng số thiết bị </small>
+          <span class="badge bg-danger">3</span>
+        </div>
       </c-card-footer>
     </c-card>
   </c-col>
@@ -102,7 +105,10 @@
         <button routerLink="/Role/tonghoprole" color="primary" cButton size="sm">Cập nhật</button>
       </c-card-body>
       <c-card-footer>
-        <small class="text-medium-emphasis">Tổng số bản ghi <strong>3</strong></small>
+        <div class="d-flex justify-content-between">
+          <small class="text-medium-emphasis">Tổng số thiết bị </small>
+          <span class="badge bg-danger">3</span>
+        </div>
       </c-card-footer>
     </c-card>
   </c-col>
@@ -117,8 +123,12 @@
           Cập nhật
         </button>
       </c-card-body>
+
       <c-card-footer>
-        <small class="badge bg-danger">Tổng số bản ghi <strong>{{sumTonghopcapdien}}</strong></small>
+        <div class="d-flex justify-content-between">
+          <small class="text-medium-emphasis">Tổng số thiết bị </small>
+          <span class="badge bg-danger">{{ sumTonghopcapdien }}</span>
+        </div>
       </c-card-footer>
     </c-card>
   </c-col>
@@ -187,6 +197,63 @@
         <h6 cCardTitle>THIẾT BỊ NEO</h6>
         <p cCardText>Cập nhật TB neo</p>
         <button routerLink="/neo/tonghopneo" color="primary" cButton size="sm">
+          Cập nhật
+        </button>
+      </c-card-body>
+      <c-card-footer>
+        <div class="d-flex justify-content-between">
+          <small class="text-medium-emphasis">Tổng số thiết bị </small>
+          <span class="badge bg-danger">{{ sumTonghopneo }}</span>
+        </div>
+      </c-card-footer>
+    </c-card>
+  </c-col>
+  <c-col>
+    <c-card class="hCard">
+      <img class="p-3" style="width: 100%; height: 200px" cCardImg="top"
+        src="../../../assets/images/thietbi/Bang-tai.jpg" />
+      <c-card-body>
+        <h6 cCardTitle>THIẾT BỊ BĂNG TẢI</h6>
+        <p cCardText>Cập nhật TB băng tải</p>
+        <button routerLink="/bangtai/danhmucbangtai" color="primary" cButton size="sm">
+          Cập nhật
+        </button>
+      </c-card-body>
+      <c-card-footer>
+        <div class="d-flex justify-content-between">
+          <small class="text-medium-emphasis">Tổng số thiết bị </small>
+          <span class="badge bg-danger">{{ sumTonghopneo }}</span>
+        </div>
+      </c-card-footer>
+    </c-card>
+  </c-col>
+  <c-col>
+    <c-card class="hCard">
+      <img class="p-3" style="width: 100%; height: 200px" cCardImg="top"
+        src="../../../assets/images/thietbi/gia-cot.jpg" />
+      <c-card-body>
+        <h6 cCardTitle>GIÁ & CỘT THỦY LỰC</h6>
+        <p cCardText>Cập nhật Giá & Cột thủy lực</p>
+        <button routerLink="/giacotthuyluc/tonghopgiacotthuyluc" color="primary" cButton size="sm">
+          Cập nhật
+        </button>
+      </c-card-body>
+      <c-card-footer>
+        <div class="d-flex justify-content-between">
+          <small class="text-medium-emphasis">Tổng số thiết bị </small>
+          <span class="badge bg-danger">{{ sumTonghopneo }}</span>
+        </div>
+      </c-card-footer>
+    </c-card>
+  </c-col>
+  <c-col>
+    <c-card class="hCard">
+      <img class="p-3" style="width: 100%; height: 200px" cCardImg="top"
+        src="../../../assets/images/thietbi/Ap-to-mat.png" />
+      <c-card-body>
+        <h6 cCardTitle>ÁP TO MÁT & KHỞI ĐỘNG TỪ</h6>
+        <p cCardText>Cập nhật Áp to mát& Khởi động từ</p>
+        <button routerLink="/aptomatkhoidongtu/danhmucaptomatkhoidongtu" color="primary" cButton size="sm">
           Cập nhật
         </button>
       </c-card-body>

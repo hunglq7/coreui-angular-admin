@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ButtonDirective } from '@coreui/angular';
 import { ToastrService } from 'ngx-toastr';
-import { ConfirmDialogComponent } from '../../../shared/utils/dialogs/confirm-dialog/confirm-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import {
   ColDef,
   GridApi,
@@ -22,13 +22,11 @@ import {
 } from '@coreui/angular';
 import * as XLSX from 'xlsx';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-import { NavImportExcelComponent } from '../../../components/nav-import-excel/nav-import-excel.component';
-import { DanhmucAptomatKhoidongTu } from '../../../core/interface/aptomatkhoidongtu/aptomatkhoidongtu-interface';
-
+import { GiacotThuyluc } from '../../../core/interface/giacotthuyluc/giacotthuyluc.interface';
 ModuleRegistry.registerModules([AllCommunityModule, RowSelectionModule]);
 
 @Component({
-  selector: 'app-danhmucaptomatkhoidongtu',
+  selector: 'app-danhmucgiacotthuyluc',
   imports: [
     RowComponent,
     ColComponent,
@@ -36,39 +34,33 @@ ModuleRegistry.registerModules([AllCommunityModule, RowSelectionModule]);
     CardComponent,
     CardHeaderComponent,
     CardBodyComponent,
-    ButtonDirective,
     AgGridAngular,
-    NavImportExcelComponent,
+    NzModalModule,
+    NzButtonModule,
+    NzIconModule,
   ],
-  templateUrl: './danhmucaptomatkhoidongtu.component.html',
-  styleUrl: './danhmucaptomatkhoidongtu.component.scss',
+  templateUrl: './danhmucgiacotthuyluc.component.html',
+  styleUrl: './danhmucgiacotthuyluc.component.scss',
 })
-export class DanhmucaptomatkhoidongtuComponent implements OnInit {
-  private gridApi!: GridApi<DanhmucAptomatKhoidongTu>;
-  data: DanhmucAptomatKhoidongTu[] = [];
+export class DanhmucgiacotthuylucComponent implements OnInit {
+  private gridApi!: GridApi<GiacotThuyluc>;
+  data: GiacotThuyluc[] = [];
   excelData: any;
-
   constructor(
     private dataService: DataService,
     private toastr: ToastrService,
-    private dialog: MatDialog
+    private modal: NzModalService
   ) {}
-
-  ngOnInit(): void {
-    this.loadData();
-  }
 
   rowSelection: RowSelectionOptions | 'single' | 'multiple' = {
     mode: 'multiRow',
   };
-
   defaulColDef = {
     flex: 1,
     minWith: 100,
     minHight: 50,
   };
-
-  onGridReady(params: GridReadyEvent<DanhmucAptomatKhoidongTu>) {
+  onGridReady(params: GridReadyEvent<GiacotThuyluc>) {
     this.gridApi = params.api;
   }
 
@@ -117,7 +109,7 @@ export class DanhmucaptomatkhoidongtuComponent implements OnInit {
   ];
 
   loadData() {
-    this.dataService.get('/api/DanhmucAptomatKhoidongtu').subscribe({
+    this.dataService.get('/api/Danhmucgiacotthuyluc').subscribe({
       next: (response: any) => {
         this.data = response;
       },
@@ -127,10 +119,39 @@ export class DanhmucaptomatkhoidongtuComponent implements OnInit {
     });
   }
 
+  ConfirmDelete(): void {
+    let pos = 2;
+    this.modal.confirm({
+      nzTitle: '<i>Bạn có muốn xóa bản ghi này?</i>',
+      nzContent: '<b>Giá cột thủy lực: </b>',
+      nzStyle: {
+        position: 'relative',
+        top: `${pos * 90}px`,
+        left: `${pos * 60}px`,
+      },
+      nzOnOk: () => this.Delete(),
+    });
+  }
+
+  Delete() {
+    const selectedRows = this.gridApi.getSelectedRows();
+    this.dataService
+      .post('/api/Danhmucgiacotthuyluc/DeleteMultiple', selectedRows)
+      .subscribe({
+        next: (data) => {
+          this.loadData();
+          this.toastr.success('Xóa thành công ' + data + ' bản ghi', 'Success');
+        },
+        error: () => {
+          this.toastr.error('Xóa bản ghi thất bại ', 'Error');
+        },
+      });
+  }
+
   save() {
     const selectedRows = this.gridApi.getSelectedRows();
     this.dataService
-      .post('/api/DanhmucAptomatKhoidongtu/UpdateMultiple', selectedRows)
+      .put('/api/Danhmucgiacotthuyluc/UpdateMultiple', selectedRows)
       .subscribe({
         next: (data) => {
           this.loadData();
@@ -145,41 +166,12 @@ export class DanhmucaptomatkhoidongtuComponent implements OnInit {
       });
   }
 
-  confirmDelete() {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        name: 'Bạn có muốn xóa bản ghi này?',
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        const selectedRows = this.gridApi.getSelectedRows();
-        this.dataService
-          .post('/api/DanhmucAptomatKhoidongtu/DeleteMultiple', selectedRows)
-          .subscribe({
-            next: (data) => {
-              this.loadData();
-              this.toastr.success(
-                'Xóa thành công ' + data + ' bản ghi',
-                'Success'
-              );
-            },
-            error: () => {
-              this.toastr.error('Xóa bản ghi thất bại ', 'Error');
-            },
-          });
-      }
-    });
-  }
-
   exportexcel() {
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.data);
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    XLSX.writeFile(wb, 'Danhmucaptomatkhoidongtu.xlsx');
+    XLSX.writeFile(wb, 'Danhmucgiacotthuyluc.xlsx');
   }
-
   importexcel(event: any) {
     let file = event.target.files[0];
     let fileReader = new FileReader();
@@ -189,7 +181,7 @@ export class DanhmucaptomatkhoidongtuComponent implements OnInit {
       var sheetName = workBook.SheetNames;
       this.excelData = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName[0]]);
       this.dataService
-        .put('/api/DanhmucAptomatKhoidongtu/UpdateMultiple', this.excelData)
+        .put('/api/Danhmucgiacotthuyluc/UpdateMultiple', this.excelData)
         .subscribe({
           next: (data) => {
             this.loadData();
@@ -203,5 +195,9 @@ export class DanhmucaptomatkhoidongtuComponent implements OnInit {
           },
         });
     };
+  }
+
+  ngOnInit(): void {
+    this.loadData();
   }
 }

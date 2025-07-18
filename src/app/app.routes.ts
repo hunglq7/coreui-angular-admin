@@ -84,6 +84,11 @@ export const routes: Routes = [
           import('./views/aptomatkhoidongtu/routes').then((m) => m.routes),
       },
       {
+        path: 'giacotthuyluc',
+        loadChildren: () =>
+          import('./views/giacotthuyluc/routes').then((m) => m.routes),
+      },
+      {
         path: 'danhmuc',
         loadChildren: () =>
           import('./views/danhmuc/routes').then((m) => m.routes),
