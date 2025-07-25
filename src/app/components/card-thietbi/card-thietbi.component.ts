@@ -34,6 +34,7 @@ export class CardThietbiComponent implements OnInit {
   sumTonghopmaycao!: number;
   sumTonghopneo!: number;
   sumTonghopcapdien!: number;
+  sumTonghopgiacotthuyluc!: number;
   constructor(private dataService: DataService) {}
   ngOnInit(): void {
     this.GetSumTonghopmayxuc();
@@ -45,6 +46,7 @@ export class CardThietbiComponent implements OnInit {
     this.GetSumTonghopmaycao();
     this.GetSumTonghopneo();
     this.GetSumTonghopcapdien();
+    this.GetSumTonghopgiacotthuyluc();
   }
   GetSumTonghopmayxuc() {
     this.dataService.get('/api/Tonghopmayxuc/sumTonghopmayxuc').subscribe({
@@ -109,7 +111,13 @@ export class CardThietbiComponent implements OnInit {
     this.dataService.get('/api/Tonghopcapdien/sum').subscribe({
       next: (data: any) => {
         this.sumTonghopcapdien = data;
-        console.log(this.sumTonghopcapdien);
+      },
+    });
+  }
+  GetSumTonghopgiacotthuyluc() {
+    this.dataService.get('/api/Tonghopgiacotthuyluc/sum').subscribe({
+      next: (data: any) => {
+        this.sumTonghopgiacotthuyluc = data;
       },
     });
   }
