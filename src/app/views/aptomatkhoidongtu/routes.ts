@@ -18,6 +18,16 @@ export const routes: Routes = [
           title: 'Danh mục áp to mát & khởi động từ',
         },
       },
+      {
+        path: 'thongsoaptomatkhoidongtu',
+        loadComponent: () =>
+          import(
+            './thongsoaptomatkhoidongtu/thongsoaptomatkhoidongtu.component'
+          ).then((m) => m.ThongsoaptomatkhoidongtuComponent),
+        data: {
+          title: 'Thông số áp to mát & khởi động từ',
+        },
+      },
     ],
   },
 ];

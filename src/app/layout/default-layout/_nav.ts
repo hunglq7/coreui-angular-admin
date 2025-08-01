@@ -264,6 +264,15 @@ export const navItems: INavData[] = [
         url: '/aptomatkhoidongtu/danhmucaptomatkhoidongtu',
         icon: 'nav-icon-bullet',
       },
+      {
+        name: 'Thông số kỹ thuật',
+        url: '/aptomatkhoidongtu/thongsoaptomatkhoidongtu',
+        icon: 'nav-icon-bullet',
+      },
+      {
+        name: 'Cập nhật áp to mát & khởi động từ',
+        url: '/aptomatkhoidongtu/tonghopaptomatkhoidongtu',
+      },
     ],
   },
   {
