@@ -87,7 +87,7 @@ export class ThongsoaptomatkhoidongtuComponent implements OnInit {
   };
   dsDanhmucAptomatKhoidongtu: any[] = [];
   Form!: FormGroup;
-  Id!: Number;
+  Id: Number = 0;
   themoi: boolean = false;
   size: NzButtonSize = 'small';
 
@@ -231,6 +231,7 @@ export class ThongsoaptomatkhoidongtuComponent implements OnInit {
       .getById('/api/ThongsoAptomatKhoidongtu/' + this.Id)
       .subscribe({
         next: (data: any) => {
+          console.log(data);
           this.loadFormData(data);
         },
         error: () => {
