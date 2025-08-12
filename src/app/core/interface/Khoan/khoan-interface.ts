@@ -1,10 +1,11 @@
 export interface Tonghopkhoan {
   id: number;
+  maQuanLy: string;
   tenThietBi: string;
   tenDonVi: string;
   donViTinh: string;
   soLuong: number;
-  ngayLap: Date;
+  ngayLap: string;
   viTriLapDat: string;
   tinhTrangKyThuat: string;
   ghiChu: string;

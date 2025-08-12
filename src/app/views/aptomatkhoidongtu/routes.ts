@@ -28,6 +28,16 @@ export const routes: Routes = [
           title: 'Thông số áp to mát & khởi động từ',
         },
       },
+      {
+        path: 'tonghopaptomatkhoidongtu',
+        loadComponent: () =>
+          import(
+            './tonghopaptomatkhoidongtu/tonghopaptomatkhoidongtu.component'
+          ).then((m) => m.TonghopaptomatkhoidongtuComponent),
+        data: {
+          title: 'Cập nhật áp to mát & khởi động từ',
+        },
+      },
     ],
   },
 ];

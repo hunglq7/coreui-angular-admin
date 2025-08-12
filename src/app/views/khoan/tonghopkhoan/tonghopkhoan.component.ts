@@ -9,6 +9,7 @@ import {
   FormGroup,
   Validators,
   FormControl,
+  FormBuilder,
 } from '@angular/forms';
 import {
   ButtonCloseDirective,
@@ -115,24 +116,28 @@ export class TonghopkhoanComponent implements OnInit {
   Id!: Number;
   themoi: boolean = false;
   size: NzButtonSize = 'small';
+
   constructor(
     private dataService: DataService,
     private toastr: ToastrService,
-    private modal: NzModalService
+    private modal: NzModalService,
+    private fb: FormBuilder
   ) {}
+
   initFormBuilder(): void {
-    this.Form = new FormGroup({
-      id: new FormControl(0),
-      khoanId: new FormControl(null, Validators.required),
-      donViId: new FormControl(null, Validators.required),
-      donViTinh: new FormControl('', Validators.required),
-      soLuong: new FormControl(0, [Validators.required, Validators.min(1)]),
-      ngayLap: new FormControl(null, Validators.required),
-      viTriLapDat: new FormControl(''),
-      tinhTrangKyThuat: new FormControl(''),
-      ghiChu: new FormControl(''),
+    this.Form = this.fb.group({
+      id: [0],
+      khoanId: [null, Validators.required],
+      donViId: [null, Validators.required],
+      donViTinh: ['', Validators.required],
+      soLuong: [0, [Validators.required, Validators.min(1)]],
+      ngayLap: [null, Validators.required],
+      viTriLapDat: [''],
+      tinhTrangKyThuat: [''],
+      ghiChu: [''],
     });
   }
+
   eventThietbi($event: number) {
     this.keywordThietbi = $event;
     this.loadTonghopkhoan();
@@ -142,19 +147,23 @@ export class TonghopkhoanComponent implements OnInit {
     this.keywordDonvi = $event;
     this.loadTonghopkhoan();
   }
+
   loadTonghopkhoanDetail() {
     this.dataService.getById('/api/Tonghopkhoan/' + this.Id).subscribe({
       next: (data: TonghopkhoanDetail) => {
         this.khoanDetail = data;
-        var myDate = new Date(data.ngayLap);
-        var myDateString;
-        myDateString =
-          myDate.getFullYear() +
-          '-' +
-          ('0' + (myDate.getMonth() + 1)).slice(-2) +
-          '-' +
-          ('0' + myDate.getDate()).slice(-2);
-        this.khoanDetail.ngayLap = myDateString;
+        if (data.ngayLap) {
+          var myDate = new Date(data.ngayLap);
+          var myDateString;
+          myDateString =
+            myDate.getFullYear() +
+            '-' +
+            ('0' + (myDate.getMonth() + 1)).slice(-2) +
+            '-' +
+            ('0' + myDate.getDate()).slice(-2);
+          this.khoanDetail.ngayLap = myDateString;
+        }
+        this.loadFormData(this.khoanDetail);
       },
     });
   }
@@ -163,15 +172,17 @@ export class TonghopkhoanComponent implements OnInit {
     this.dataService.getById('/api/Tonghopkhoan/' + 0).subscribe({
       next: (data) => {
         this.khoanDetail = data;
-        var myDate = new Date(this.khoanDetail.ngayLap);
-        var myDateString;
-        myDateString =
-          myDate.getFullYear() +
-          '-' +
-          ('0' + (myDate.getMonth() + 1)).slice(-2) +
-          '-' +
-          ('0' + myDate.getDate()).slice(-2);
-        this.khoanDetail.ngayLap = myDateString;
+        if (this.khoanDetail.ngayLap) {
+          var myDate = new Date(this.khoanDetail.ngayLap);
+          var myDateString;
+          myDateString =
+            myDate.getFullYear() +
+            '-' +
+            ('0' + (myDate.getMonth() + 1)).slice(-2) +
+            '-' +
+            ('0' + myDate.getDate()).slice(-2);
+          this.khoanDetail.ngayLap = myDateString;
+        }
         this.loadFormData(this.khoanDetail);
       },
     });
@@ -227,6 +238,7 @@ export class TonghopkhoanComponent implements OnInit {
         this.sumSoluong = data.sumRecords;
       });
   }
+
   public pageIndexChanged(event: any): void {
     this.pageIndex = event;
     this.loadTonghopkhoan();
@@ -256,7 +268,7 @@ export class TonghopkhoanComponent implements OnInit {
   showConfirm(item: any): void {
     let pos = 2;
     this.modal.confirm({
-      nzTitle: '<i>Bán có muốn xóa bản ghi này?</i>',
+      nzTitle: '<i>Bạn có muốn xóa bản ghi này?</i>',
       nzContent: '<b>Thiết bị: </b>' + item.tenThietBi,
       nzStyle: {
         position: 'relative',
@@ -266,6 +278,7 @@ export class TonghopkhoanComponent implements OnInit {
       nzOnOk: () => this.onDelete(item),
     });
   }
+
   onDelete(item: any) {
     this.Id = item.id;
     this.dataService.delete('/api/Tonghopkhoan/' + this.Id).subscribe({
@@ -278,7 +291,8 @@ export class TonghopkhoanComponent implements OnInit {
       },
     });
   }
-  handleLiveDemoChange(event: boolean) {
+
+  handleLiveDemoChange(event: any) {
     this.liveDemoVisible = event;
   }
 
@@ -328,6 +342,7 @@ export class TonghopkhoanComponent implements OnInit {
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
     XLSX.writeFile(wb, 'Tonghopkhoan.xlsx');
   }
+
   pageSizeChange(event: number): void {
     this.pageSize = event;
     this.loadTonghopkhoan();
@@ -338,7 +353,7 @@ export class TonghopkhoanComponent implements OnInit {
     this.loadTonghopkhoan();
     this.getDataDonvi();
     this.getDataKhoan();
-    if ((this.Id = 0)) {
+    if (this.Id === 0) {
       this.themoiTonghopkhoanDetail();
     } else {
       this.loadTonghopkhoanDetail();

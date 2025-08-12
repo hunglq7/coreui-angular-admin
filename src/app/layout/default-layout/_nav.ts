@@ -272,6 +272,7 @@ export const navItems: INavData[] = [
       {
         name: 'Cập nhật áp to mát & khởi động từ',
         url: '/aptomatkhoidongtu/tonghopaptomatkhoidongtu',
+        icon: 'nav-icon-bullet',
       },
     ],
   },

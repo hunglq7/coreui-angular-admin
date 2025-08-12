@@ -16,13 +16,10 @@ export interface TongHopBomNuoc {
   id: number;
   maQuanLy: string;
   tenThietBi: number;
-  tenDonVi: number;
+  tenDonVi: string;
   viTriLapDat: string;
   ngayLap: string;
   soLuong: number;
-  tinhTrangThietBi: string;
-  duPhong: boolean;
-  ghiChu: string;
 }
 
 export interface TongHopBomNuocDetail {
