@@ -109,11 +109,16 @@ export class NhatkybomnuocTabComponent implements OnChanges {
   ];
   getDataDetailById() {
     this.dataService
-      .getById('/api/Nhatkybomnuoc/DatailById/' + this.tonghopbomnuocId)
+              .getById('/api/Nhatkybomnuoc/DetailById/' + this.tonghopbomnuocId)
       .subscribe({
         next: (response) => {
           this.rowData = response;
         },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+          this.toastr.error('Không thể tải dữ liệu', 'Lỗi');
+          this.rowData = [];
+        }
       });
   }
   onDelete() {

@@ -54,8 +54,9 @@ export interface TongHopAptomatKhoiDongTu {
   id: number;
   maQuanLy: string;
   tenThietBi: string;
-  tenDonVi: string;
+  phongBan: string;
   viTriLapDat: string;
+  ngayKiemDinh: string;
   ngayLap: string;
   soLuong: number;
 }
@@ -63,9 +64,10 @@ export interface TongHopAptomatKhoiDongTu {
 export interface TongHopAptomatKhoiDongTuDetail {
   id: number;
   maQuanLy: string;
-  aptomatKhoiDongTuId: number;
+  aptomatkhoidongtuId: number;
   donViId: number;
   viTriLapDat: string;
+  ngayKiemDinh: string;
   ngayLap: string;
   soLuong: number;
   tinhTrangThietBi: string;
@@ -136,9 +138,10 @@ export class TonghopaptomatkhoidongtuComponent implements OnInit {
   dataDetail: TongHopAptomatKhoiDongTuDetail = {
     id: 0,
     maQuanLy: '',
-    aptomatKhoiDongTuId: 0,
+    aptomatkhoidongtuId: 0,
     donViId: 0,
     viTriLapDat: '',
+    ngayKiemDinh: '',
     ngayLap: '',
     soLuong: 1,
     tinhTrangThietBi: '',
@@ -175,9 +178,10 @@ export class TonghopaptomatkhoidongtuComponent implements OnInit {
     this.Form = this.fb.group({
       id: [''],
       maQuanLy: [''],
-      aptomatKhoiDongTuId: [''],
+      aptomatkhoidongtuId: [''],
       donViId: [''],
       viTriLapDat: ['', Validators.required],
+      ngayKiemDinh: [''],
       ngayLap: new Date(),
       soLuong: 1,
       tinhTrangThietBi: [''],
@@ -214,6 +218,8 @@ export class TonghopaptomatkhoidongtuComponent implements OnInit {
           this.dataDetail = data;
           var myDate = new Date(data.ngayLap);
           var myDateString;
+          var myDateKiemDinh = new Date(data.ngayKiemDinh);
+          var myDateKiemDinhString;
           myDateString =
             myDate.getFullYear() +
             '-' +
@@ -221,6 +227,13 @@ export class TonghopaptomatkhoidongtuComponent implements OnInit {
             '-' +
             ('0' + myDate.getDate()).slice(-2);
           this.dataDetail.ngayLap = myDateString;
+          myDateKiemDinhString =
+            myDateKiemDinh.getFullYear() +
+            '-' +
+            ('0' + (myDateKiemDinh.getMonth() + 1)).slice(-2) +
+            '-' +
+            ('0' + myDateKiemDinh.getDate()).slice(-2);
+          this.dataDetail.ngayKiemDinh = myDateKiemDinhString;
         },
       });
   }
@@ -253,9 +266,10 @@ export class TonghopaptomatkhoidongtuComponent implements OnInit {
     this.Form.setValue({
       id: entity.id,
       maQuanLy: entity.maQuanLy,
-      aptomatKhoiDongTuId: entity.aptomatKhoiDongTuId,
+      aptomatkhoidongtuId: entity.aptomatkhoidongtuId,
       donViId: entity.donViId,
       viTriLapDat: entity.viTriLapDat,
+      ngayKiemDinh: entity.ngayKiemDinh,
       ngayLap: entity.ngayLap,
       soLuong: entity.soLuong,
       tinhTrang: entity.tinhTrangThietBi,
@@ -361,7 +375,6 @@ export class TonghopaptomatkhoidongtuComponent implements OnInit {
 
   save() {
     if (this.themoi) {
-      alert(JSON.stringify(this.Form.value));
       this.dataService
         .post('/api/Tonghopaptomatkhoidongtu', this.Form.value)
         .subscribe({
@@ -376,7 +389,6 @@ export class TonghopaptomatkhoidongtuComponent implements OnInit {
           },
         });
     } else {
-      alert(JSON.stringify(this.Form.value));
       this.dataService
         .put('/api/Tonghopaptomatkhoidongtu/update', this.Form.value)
         .subscribe({
@@ -416,4 +428,3 @@ export class TonghopaptomatkhoidongtuComponent implements OnInit {
     XLSX.writeFile(wb, 'Tonghopaptomatkhoidongtu.xlsx');
   }
 }
-

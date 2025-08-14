@@ -143,10 +143,15 @@ export class NhatkymayxucTabComponent implements OnChanges {
 
   getDataDetailById() {
     this.dataService
-      .getById('/api/Nhatkymayxuc/DatailById/' + this.tonghopmayxucId)
+      .getById('/api/Nhatkymayxuc/DetailById/' + this.tonghopmayxucId)
       .subscribe({
         next: (response) => {
           this.rowData = response;
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+          this.toastr.error('Không thể tải dữ liệu', 'Lỗi');
+          this.rowData = [];
         },
       });
   }

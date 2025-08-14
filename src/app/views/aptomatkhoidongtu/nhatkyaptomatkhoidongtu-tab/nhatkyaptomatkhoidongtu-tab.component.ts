@@ -45,9 +45,31 @@ export class NhatkyaptomatkhoidongtuTabComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.entity = changes['TonghopaptomatkhoidongtuDetail'].currentValue;
-    this.tonghopaptomatkhoidongtuId = this.entity.id;
-    this.getDataDetailById();
+    if (
+      changes['TonghopaptomatkhoidongtuDetail'] &&
+      changes['TonghopaptomatkhoidongtuDetail'].currentValue
+    ) {
+      this.entity = changes['TonghopaptomatkhoidongtuDetail'].currentValue;
+      this.tonghopaptomatkhoidongtuId = this.entity.id;
+      console.log(
+        'TonghopaptomatkhoidongtuId:',
+        this.tonghopaptomatkhoidongtuId
+      );
+
+      // Only call API if we have a valid ID
+      if (
+        this.tonghopaptomatkhoidongtuId &&
+        this.tonghopaptomatkhoidongtuId > 0
+      ) {
+        this.getDataDetailById();
+      } else {
+        console.warn(
+          'Invalid tonghopaptomatkhoidongtuId:',
+          this.tonghopaptomatkhoidongtuId
+        );
+        this.rowData = [];
+      }
+    }
   }
 
   rowSelection: RowSelectionOptions | 'single' | 'multiple' = {
@@ -119,10 +141,18 @@ export class NhatkyaptomatkhoidongtuTabComponent implements OnChanges {
 
   getDataDetailById() {
     this.dataService
-      .getById('/api/Nhatkyaptomatkhoidongtu/DatailById/' + this.tonghopaptomatkhoidongtuId)
+      .getById(
+        '/api/Nhatkyaptomatkhoidongtu/DetailById/' +
+          this.tonghopaptomatkhoidongtuId
+      )
       .subscribe({
         next: (response) => {
           this.rowData = response;
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+          this.toastr.error('Không thể tải dữ liệu', 'Lỗi');
+          this.rowData = [];
         },
       });
   }

@@ -21,6 +21,7 @@
                             <th scope="col" style="width: 400px">Thiết bị</th>
                             <th scope="col">Đơn vị</th>
                             <th scope="col">Vị trí lắp đặt</th>
+                            <th scope="col">Ngày kiểm định</th>
                             <th scope="col">Ngày lắp</th>
                             <th scope="col">Số lượng</th>
                             <th scope="col">Hành động</th>
@@ -31,8 +32,9 @@
                         <tr>
                             <td nzLeft>{{ item.maQuanLy }}</td>
                             <td>{{ item.tenThietBi }}</td>
-                            <td>{{ item.tenDonVi }}</td>
+                            <td>{{ item.phongBan }}</td>
                             <td>{{ item.viTriLapDat }}</td>
+                            <td>{{ item.ngayKiemDinh | date : "dd/MM/yyyy" }}</td>
                             <td>{{ item.ngayLap | date : "dd/MM/yyyy" }}</td>
                             <td>{{ item.soLuong }}</td>
                             <td>
@@ -113,11 +115,11 @@
                                 </nz-form-item>
                                 <!-- thiết bị -->
                                 <nz-form-item>
-                                    <nz-form-label [nzSpan]="5" nzFor="aptomatKhoiDongTuId" nzRequired>Thiết
+                                    <nz-form-label [nzSpan]="5" nzFor="aptomatkhoidongtuId" nzRequired>Thiết
                                         bị</nz-form-label>
                                     <nz-form-control [nzSpan]="16" nzErrorTip="thiết bị phải chọn">
-                                        <select id="aptomatKhoiDongTuId" formControlName="aptomatKhoiDongTuId"
-                                            [(ngModel)]="dataDetail.aptomatKhoiDongTuId"
+                                        <select id="aptomatkhoidongtuIdd" formControlName="aptomatkhoidongtuId"
+                                            [(ngModel)]="dataDetail.aptomatkhoidongtuId"
                                             aria-label="Default select example" cSelect sizing="sm">
                                             <option>Chọn thiết bị</option>
                                             @for (item of danhSach; track item.id) {
@@ -148,6 +150,15 @@
                                     <nz-form-control [nzSpan]="16">
                                         <input id="viTriLapDat" nz-input cFormControl sizing="sm"
                                             formControlName="viTriLapDat" [(ngModel)]="dataDetail.viTriLapDat" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                                <!-- Ngày kiểm định -->
+                                <nz-form-item>
+                                    <nz-form-label [nzSpan]="5">Ngày kiểm định</nz-form-label>
+                                    <nz-form-control [nzSpan]="16">
+                                        <input id="ngayKiemDinh" nz-input cFormControl sizing="sm"
+                                            formControlName="ngayKiemDinh" [(ngModel)]="dataDetail.ngayKiemDinh"
+                                            type="date" />
                                     </nz-form-control>
                                 </nz-form-item>
                                 <!-- Ngày lắp -->
@@ -184,7 +195,7 @@
                                             <input cFormCheckInput checked sizing="lg" type="checkbox"
                                                 [(ngModel)]="dataDetail.duPhong" formControlName="duPhong" />
                                             <label cFormCheckLabel>{{
-                                                dataDetail.duPhong ? "Kích hoạt" : "Hủy kích hoạt"
+                                                dataDetail.duPhong ? "Chọn" : "Không chọn"
                                                 }}</label>
                                         </c-form-check>
                                     </nz-form-control>

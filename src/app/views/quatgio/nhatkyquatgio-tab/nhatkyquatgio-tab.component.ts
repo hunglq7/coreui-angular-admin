@@ -117,11 +117,16 @@ export class NhatkyquatgioTabComponent implements OnChanges {
 
   getDataDetailById() {
     this.dataService
-      .getById('/api/Nhatkyquatgio/DatailById/' + this.tonghopquatgioId)
+              .getById('/api/Nhatkyquatgio/DetailById/' + this.tonghopquatgioId)
       .subscribe({
         next: (response) => {
           this.rowData = response;
         },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+          this.toastr.error('Không thể tải dữ liệu', 'Lỗi');
+          this.rowData = [];
+        }
       });
   }
 

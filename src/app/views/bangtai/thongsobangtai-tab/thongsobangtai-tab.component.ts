@@ -19,10 +19,22 @@ export class ThongsobangtaiTabComponent implements OnChanges {
   constructor(private dataService: DataService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    const change = changes['TonghopbangtaiDetail'].currentValue;
-    this.bangtaiId = change.bangTaiId;
-    if (this.bangtaiId > 0) {
-      this.getDataDetail();
+    if (changes['TonghopbangtaiDetail'] && changes['TonghopbangtaiDetail'].currentValue) {
+      const change = changes['TonghopbangtaiDetail'].currentValue;
+      
+      // Try different possible property names for the ID
+      this.bangtaiId = change.bangTaiId || change.id || change.bangtaiId;
+      
+      console.log('Entity:', change);
+      console.log('BangtaiId:', this.bangtaiId);
+      
+      // Only call API if we have a valid ID
+      if (this.bangtaiId && this.bangtaiId > 0) {
+        this.getDataDetail();
+      } else {
+        console.warn('Invalid bangtaiId:', this.bangtaiId);
+        this.items = [];
+      }
     }
   }
 
@@ -33,6 +45,10 @@ export class ThongsobangtaiTabComponent implements OnChanges {
         next: (response) => {
           this.items = response;
         },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+          this.items = [];
+        }
       });
   }
 }
