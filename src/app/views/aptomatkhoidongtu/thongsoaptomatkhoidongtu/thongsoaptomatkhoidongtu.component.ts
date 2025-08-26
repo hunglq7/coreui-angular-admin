@@ -231,7 +231,6 @@ export class ThongsoaptomatkhoidongtuComponent implements OnInit {
       .getById('/api/ThongsoAptomatKhoidongtu/' + this.Id)
       .subscribe({
         next: (data: any) => {
-          console.log(data);
           this.loadFormData(data);
         },
         error: () => {

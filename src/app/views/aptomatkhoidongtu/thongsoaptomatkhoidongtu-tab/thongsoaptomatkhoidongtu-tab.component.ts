@@ -32,13 +32,8 @@ export class ThongsoaptomatkhoidongtuTabComponent implements OnChanges {
       this.entity = changes['TonghopaptomatkhoidongtuDetail'].currentValue;
 
       // Try different possible property names for the ID
-      this.aptomatKhoiDongTuId =
-        this.entity.aptomatKhoiDongTuId ||
-        this.entity.id ||
-        this.entity.aptomatKhoidongtuId;
 
-      console.log('Entity:', this.entity);
-      console.log('AptomatKhoiDongTuId:', this.aptomatKhoiDongTuId);
+      this.aptomatKhoiDongTuId = this.entity.aptomatkhoidongtuId;
 
       // Only call API if we have a valid ID
       if (this.aptomatKhoiDongTuId && this.aptomatKhoiDongTuId > 0) {

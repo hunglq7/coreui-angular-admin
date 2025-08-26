@@ -8,6 +8,12 @@
   <button (click)="exportexcel()" nz-button nzType="default" nzPrimary>
     Xuất Excel
   </button>
+
+  <label style="margin-left: 8px; display: inline-flex; align-items: center; gap: 6px;">
+    <input type="checkbox" [checked]="kywordDuphong" (change)="eventDuPhong($any($event.target).checked)" />
+    Dự phòng
+  </label>
+
   <c-col sm="12">
     <c-row>
       <c-col sm="12">
@@ -29,12 +35,12 @@
           <tbody>
             @for (item of dataMayxucDetail; track $index) {
             <tr>
-              <td nzLeft>{{ item.maQuanLy }}</td>
-              <td>{{ item.tenMayXuc }}</td>
-              <td>{{ item.tenPhongBan }}</td>
-              <td>{{ item.viTriLapDat }}</td>
-              <td>{{ item.ngayLap | date : "dd/MM/yyyy" }}</td>
-              <td>{{ item.soLuong }}</td>
+              <td nzLeft>{{ item.maQuanLy || 'N/A' }}</td>
+              <td>{{ item.tenMayXuc || 'N/A' }}</td>
+              <td>{{ item.tenPhongBan || 'N/A' }}</td>
+              <td>{{ item.viTriLapDat || 'N/A' }}</td>
+              <td>{{ item.ngayLap ? (item.ngayLap | date : "dd/MM/yyyy") : 'N/A' }}</td>
+              <td>{{ item.soLuong || 0 }}</td>
               <td>
                 <button nz-tooltip [nzTooltipTitle]="titleSua" [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button
                   nzType="primary" style="border-radius: 3px" [nzSize]="size" (click)="onEdit(item.id)">
@@ -42,7 +48,7 @@
                 </button>
 
                 <button nz-tooltip [nzTooltipTitle]="titleXoa" [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button
-                  nzType="primary" nzDanger style="border-radius: 3px" [nzSize]="size" (click)="showConfirm(item.id)">
+                  nzType="primary" nzDanger style="border-radius: 3px" [nzSize]="size" (click)="showConfirm(item)">
                   <nz-icon nzType="delete" style="color: #ffffff" /><span>Xóa</span>
                 </button>
                 <ng-template #titleSua let-thing>

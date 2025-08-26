@@ -311,6 +311,7 @@ export class TonghopaptomatkhoidongtuComponent implements OnInit {
         this.pageSize = data.pageSize;
         this.pageIndex = data.pageIndex;
         this.totalRow = data.totalRecords;
+        this.sumSoluong = data.sumRecords;
       });
   }
 

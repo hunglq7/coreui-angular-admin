@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { HttpBackend, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpBackend } from '@angular/common/http';
 import { AuthService } from './auth.service';
-import { map, Observable } from 'rxjs';
+import { map, Observable, throwError, timeout, catchError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -15,14 +15,48 @@ export class DataService {
   get(uri: string) {
     let headers = new HttpHeaders();
     headers = headers.set('Content-Type', 'application/json; charset=utf-8 ');
-    headers = headers.set(
-      'Authorization',
-      'Bearer ' + this.authenService.accessToken
-    );
-    //let params = new HttpParams();
+    
+    const token = this.authenService.accessToken;
+    if (token) {
+      headers = headers.set('Authorization', 'Bearer ' + token);
+    }
+    
+    console.log('Making GET request to:', this.baseUrl + uri);
+    console.log('Headers:', headers);
+    
     return this.http.get(this.baseUrl + uri, {
       headers: headers,
+    }).pipe(
+      timeout(30000), // 30 second timeout
+      catchError(this.handleError.bind(this))
+    );
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    console.error('DataService error:', error);
+    
+    let errorMessage = 'An error occurred';
+    
+    if (error.error instanceof ErrorEvent) {
+      // Client-side error
+      errorMessage = `Client error: ${error.error.message}`;
+    } else {
+      // Server-side error
+      errorMessage = `Server error: ${error.status} - ${error.statusText}`;
+      if (error.error && error.error.message) {
+        errorMessage += ` - ${error.error.message}`;
+      }
+    }
+    
+    console.error('Error details:', {
+      status: error.status,
+      statusText: error.statusText,
+      message: errorMessage,
+      url: error.url,
+      error: error.error
     });
+    
+    return throwError(() => error);
   }
 
   getById(uri: string) {

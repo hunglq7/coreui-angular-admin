@@ -143,7 +143,7 @@ export class NhatkymayxucTabComponent implements OnChanges {
 
   getDataDetailById() {
     this.dataService
-      .getById('/api/Nhatkymayxuc/DetailById/' + this.tonghopmayxucId)
+      .getById('/api/Nhatkymayxuc/DatailById/' + this.tonghopmayxucId)
       .subscribe({
         next: (response) => {
           this.rowData = response;
