@@ -35,9 +35,18 @@ export class NhatkybomnuocTabComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.entity = changes['TonghopbomnuocDetail'].currentValue;
-    this.tonghopbomnuocId = this.entity.id;
-    this.getDataDetailById();
+    if (changes['TonghopbomnuocDetail'] && changes['TonghopbomnuocDetail'].currentValue) {
+      this.entity = changes['TonghopbomnuocDetail'].currentValue;
+      this.tonghopbomnuocId = this.entity.id;
+      
+      // Only call API if we have a valid ID
+      if (this.tonghopbomnuocId && this.tonghopbomnuocId > 0) {
+        this.getDataDetailById();
+      } else {
+        console.warn('Invalid tonghopbomnuocId:', this.tonghopbomnuocId);
+        this.rowData = [];
+      }
+    }
   }
 
   rowSelection: RowSelectionOptions | 'single' | 'multiple' = {
@@ -53,12 +62,18 @@ export class NhatkybomnuocTabComponent implements OnChanges {
   }
 
   onAddRow() {
+    // Validate ID before adding row
+    if (!this.tonghopbomnuocId || this.tonghopbomnuocId <= 0) {
+      this.toastr.warning('Vui lòng lưu thiết bị trước khi thêm nhật ký', 'Warning');
+      return;
+    }
+
     this.gridApi.applyTransaction({
       add: [
         {
           id: 0,
           tonghopbomnuocId: this.tonghopbomnuocId,
-          ngayLap: '',
+          ngayLap: new Date().toISOString().split('T')[0], // Default to today
           donVi: '',
           viTri: '',
           trangThai: '',
@@ -80,7 +95,7 @@ export class NhatkybomnuocTabComponent implements OnChanges {
       hide: true,
     },
     {
-      field: 'ngaythang',
+      field: 'ngayLap',
       headerName: 'Ngày sử dụng',
       editable: true,
       cellEditorPopup: true,
@@ -91,7 +106,6 @@ export class NhatkybomnuocTabComponent implements OnChanges {
       editable: true,
       cellEditorPopup: true,
     },
-
     {
       field: 'viTri',
       headerName: 'Vị trí',
@@ -108,48 +122,83 @@ export class NhatkybomnuocTabComponent implements OnChanges {
     { field: 'ghiChu', headerName: 'Ghi chú' },
   ];
   getDataDetailById() {
-    this.dataService
-              .getById('/api/Nhatkybomnuoc/DetailById/' + this.tonghopbomnuocId)
-      .subscribe({
-        next: (response) => {
-          this.rowData = response;
-        },
-        error: (error) => {
-          console.error('Error fetching data:', error);
-          this.toastr.error('Không thể tải dữ liệu', 'Lỗi');
-          this.rowData = [];
+    // Validate ID before making API call
+    if (!this.tonghopbomnuocId || this.tonghopbomnuocId <= 0) {
+      console.warn('Cannot fetch data: Invalid ID:', this.tonghopbomnuocId);
+      this.rowData = [];
+      return;
+    }
+
+    const url = `/api/Nhatkybomnuoc/DetailById/${this.tonghopbomnuocId}`;
+    console.log('Fetching nhatky data for ID:', this.tonghopbomnuocId, 'URL:', url);
+    
+    this.dataService.getById(url).subscribe({
+      next: (response) => {
+        console.log('Nhatky data received:', response);
+        this.rowData = Array.isArray(response) ? response : [];
+      },
+      error: (error) => {
+        console.error('Error fetching nhatky data:', error);
+        console.error('Error details:', {
+          status: error.status,
+          statusText: error.statusText,
+          url: url,
+          id: this.tonghopbomnuocId
+        });
+        
+        if (error.status === 404) {
+          this.toastr.warning('Không tìm thấy dữ liệu nhật ký cho thiết bị này', 'Warning');
+        } else {
+          this.toastr.error('Không thể tải dữ liệu nhật ký', 'Lỗi');
         }
-      });
+        this.rowData = [];
+      }
+    });
   }
   onDelete() {
     const selectedRows = this.gridApi.getSelectedRows();
-    this.dataService
-      .post('/api/Nhatkybomnuoc/DeleteMultipale', selectedRows)
-      .subscribe({
-        next: () => {
-          this.getDataDetailById();
-          this.toastr.success('Xóa dữ liệu thành công', 'Success');
-        },
-        error: () => {
-          this.toastr.error('Xóa dữ liệu thất bại', 'Error');
-        },
-      });
+    if (selectedRows.length === 0) {
+      this.toastr.warning('Vui lòng chọn dòng cần xóa', 'Warning');
+      return;
+    }
+
+    this.dataService.post('/api/Nhatkybomnuoc/DeleteMultipale', selectedRows).subscribe({
+      next: () => {
+        this.getDataDetailById();
+        this.toastr.success('Xóa dữ liệu thành công', 'Success');
+      },
+      error: (err) => {
+        console.error('Delete error:', err);
+        this.toastr.error('Xóa dữ liệu thất bại', 'Error');
+      },
+    });
   }
   save() {
     const selectedRows = this.gridApi.getSelectedRows();
-    this.dataService
-      .put('/api/Nhatkybomnuoc/UpdateMultiple', selectedRows)
-      .subscribe({
-        next: (data: any) => {
-          this.getDataDetailById();
-          this.toastr.success(
-            'Thêm thành công ' + data + ' bản ghi',
-            'Success'
-          );
-        },
-        error: () => {
-          this.toastr.warning('Phải chọn danh sách cần lưu ', 'Warning');
-        },
-      });
+    if (selectedRows.length === 0) {
+      this.toastr.warning('Vui lòng chọn dòng cần lưu', 'Warning');
+      return;
+    }
+
+    // Validate data before saving
+    const validRows = selectedRows.filter(row => {
+      return row.tonghopbomnuocId && row.tonghopbomnuocId > 0;
+    });
+
+    if (validRows.length === 0) {
+      this.toastr.error('Dữ liệu không hợp lệ', 'Error');
+      return;
+    }
+
+    this.dataService.put('/api/Nhatkybomnuoc/UpdateMultiple', validRows).subscribe({
+      next: (data: any) => {
+        this.getDataDetailById();
+        this.toastr.success('Lưu thành công ' + data + ' bản ghi', 'Success');
+      },
+      error: (err) => {
+        console.error('Save error:', err);
+        this.toastr.error('Lưu dữ liệu thất bại', 'Error');
+      },
+    });
   }
 }

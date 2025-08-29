@@ -208,39 +208,54 @@ export class TonghopmayxucComponent implements OnInit {
   }
 
   loadTonghopMayxucDetail() {
+    if (!this.Id || Number(this.Id) <= 0) {
+      console.warn('Cannot load detail: Invalid ID:', this.Id);
+      return;
+    }
+
     this.dataService.getById('/api/Tonghopmayxuc/' + this.Id).subscribe({
       next: (data: TonghopMayxucDetail) => {
+        console.log('Loaded detail data:', data);
         this.tonghopmayxucDetail = data;
-        console.log('data chi tiết tổng hợp máy xúc', data);
-        var myDate = new Date(data.ngayLap);
-        var myDateString;
-        myDateString =
-          myDate.getFullYear() +
-          '-' +
-          ('0' + (myDate.getMonth() + 1)).slice(-2) +
-          '-' +
-          ('0' + myDate.getDate()).slice(-2);
-        this.tonghopmayxucDetail.ngayLap = myDateString;
+        
+        // Normalize date format
+        if (data.ngayLap) {
+          var myDate = new Date(data.ngayLap);
+          var myDateString;
+          myDateString =
+            myDate.getFullYear() +
+            '-' +
+            ('0' + (myDate.getMonth() + 1)).slice(-2) +
+            '-' +
+            ('0' + myDate.getDate()).slice(-2);
+          this.tonghopmayxucDetail.ngayLap = myDateString;
+        }
+        
+        this.loadFormData(this.tonghopmayxucDetail);
       },
+      error: (err) => {
+        console.error('Error loading detail:', err);
+        this.toastr.error('Không thể tải thông tin chi tiết', 'Error');
+      }
     });
   }
 
   addNewTonghopMayxucDetail() {
-    this.dataService.getById('/api/Tonghopmayxuc/' + 0).subscribe({
-      next: (data) => {
-        this.tonghopmayxucDetail = data;
-        var myDate = new Date(data.ngayLap);
-        var myDateString;
-        myDateString =
-          myDate.getFullYear() +
-          '-' +
-          ('0' + (myDate.getMonth() + 1)).slice(-2) +
-          '-' +
-          ('0' + myDate.getDate()).slice(-2);
-        this.tonghopmayxucDetail.ngayLap = myDateString;
-        this.loadFormData(this.tonghopmayxucDetail);
-      },
-    });
+    // Create a new empty record instead of calling API with ID 0
+    const today = new Date().toISOString().split('T')[0];
+    this.tonghopmayxucDetail = {
+      id: 0,
+      mayXucId: 0,
+      maQuanLy: '',
+      loaiThietBiId: 0,
+      phongBanId: 0,
+      viTriLapDat: '',
+      ngayLap: today,
+      soLuong: 1,
+      tinhTrang: '',
+      ghiChu: '',
+    };
+    this.loadFormData(this.tonghopmayxucDetail);
   }
 
   private loadFormData(mayxuc: TonghopMayxucDetail) {
@@ -473,7 +488,8 @@ export class TonghopmayxucComponent implements OnInit {
 
   save() {
     const raw = this.Form.getRawValue();
-
+    console.log('Raw form data:', raw);
+    
     // Chuẩn hóa và validate payload trước khi gửi
     const payload = this.buildPayload(raw);
     if (!payload) {
@@ -481,32 +497,66 @@ export class TonghopmayxucComponent implements OnInit {
       return;
     }
 
+    console.log('Validated payload:', payload);
+
     if (this.themoi) {
+      console.log('Creating new record with payload:', payload);
       this.dataService.post('/api/Tonghopmayxuc', payload).subscribe({
-        next: () => {
+        next: (response) => {
+          console.log('Create success response:', response);
           this.loadTonghopMayxuc();
           this.toastr.success('Lưu dữ liệu thành công', 'Success');
           this.liveDemoVisible = !this.liveDemoVisible;
           this.Form.reset();
         },
         error: (err) => {
-          console.error('Create Tonghopmayxuc failed:', { err, payload });
-          this.toastr.error(err?.error?.message || 'Lưu dữ liệu thất bại', 'Error');
+          console.error('Create Tonghopmayxuc failed:', { 
+            error: err, 
+            payload: payload,
+            status: err.status,
+            statusText: err.statusText,
+            message: err.error?.message || err.message
+          });
+          
+          let errorMessage = 'Lưu dữ liệu thất bại';
+          if (err.status === 500) {
+            errorMessage = 'Lỗi server (500). Vui lòng kiểm tra dữ liệu và thử lại.';
+          } else if (err.error?.message) {
+            errorMessage = err.error.message;
+          }
+          
+          this.toastr.error(errorMessage, 'Error');
         },
       });
     } else {
+      console.log('Updating record with payload:', payload);
       this.dataService
         .put('/api/Tonghopmayxuc/update', payload)
         .subscribe({
-          next: () => {
+          next: (response) => {
+            console.log('Update success response:', response);
             this.loadTonghopMayxuc();
             this.toastr.success('Lưu dữ liệu thành công', 'Success');
             this.liveDemoVisible = !this.liveDemoVisible;
             this.Form.reset();
           },
           error: (err) => {
-            console.error('Update Tonghopmayxuc failed:', { err, payload });
-            this.toastr.error(err?.error?.message || 'Lưu dữ liệu thất bại', 'Error');
+            console.error('Update Tonghopmayxuc failed:', { 
+              error: err, 
+              payload: payload,
+              status: err.status,
+              statusText: err.statusText,
+              message: err.error?.message || err.message
+            });
+            
+            let errorMessage = 'Lưu dữ liệu thất bại';
+            if (err.status === 500) {
+              errorMessage = 'Lỗi server (500). Vui lòng kiểm tra dữ liệu và thử lại.';
+            } else if (err.error?.message) {
+              errorMessage = err.error.message;
+            }
+            
+            this.toastr.error(errorMessage, 'Error');
           },
         });
     }
@@ -514,27 +564,51 @@ export class TonghopmayxucComponent implements OnInit {
 
   private buildPayload(formValue: any): any | null {
     try {
-      const toNumber = (v: any) => (v === null || v === '' || isNaN(+v) ? 0 : +v);
-      const toTrim = (v: any) => (v ?? '').toString().trim();
+      console.log('Building payload from form value:', formValue);
+      
+      const toNumber = (v: any) => {
+        const num = v === null || v === '' || isNaN(+v) ? 0 : +v;
+        console.log(`Converting ${v} to number: ${num}`);
+        return num;
+      };
+      const toTrim = (v: any) => {
+        const trimmed = (v ?? '').toString().trim();
+        console.log(`Converting ${v} to trimmed string: "${trimmed}"`);
+        return trimmed;
+      };
 
       // Chuẩn hóa ngày yyyy-MM-dd
       const normalizeDate = (v: any): string => {
-        if (!v) return '';
+        console.log('Normalizing date:', v);
+        if (!v) {
+          console.log('Date is empty, returning empty string');
+          return '';
+        }
         // Hỗ trợ cả DD/MM/YYYY và YYYY-MM-DD
         if (typeof v === 'string') {
           const s = v.trim();
           if (/^\d{2}\/\d{2}\/\d{4}$/.test(s)) {
             const [dd, mm, yyyy] = s.split('/');
-            return `${yyyy}-${mm}-${dd}`;
+            const result = `${yyyy}-${mm}-${dd}`;
+            console.log(`Converted DD/MM/YYYY ${s} to ${result}`);
+            return result;
           }
-          if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+          if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {
+            console.log(`Date already in YYYY-MM-DD format: ${s}`);
+            return s;
+          }
         }
         const d = new Date(v);
-        if (isNaN(d.getTime())) return '';
+        if (isNaN(d.getTime())) {
+          console.log('Invalid date object, returning empty string');
+          return '';
+        }
         const yyyy = d.getFullYear();
         const mm = String(d.getMonth() + 1).padStart(2, '0');
         const dd = String(d.getDate()).padStart(2, '0');
-        return `${yyyy}-${mm}-${dd}`;
+        const result = `${yyyy}-${mm}-${dd}`;
+        console.log(`Converted date object ${v} to ${result}`);
+        return result;
       };
 
       const payload = {
@@ -550,10 +624,27 @@ export class TonghopmayxucComponent implements OnInit {
         ghiChu: toTrim(formValue.ghiChu),
       } as TonghopMayxucDetail;
 
-      // Validate các trường bắt buộc tối thiểu
-      if (!payload.mayXucId || !payload.loaiThietBiId || !payload.phongBanId) return null;
-      if (!payload.ngayLap) return null;
+      console.log('Built payload:', payload);
 
+      // Validate các trường bắt buộc tối thiểu
+      if (!payload.mayXucId || payload.mayXucId <= 0) {
+        console.error('Validation failed: mayXucId is required and must be > 0');
+        return null;
+      }
+      if (!payload.loaiThietBiId || payload.loaiThietBiId <= 0) {
+        console.error('Validation failed: loaiThietBiId is required and must be > 0');
+        return null;
+      }
+      if (!payload.phongBanId || payload.phongBanId <= 0) {
+        console.error('Validation failed: phongBanId is required and must be > 0');
+        return null;
+      }
+      if (!payload.ngayLap) {
+        console.error('Validation failed: ngayLap is required');
+        return null;
+      }
+
+      console.log('Payload validation passed');
       return payload;
     } catch (e) {
       console.error('buildPayload error:', e, formValue);

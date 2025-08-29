@@ -42,7 +42,7 @@
                 </button>
 
                 <button nz-tooltip [nzTooltipTitle]="titleXoa" [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button
-                  nzType="primary" nzDanger style="border-radius: 3px" [nzSize]="size" (click)="showConfirm(item.id)">
+                  nzType="primary" nzDanger style="border-radius: 3px" [nzSize]="size" (click)="showConfirm(item)">
                   <nz-icon nzType="delete" style="color: #ffffff" /><span>Xóa</span>
                 </button>
                 <ng-template #titleSua let-thing>

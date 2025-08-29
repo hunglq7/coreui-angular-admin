@@ -143,11 +143,7 @@ export class TonghopbomnuocComponent implements OnInit {
     this.loadTonghopBomnuoc();
     this.getDataDonvi();
     this.getDataBomnuoc();
-    if ((this.Id = 0)) {
-      this.addNew();
-    } else {
-      this.loadDataDetail();
-    }
+    // Remove unnecessary create/detail calls on init to avoid 500 errors
   }
   private initFormBuilder() {
     this.Form = this.fb.group({
@@ -182,41 +178,56 @@ export class TonghopbomnuocComponent implements OnInit {
     this.loadTonghopBomnuoc();
   }
   loadDataDetail() {
+    if (!this.Id || Number(this.Id) <= 0) {
+      console.warn('Cannot load detail: Invalid ID:', this.Id);
+      return;
+    }
+
     this.dataService.getById('/api/Tonghopbomnuoc/' + this.Id).subscribe({
       next: (data: TongHopBomNuocDetail) => {
+        console.log('Loaded detail data:', data);
         this.dataDetail = data;
-        var myDate = new Date(data.ngayLap);
-        var myDateString;
-        myDateString =
-          myDate.getFullYear() +
-          '-' +
-          ('0' + (myDate.getMonth() + 1)).slice(-2) +
-          '-' +
-          ('0' + myDate.getDate()).slice(-2);
-        this.dataDetail.ngayLap = myDateString;
+        
+        // Normalize date format
+        if (data.ngayLap) {
+          var myDate = new Date(data.ngayLap);
+          var myDateString;
+          myDateString =
+            myDate.getFullYear() +
+            '-' +
+            ('0' + (myDate.getMonth() + 1)).slice(-2) +
+            '-' +
+            ('0' + myDate.getDate()).slice(-2);
+          this.dataDetail.ngayLap = myDateString;
+        }
+        
+        this.loadFormData(this.dataDetail);
       },
+      error: (err) => {
+        console.error('Error loading detail:', err);
+        this.toastr.error('Không thể tải thông tin chi tiết', 'Error');
+      }
     });
   }
   clickSwitch() {
     this.keywordDuPhong = !this.keywordDuPhong;
   }
   addNew() {
-    this.dataService.getById('/api/Tonghopbomnuoc/' + 0).subscribe({
-      next: (data) => {
-        this.dataDetail = data;
-        var myDate = new Date(data.ngayLap);
-        var myDateString;
-        myDateString =
-          myDate.getFullYear() +
-          '-' +
-          ('0' + (myDate.getMonth() + 1)).slice(-2) +
-          '-' +
-          ('0' + myDate.getDate()).slice(-2);
-        this.dataDetail.ngayLap = myDateString;
-        this.dataDetail.duPhong = this.keywordDuPhong;
-        this.loadFormData(this.dataDetail);
-      },
-    });
+    // Create a new empty record instead of calling API with ID 0
+    const today = new Date().toISOString().split('T')[0];
+    this.dataDetail = {
+      id: 0,
+      maQuanLy: '',
+      bomNuocId: 0,
+      donViId: 0,
+      viTriLapDat: '',
+      ngayLap: today,
+      soLuong: 1,
+      tinhTrangThietBi: '',
+      duPhong: this.keywordDuPhong,
+      ghiChu: '',
+    };
+    this.loadFormData(this.dataDetail);
   }
 
   private loadFormData(entity: TongHopBomNuocDetail) {
@@ -229,7 +240,7 @@ export class TonghopbomnuocComponent implements OnInit {
       viTriLapDat: entity.viTriLapDat,
       ngayLap: entity.ngayLap,
       soLuong: entity.soLuong,
-      tinhTrang: entity.tinhTrangThietBi,
+      tinhTrangThietBi: entity.tinhTrangThietBi, // Fixed field name
       duPhong: entity.duPhong,
       ghiChu: entity.ghiChu,
     });
@@ -276,7 +287,7 @@ export class TonghopbomnuocComponent implements OnInit {
     this.loadTonghopBomnuoc();
   }
   onThemmoi() {
-    this.title = 'Thêm quạt gió';
+    this.title = 'Thêm bơm nước';
     this.themoi = true;
     this.Id = 0;
     this.addNew();
@@ -292,32 +303,33 @@ export class TonghopbomnuocComponent implements OnInit {
     this.themoi = false;
     this.Id = id;
     this.loadDataDetail();
-    this.title = 'Sửa bảng quạt gió';
+    this.title = 'Sửa bơm nước';
     this.liveDemoVisible = !this.liveDemoVisible;
   }
 
   showConfirm(item: any): void {
     let pos = 2;
     this.modal.confirm({
-      nzTitle: '<i>Bán có muốn xóa bản ghi này?</i>',
+      nzTitle: '<i>Bạn có muốn xóa bản ghi này?</i>',
       nzContent: '<b>Thiết bị: </b>' + item.tenThietBi,
       nzStyle: {
         position: 'relative',
         top: `${pos * 90}px`,
         left: `${pos * 60}px`,
       },
-      nzOnOk: () => this.onDelete(item),
+      nzOnOk: () => this.onDelete(item.id),
     });
   }
 
   onDelete(id: number) {
-    this.Id = id;
-    this.dataService.delete('/api/Tonghopbomnuoc/' + this.Id).subscribe({
+    console.log('Deleting item with Id:', id);
+    this.dataService.delete('/api/Tonghopbomnuoc/' + id).subscribe({
       next: () => {
         this.loadTonghopBomnuoc();
         this.toastr.success('Xóa dữ liệu thành công', 'Success');
       },
-      error: () => {
+      error: (err) => {
+        console.error('Delete error:', err);
         this.toastr.error('Xóa dữ liệu thất bại', 'Error');
       },
     });
@@ -328,34 +340,170 @@ export class TonghopbomnuocComponent implements OnInit {
   }
 
   save() {
+    const raw = this.Form.getRawValue();
+    console.log('Raw form data:', raw);
+    
+    // Build and validate payload
+    const payload = this.buildPayload(raw);
+    if (!payload) {
+      this.toastr.error('Dữ liệu không hợp lệ. Vui lòng kiểm tra các trường bắt buộc.', 'Error');
+      return;
+    }
+
+    console.log('Validated payload:', payload);
+
     if (this.themoi) {
-      alert(JSON.stringify(this.Form.value));
-      this.dataService.post('/api/Tonghopbomnuoc', this.Form.value).subscribe({
-        next: () => {
+      console.log('Creating new record with payload:', payload);
+      this.dataService.post('/api/Tonghopbomnuoc', payload).subscribe({
+        next: (response) => {
+          console.log('Create success response:', response);
           this.loadTonghopBomnuoc();
           this.toastr.success('Lưu dữ liệu thành công', 'Success');
           this.liveDemoVisible = !this.liveDemoVisible;
           this.Form.reset();
         },
-        error: () => {
-          this.toastr.error('Lưu dữ liệu thất bại', 'Error');
+        error: (err) => {
+          console.error('Create Tonghopbomnuoc failed:', { 
+            error: err, 
+            payload: payload,
+            status: err.status,
+            statusText: err.statusText,
+            message: err.error?.message || err.message
+          });
+          
+          let errorMessage = 'Lưu dữ liệu thất bại';
+          if (err.status === 500) {
+            errorMessage = 'Lỗi server (500). Vui lòng kiểm tra dữ liệu và thử lại.';
+          } else if (err.error?.message) {
+            errorMessage = err.error.message;
+          }
+          
+          this.toastr.error(errorMessage, 'Error');
         },
       });
     } else {
-      alert(JSON.stringify(this.Form.value));
-      this.dataService
-        .put('/api/Tonghopbomnuoc/update', this.Form.value)
-        .subscribe({
-          next: () => {
-            this.loadTonghopBomnuoc();
-            this.toastr.success('Lưu dữ liệu thành công', 'Success');
-            this.liveDemoVisible = !this.liveDemoVisible;
-            this.Form.reset();
-          },
-          error: () => {
-            this.toastr.error('Lưu dữ liệu thất bại', 'Error');
-          },
-        });
+      console.log('Updating record with payload:', payload);
+      this.dataService.put('/api/Tonghopbomnuoc/update', payload).subscribe({
+        next: (response) => {
+          console.log('Update success response:', response);
+          this.loadTonghopBomnuoc();
+          this.toastr.success('Lưu dữ liệu thành công', 'Success');
+          this.liveDemoVisible = !this.liveDemoVisible;
+          this.Form.reset();
+        },
+        error: (err) => {
+          console.error('Update Tonghopbomnuoc failed:', { 
+            error: err, 
+            payload: payload,
+            status: err.status,
+            statusText: err.statusText,
+            message: err.error?.message || err.message
+          });
+          
+          let errorMessage = 'Lưu dữ liệu thất bại';
+          if (err.status === 500) {
+            errorMessage = 'Lỗi server (500). Vui lòng kiểm tra dữ liệu và thử lại.';
+          } else if (err.error?.message) {
+            errorMessage = err.error.message;
+          }
+          
+          this.toastr.error(errorMessage, 'Error');
+        },
+      });
+    }
+  }
+
+  private buildPayload(formValue: any): any | null {
+    try {
+      console.log('Building payload from form value:', formValue);
+      
+      const toNumber = (v: any) => {
+        const num = v === null || v === '' || isNaN(+v) ? 0 : +v;
+        console.log(`Converting ${v} to number: ${num}`);
+        return num;
+      };
+      const toTrim = (v: any) => {
+        const trimmed = (v ?? '').toString().trim();
+        console.log(`Converting ${v} to trimmed string: "${trimmed}"`);
+        return trimmed;
+      };
+      const toBoolean = (v: any) => {
+        const bool = Boolean(v);
+        console.log(`Converting ${v} to boolean: ${bool}`);
+        return bool;
+      };
+
+      // Normalize date to yyyy-MM-dd
+      const normalizeDate = (v: any): string => {
+        console.log('Normalizing date:', v);
+        if (!v) {
+          console.log('Date is empty, returning empty string');
+          return '';
+        }
+        if (typeof v === 'string') {
+          const s = v.trim();
+          if (/^\d{2}\/\d{2}\/\d{4}$/.test(s)) {
+            const [dd, mm, yyyy] = s.split('/');
+            const result = `${yyyy}-${mm}-${dd}`;
+            console.log(`Converted DD/MM/YYYY ${s} to ${result}`);
+            return result;
+          }
+          if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {
+            console.log(`Date already in YYYY-MM-DD format: ${s}`);
+            return s;
+          }
+        }
+        const d = new Date(v);
+        if (isNaN(d.getTime())) {
+          console.log('Invalid date object, returning empty string');
+          return '';
+        }
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const dd = String(d.getDate()).padStart(2, '0');
+        const result = `${yyyy}-${mm}-${dd}`;
+        console.log(`Converted date object ${v} to ${result}`);
+        return result;
+      };
+
+      const payload = {
+        id: toNumber(formValue.id),
+        bomNuocId: toNumber(formValue.bomNuocId),
+        maQuanLy: toTrim(formValue.maQuanLy),
+        donViId: toNumber(formValue.donViId),
+        viTriLapDat: toTrim(formValue.viTriLapDat),
+        ngayLap: normalizeDate(formValue.ngayLap),
+        soLuong: toNumber(formValue.soLuong),
+        tinhTrangThietBi: toTrim(formValue.tinhTrangThietBi),
+        duPhong: toBoolean(formValue.duPhong),
+        ghiChu: toTrim(formValue.ghiChu),
+      } as TongHopBomNuocDetail;
+
+      console.log('Built payload:', payload);
+
+      // Validate required fields
+      if (!payload.bomNuocId || payload.bomNuocId <= 0) {
+        console.error('Validation failed: bomNuocId is required and must be > 0');
+        return null;
+      }
+      if (!payload.donViId || payload.donViId <= 0) {
+        console.error('Validation failed: donViId is required and must be > 0');
+        return null;
+      }
+      if (!payload.viTriLapDat) {
+        console.error('Validation failed: viTriLapDat is required');
+        return null;
+      }
+      if (!payload.ngayLap) {
+        console.error('Validation failed: ngayLap is required');
+        return null;
+      }
+
+      console.log('Payload validation passed');
+      return payload;
+    } catch (e) {
+      console.error('buildPayload error:', e, formValue);
+      return null;
     }
   }
 
