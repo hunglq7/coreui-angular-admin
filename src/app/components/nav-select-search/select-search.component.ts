@@ -28,7 +28,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       <nz-select
         nzPlaceHolder="Chọn thiết bị"
         [(ngModel)]="keywordThietbi"
-        style="width: 50%"
+        style="width: 33%"
       >
         <nz-option [nzLabel]="'Chọn hết...'" [nzValue]="''"></nz-option>
         @for (item of dsThietbi ; track $index) {
@@ -38,12 +38,21 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
       <nz-select
         nzPlaceHolder="Chọn đơn vị"
         [(ngModel)]="keywordDonvi"
-        style="width: 50%"
+        style="width: 33%"
       >
         <nz-option [nzLabel]="'Chọn hết...'" [nzValue]="''"></nz-option>
         @for (item of dsDonvi ; track $index) {
         <nz-option [nzLabel]="item.tenPhong" [nzValue]="item.id"></nz-option>
         }
+      </nz-select>
+      <nz-select
+        nzPlaceHolder="Chọn dự phòng"
+        [(ngModel)]="keywordDuPhong"
+        style="width: 33%"
+      >
+        <nz-option [nzLabel]="'Chọn hết...'" [nzValue]="''"></nz-option>
+        <nz-option [nzLabel]="'Có'" [nzValue]="true"></nz-option>
+        <nz-option [nzLabel]="'Không'" [nzValue]="false"></nz-option>
       </nz-select>
     </nz-input-group>
 
@@ -71,11 +80,15 @@ export class SelectSearchComponent {
   @Input() dsDonvi: any[] = [];
   @Output() eventSearchThietbi = new EventEmitter<any>();
   @Output() eventSearchDonvi = new EventEmitter<any>();
+  @Output() eventSearchDuPhong = new EventEmitter<any>();
 
   keywordThietbi: number = 0;
   keywordDonvi: number = 0;
+  keywordDuPhong: boolean | null = null;
+  
   search() {
     this.eventSearchThietbi.emit(this.keywordThietbi);
     this.eventSearchDonvi.emit(this.keywordDonvi);
+    this.eventSearchDuPhong.emit(this.keywordDuPhong);
   }
 }

@@ -7,7 +7,6 @@ export interface TonghoproleList {
   soLuong: number;
   tinhTrangThietBi: string;
   duPhong: boolean;
-  lamViec: boolean;
   ghiChu: string;
 }
 
@@ -20,6 +19,5 @@ export interface TonghoproleDetail {
   soLuong: number;
   tinhTrangThietBi: string;
   duPhong: boolean;
-  lamViec: boolean;
   ghiChu: string;
 }

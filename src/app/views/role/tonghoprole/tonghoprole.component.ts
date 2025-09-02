@@ -98,8 +98,9 @@ export class TonghoproleComponent implements OnInit {
   pageIndex = 1;
   pageSize = 10;
   pageDisplay = 10;
-  keywordThietbi: boolean = false;
-  keywordDonvi: number = 0;
+  keywordThietbi: boolean | null = null;
+  keywordDonvi: number | null = null;
+  keywordDuPhong: number | null = null;
   dataView: TonghoproleList[] = [];
   dataDetail: TonghoproleDetail = {
     id: 0,
@@ -110,7 +111,6 @@ export class TonghoproleComponent implements OnInit {
     soLuong: 0,
     tinhTrangThietBi: '',
     duPhong: false,
-    lamViec: false,
     ghiChu: '',
   };
   dsRole: any[] = [];
@@ -148,7 +148,6 @@ export class TonghoproleComponent implements OnInit {
       soLuong: [''],
       tinhTrangThietBi: [''],
       duPhong: [false],
-      lamViec: [false],
       ghiChu: [''],
     });
   }
@@ -159,6 +158,10 @@ export class TonghoproleComponent implements OnInit {
   }
   eventDonvi($event: any) {
     this.keywordDonvi = $event;
+    this.getDanhsachTonghoprole();
+  }
+  eventDuPhong($event: any) {
+    this.keywordDuPhong = $event;
     this.getDanhsachTonghoprole();
   }
   pageIndexChanged($event: any) {
@@ -188,25 +191,105 @@ export class TonghoproleComponent implements OnInit {
 
   // Lấy danh sách tổng hợp role
   getDanhsachTonghoprole() {
-    this.dataService
-      .get(
-        '/api/TonghopRole/paging?duPhong=' +
-          this.keywordThietbi +
-          '&donViId=' +
-          this.keywordDonvi +
-          '&PageIndex=' +
-          this.pageIndex +
-          '&PageSize=' +
-          this.pageSize
-      )
-      .subscribe((data: any) => {
-        console.log(data.items);
-        this.dataView = data.items;
-        this.pageSize = data.pageSize;
-        this.pageIndex = data.pageIndex;
-        this.totalRow = data.totalRecords;
-        this.sumSoluong = data.sumRecords;
+    try {
+      const params = new URLSearchParams();
+      
+      // Add keywordThietbi parameter (role filter)
+      if (this.keywordThietbi !== null && this.keywordThietbi !== undefined) {
+        params.append('roleId', this.keywordThietbi.toString());
+      }
+      
+      // Add keywordDonvi parameter (department filter)
+      if (this.keywordDonvi !== null && this.keywordDonvi !== undefined && this.keywordDonvi !== 0) {
+        params.append('donViId', this.keywordDonvi.toString());
+      }
+      
+      // Add keywordDuPhong parameter (backup filter)
+      if (this.keywordDuPhong !== null && this.keywordDuPhong !== undefined) {
+        params.append('duPhong', this.keywordDuPhong.toString());
+      }
+      
+      // Always include pagination parameters
+      const pageIndex = this.pageIndex || 1;
+      const pageSize = this.pageSize || 10;
+      
+      params.append('PageIndex', pageIndex.toString());
+      params.append('PageSize', pageSize.toString());
+
+      const url = `/api/TonghopRole/paging${params.toString() ? '?' + params.toString() : ''}`;
+      
+      console.log('Request URL:', url);
+      console.log('Full URL:', 'http://192.168.1.253:5005' + url);
+      console.log('Parameters:', {
+        keywordThietbi: this.keywordThietbi,
+        keywordDonvi: this.keywordDonvi,
+        keywordDuPhong: this.keywordDuPhong,
+        pageIndex: pageIndex,
+        pageSize: pageSize
       });
+      
+      this.dataService.get(url).subscribe({
+        next: (data: any) => {
+          console.log('Response data:', data);
+          if (data && data.items) {
+            this.dataView = data.items;
+            this.pageSize = data.pageSize || this.pageSize;
+            this.pageIndex = data.pageIndex || this.pageIndex;
+            this.totalRow = data.totalRecords || 0;
+            this.sumSoluong = data.sumRecords || 0;
+            console.log('Data loaded successfully:', {
+              itemsCount: this.dataView.length,
+              totalRow: this.totalRow,
+              sumSoluong: this.sumSoluong
+            });
+          } else if (Array.isArray(data)) {
+            // Handle case where API returns array directly
+            this.dataView = data;
+            this.totalRow = data.length;
+            this.sumSoluong = data.reduce((acc: number, cur: any) => acc + (Number(cur?.soLuong) || 0), 0);
+            console.log('Data loaded successfully (array response):', {
+              itemsCount: this.dataView.length,
+              totalRow: this.totalRow,
+              sumSoluong: this.sumSoluong
+            });
+          } else {
+            console.warn('No data items found in response');
+            this.dataView = [];
+            this.totalRow = 0;
+            this.sumSoluong = 0;
+          }
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+          console.error('Error details:', {
+            status: error.status,
+            statusText: error.statusText,
+            message: error.message,
+            url: url,
+            fullUrl: 'http://192.168.1.253:5005' + url
+          });
+          
+          // Handle specific error cases
+          if (error.status === 400) {
+            this.toastr.error('Yêu cầu không hợp lệ. Vui lòng kiểm tra lại tham số.', 'Bad Request');
+          } else if (error.status === 404) {
+            this.toastr.error('API endpoint không tồn tại.', 'Not Found');
+          } else if (error.status === 500) {
+            this.toastr.error('Lỗi server. Vui lòng thử lại sau.', 'Server Error');
+          } else {
+            this.toastr.error('Lỗi khi tải dữ liệu: ' + (error.message || 'Unknown error'), 'Error');
+          }
+          
+          // Set default values on error
+          this.dataView = [];
+          this.totalRow = 0;
+          this.sumSoluong = 0;
+        }
+      });
+    } catch (error) {
+      console.error('Exception in getDanhsachTonghoprole:', error);
+      this.toastr.error('Lỗi xử lý yêu cầu', 'Error');
+    }
   }
   // Lấy chi tiết tổng hợp role theo Id
   getTonghoproleDetailById() {
@@ -241,7 +324,6 @@ export class TonghoproleComponent implements OnInit {
       soLuong: data.soLuong,
       tinhTrangThietBi: data.tinhTrangThietBi,
       duPhong: data.duPhong,
-      lamViec: data.lamViec,
       ghiChu: data.ghiChu,
     });
   }

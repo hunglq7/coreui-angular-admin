@@ -1,6 +1,6 @@
 <c-col sm="12">
     <app-select-search [dsThietbi]="dsRole" [dsDonvi]="dsPhongBan" (eventSearchThietbi)="eventThietbi($event)"
-        (eventSearchDonvi)="eventDonvi($event)"></app-select-search>
+        (eventSearchDonvi)="eventDonvi($event)" (eventSearchDuPhong)="eventDuPhong($event)"></app-select-search>
 
     <button (click)="onThemmoi()" nz-button nzType="primary" nzPrimary>
         <span>Thêm</span>
@@ -24,7 +24,6 @@
                             <th scope="col" style="width: 100px;">Số lượng</th>
                             <th scope="col" style="width: 140px;">Tình trạng thiết bị</th>
                             <th scope="col">Dự phòng</th>
-                            <th scope="col">Làm việc</th>
                             <th scope="col">Ghi chú</th>
                             <th scope="col">Hành động</th>
                         </tr>
@@ -39,7 +38,6 @@
                             <td>{{ item.soLuong }}</td>
                             <td>{{ item.tinhTrangThietBi }}</td>
                             <td>{{ item.duPhong ? 'Có' : 'Không' }}</td>
-                            <td>{{ item.lamViec ? 'Có' : 'Không' }}</td>
                             <td>{{ item.ghiChu }}</td>
                             <td>
                                 <button nz-tooltip [nzTooltipTitle]="titleSua"
@@ -155,18 +153,7 @@
                             </c-form-check>
                         </nz-form-control>
                     </nz-form-item>
-                    <nz-form-item>
-                        <nz-form-label [nzSpan]="5">Làm việc</nz-form-label>
-                        <nz-form-control [nzSpan]="16">
-                            <c-form-check [switch]="dataDetail.lamViec">
-                                <input cFormCheckInput checked sizing="lg" type="checkbox"
-                                    [(ngModel)]="dataDetail.lamViec" formControlName="lamViec" />
-                                <label cFormCheckLabel>{{
-                                    dataDetail.lamViec ? "Kích hoạt" : "Hủy kích hoạt"
-                                    }}</label>
-                            </c-form-check>
-                        </nz-form-control>
-                    </nz-form-item>
+
                     <nz-form-item>
                         <nz-form-label [nzSpan]="5">Ghi chú</nz-form-label>
                         <nz-form-control [nzSpan]="16">
