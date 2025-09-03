@@ -9,24 +9,6 @@
     Xuất Excel
   </button>
 
-  <!-- Debug buttons -->
-  <button (click)="debugData()" nz-button nzType="default" style="background-color: #ffc107; color: #000;">
-    Debug Data
-  </button>
-  <button (click)="testApiConnection()" nz-button nzType="default" style="background-color: #17a2b8; color: #fff;">
-    Test API
-  </button>
-  <button (click)="tryDifferentParameters()" nz-button nzType="default" style="background-color: #6f42c1; color: #fff;">
-    Test Params
-  </button>
-  <button (click)="loadDataWithMinimalParams()" nz-button nzType="default"
-    style="background-color: #28a745; color: #fff;">
-    Load Basic
-  </button>
-  <button (click)="checkDataStructure()" nz-button nzType="default" style="background-color: #fd7e14; color: #fff;">
-    Check Data
-  </button>
-
   <label style="margin-left: 8px; display: inline-flex; align-items: center; gap: 6px;">
     <input type="checkbox" [checked]="kywordDuphong" (change)="eventDuPhong($any($event.target).checked)" />
     Dự phòng

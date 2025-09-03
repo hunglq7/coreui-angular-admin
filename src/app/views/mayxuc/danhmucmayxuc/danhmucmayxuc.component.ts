@@ -26,6 +26,7 @@ ModuleRegistry.registerModules([AllCommunityModule, RowSelectionModule]);
 
 export interface MayXuc {
   id: number;
+  maTaiSan: string;
   tenThietBi: string;
   loaiThietBi: string;
   hangSanXuat: String;
@@ -76,6 +77,7 @@ export class DanhmucmayxucComponent implements OnInit {
       add: [
         {
           id: 0,
+          maTaiSan: '',
           tenThietBi: '',
           loaiThietBi: '',
           hangSanXuat: '',
@@ -98,7 +100,13 @@ export class DanhmucmayxucComponent implements OnInit {
         return 'MTB-' + item.value;
       },
     },
-
+    {
+      field: 'maTaiSan',
+      headerName: 'Mã tài sản',
+      filter: 'agTextColumnFilter',
+      editable: true,
+      cellEditorPopup: true,
+    },
     {
       field: 'tenThietBi',
       headerName: 'Tên thiết bị',
@@ -150,6 +158,7 @@ export class DanhmucmayxucComponent implements OnInit {
   loadDataMayxuc() {
     this.dataService.get('/api/MayXuc').subscribe({
       next: (response: any) => {
+        console.log("Lấy dữ liệu thành công", response);
         this.dataMayxuc = response;
       },
       error: () => {

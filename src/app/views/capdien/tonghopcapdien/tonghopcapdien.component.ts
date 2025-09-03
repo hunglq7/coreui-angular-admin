@@ -188,6 +188,7 @@ export class TonghopcapdienComponent implements OnInit {
   getDanhmucCapdien() {
     this.dataService.get('/api/Capdien').subscribe({
       next: (data: any) => {
+        console.log("dsCapdien",data);
         this.dsCapdien = data;
       },
     });
