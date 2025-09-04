@@ -129,7 +129,7 @@ export class NhatkybomnuocTabComponent implements OnChanges {
       return;
     }
 
-    const url = `/api/Nhatkybomnuoc/DetailById/${this.tonghopbomnuocId}`;
+    const url = `/api/Nhatkybomnuoc/DatailById/${this.tonghopbomnuocId}`;
     console.log('Fetching nhatky data for ID:', this.tonghopbomnuocId, 'URL:', url);
     
     this.dataService.getById(url).subscribe({
