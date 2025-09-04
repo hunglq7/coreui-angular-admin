@@ -56,7 +56,7 @@
 
                                 <button nz-tooltip [nzTooltipTitle]="titleXoa"
                                     [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button nzType="primary" nzDanger
-                                    style="border-radius: 3px" [nzSize]="size" (click)="showConfirm(item)">
+                                    style="border-radius: 3px" [nzSize]="size" (click)="showConfirm(item.id)">
                                     <nz-icon nzType="delete" style="color: #ffffff" /><span>Xóa</span>
                                 </button>
                                 <ng-template #titleSua let-thing>
@@ -124,7 +124,7 @@
                                 <option>Chọn thiết bị</option>
                                 @for (item of dsCapdien; track item.id) {
                                 <option value="{{ item.id }}">
-                                    {{ item.tenThietBi }}
+                                    {{ item.tenthietbi }}
                                 </option>
                                 }
                             </select>

@@ -248,8 +248,8 @@ export const navItems: INavData[] = [
         icon: 'nav-icon-bullet',
       },
       {
-        name: 'Cập nhật neo',
-        url: '/neo/tonghopneo',
+        name: 'Cập nhật băng tải',
+        url: '/bangtai/tonghopbangtai',
         icon: 'nav-icon-bullet',
       },
     ],

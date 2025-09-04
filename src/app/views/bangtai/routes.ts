@@ -33,6 +33,16 @@ export const routes: Routes = [
           title: 'Thông số băng tải',
         },
       },
+      {
+        path: 'tonghopbangtai',
+        loadComponent: () =>
+          import('./tonghopbangtai/tonghopbangtai.component').then(
+            (m) => m.TonghopbangtaiComponent
+          ),
+        data: {
+          title: 'Cập nhật băng tải',
+        },
+      },
     ],
   },
 ];
