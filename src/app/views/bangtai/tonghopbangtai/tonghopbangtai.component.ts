@@ -100,7 +100,7 @@ export class TonghopbangtaiComponent implements OnInit {
     id: 0,
     maHieu: '',
     bangTaiId: 0,
-    dinViId: 0,
+    donViId: 0,
     viTriLapDat: '',
     ngayLap: '',
     nMay: '',
@@ -150,7 +150,7 @@ export class TonghopbangtaiComponent implements OnInit {
       id: new FormControl({ value: null, disabled: false }),
       maHieu: new FormControl({ value: null, disabled: false }),
       bangTaiId: new FormControl({ value: null, disabled: false }),
-      dinViId: new FormControl({ value: null, disabled: false }),
+      donViId: new FormControl({ value: null, disabled: false }),
       viTriLapDat: new FormControl({ value: null, disabled: false }),
       ngayLap: new FormControl({ value: null, disabled: false }),
       nMay: new FormControl({ value: null, disabled: false }),
@@ -198,7 +198,7 @@ export class TonghopbangtaiComponent implements OnInit {
   }
 
   getDataBangtai() {
-    this.dataService.get('/api/Bangtai').subscribe({
+    this.dataService.get('/api/Danhmucbangtai').subscribe({
       next: (data: any) => {
         this.dsBangtai = data;
       },
@@ -315,7 +315,7 @@ export class TonghopbangtaiComponent implements OnInit {
       id: 0,
       maHieu: '',
       bangTaiId: 0,
-      dinViId: 0,
+      donViId: 0,
       viTriLapDat: '',
       ngayLap: today,
       nMay: '',
@@ -337,7 +337,7 @@ export class TonghopbangtaiComponent implements OnInit {
       id: detail.id,
       maHieu: detail.maHieu,
       bangTaiId: detail.bangTaiId,
-      dinViId: detail.dinViId,
+      donViId: detail.donViId,
       viTriLapDat: detail.viTriLapDat,
       ngayLap: detail.ngayLap,
       nMay: detail.nMay,
@@ -471,7 +471,7 @@ export class TonghopbangtaiComponent implements OnInit {
         id: toNumber(formValue.id),
         maHieu: toTrim(formValue.maHieu),
         bangTaiId: toNumber(formValue.bangTaiId),
-        dinViId: toNumber(formValue.dinViId),
+        donViId: toNumber(formValue.dinViId),
         viTriLapDat: toTrim(formValue.viTriLapDat),
         ngayLap: normalizeDate(formValue.ngayLap),
         nMay: toTrim(formValue.nMay),
@@ -486,7 +486,7 @@ export class TonghopbangtaiComponent implements OnInit {
       };
 
       if (!payload.bangTaiId || payload.bangTaiId <= 0) return null;
-      if (!payload.dinViId || payload.dinViId <= 0) return null;
+      if (!payload.donViId || payload.donViId <= 0) return null;
       if (!payload.ngayLap) return null;
 
       return payload;

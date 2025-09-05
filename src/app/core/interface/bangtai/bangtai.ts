@@ -2,7 +2,7 @@ export interface TongHopBangTaiDetail {
   id: number;
   maHieu: string;
   bangTaiId: number;
-  dinViId: number;
+  donViId: number;
   viTriLapDat: string;
   ngayLap: string;
   nMay: string;

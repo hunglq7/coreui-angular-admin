@@ -98,7 +98,7 @@
                 <nz-form-item>
                   <nz-form-label [nzSpan]="5">Đơn vị</nz-form-label>
                   <nz-form-control [nzSpan]="16">
-                    <select id="dinViId" formControlName="dinViId" [(ngModel)]="detail.dinViId" cSelect sizing="sm">
+                    <select id="donViId" formControlName="donViId" [(ngModel)]="detail.donViId" cSelect sizing="sm">
                       <option>Chọn đơn vị</option>
                       @for (item of dsDonvi; track item.id) {
                       <option value="{{ item.id }}">{{ item.tenPhong }}</option>
@@ -120,6 +120,70 @@
                   <nz-form-control [nzSpan]="16">
                     <input id="ngayLap" nz-input cFormControl sizing="sm" formControlName="ngayLap"
                       [(ngModel)]="detail.ngayLap" type="date" />
+                  </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5">N máy</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input id="nMay" nz-input cFormControl sizing="sm" formControlName="nMay"
+                      [(ngModel)]="detail.nMay" />
+                  </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5">L máy</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input id="lMay" nz-input cFormControl sizing="sm" formControlName="lMay"
+                      [(ngModel)]="detail.lMay" />
+                  </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5">Khung đầu</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input id="khungDau" nz-input cFormControl sizing="sm" formControlName="khungDau"
+                      [(ngModel)]="detail.khungDau" />
+                  </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5">Khung dưới</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input id="khungDuoi" nz-input cFormControl sizing="sm" formControlName="khungDuoi"
+                      [(ngModel)]="detail.khungDuoi" />
+                  </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5">Khung băng rời</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input id="khungBangRoi" nz-input cFormControl sizing="sm" formControlName="khungBangRoi"
+                      [(ngModel)]="detail.khungBangRoi" />
+                  </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5">Dây băng</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input id="dayBang" nz-input cFormControl sizing="sm" formControlName="dayBang"
+                      [(ngModel)]="detail.dayBang" />
+                  </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5">Con lăn</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input id="conLan" nz-input cFormControl sizing="sm" formControlName="conLan"
+                      [(ngModel)]="detail.conLan" />
+                  </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5">Tình trạng thiết bị</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <input id="tinhTrangThietbi" nz-input cFormControl sizing="sm" formControlName="tinhTrangThietbi"
+                      [(ngModel)]="detail.tinhTrangThietbi" />
                   </nz-form-control>
                 </nz-form-item>
 
@@ -149,4 +213,4 @@
       </c-col>
     </c-row>
   </c-modal-body>
-</c-modal> 
+</c-modal>

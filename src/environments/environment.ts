@@ -20,7 +20,7 @@ export const environment = {
     host: 'http://localhost:5252/api',
   },
 
-  BASE_API: 'http://192.168.1.253:5005',
+  BASE_API: 'http://192.168.1.7:5005',
 };
 
 /*
