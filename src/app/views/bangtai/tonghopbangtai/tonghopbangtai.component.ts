@@ -295,7 +295,7 @@ export class TonghopbangtaiComponent implements OnInit {
     }
     this.dataService.getById('/api/Tonghopbangtai/detail/' + this.Id).subscribe({
       next: (data: TongHopBangTaiDetail) => {
-        this.detail = data;
+        this.detail = data;  
         if (data.ngayLap) {
           const d = new Date(data.ngayLap);
           const s = `${d.getFullYear()}-${('0' + (d.getMonth() + 1)).slice(-2)}-${('0' + d.getDate()).slice(-2)}`;
@@ -333,6 +333,7 @@ export class TonghopbangtaiComponent implements OnInit {
 
   private loadFormData(detail: TongHopBangTaiDetail) {
     this.detail = detail;
+    console.log("Dữ liệu"+ this.detail);
     this.Form.setValue({
       id: detail.id,
       maHieu: detail.maHieu,
@@ -405,15 +406,15 @@ export class TonghopbangtaiComponent implements OnInit {
   }
 
   save() {
-    const raw = this.Form.getRawValue();
-    const payload = this.buildPayload(raw);
-    if (!payload) {
-      this.toastr.error('Dữ liệu không hợp lệ. Vui lòng kiểm tra các trường bắt buộc.', 'Error');
-      return;
-    }
+    // const raw = this.Form.getRawValue();
+    // const payload = this.buildPayload(raw);
+    // if (!payload) {
+    //   this.toastr.error('Dữ liệu không hợp lệ. Vui lòng kiểm tra các trường bắt buộc.', 'Error');
+    //   return;
+    // }
 
     if (this.themoi) {
-      this.dataService.post('/api/Tonghopbangtai', payload).subscribe({
+      this.dataService.post('/api/Tonghopbangtai', this.Form.value).subscribe({
         next: () => {
           this.loadBangtai();
           this.getSum();
@@ -427,7 +428,7 @@ export class TonghopbangtaiComponent implements OnInit {
         },
       });
     } else {
-      this.dataService.put('/api/Tonghopbangtai', payload).subscribe({
+      this.dataService.put('/api/Tonghopbangtai', this.Form.value).subscribe({
         next: () => {
           this.loadBangtai();
           this.getSum();
