@@ -77,7 +77,7 @@ export class DanhmucbangtaiComponent implements OnInit {
       add: [
         {
           id: 0,
-          tenBangTai: '',
+          tenThietBi: '',
           ghiChu: '',
         },
       ],

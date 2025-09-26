@@ -1,5 +1,5 @@
 export interface BangTai {
   id: number;
-  tenBangTai: string;
+  tenThietBi: string;
   ghiChu: string;
 }

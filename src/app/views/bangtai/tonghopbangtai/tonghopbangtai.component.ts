@@ -86,12 +86,12 @@ import { SelectSearchComponent } from '../../../components/nav-select-search/sel
 })
 export class TonghopbangtaiComponent implements OnInit {
   public liveDemoVisible = false;
+  isLoading = false;
   title: string = '';
   totalRow!: number;
   pageIndex = 1;
   pageSize = 10;
   pageDisplay = 10;
-
   keywordBangtai: number = 0;
   keywordDonvi: number = 0;
 
@@ -200,7 +200,7 @@ export class TonghopbangtaiComponent implements OnInit {
   getDataBangtai() {
     this.dataService.get('/api/Danhmucbangtai').subscribe({
       next: (data: any) => {
-        this.dsBangtai = data;
+        this.dsBangtai = data;    
       },
       error: () => {
         this.toastr.error('Không tải được danh sách băng tải', 'Error');
@@ -218,6 +218,7 @@ export class TonghopbangtaiComponent implements OnInit {
     const url = `/api/Tonghopbangtai/paging?bangtaiId=${bangtaiId}&donviId=${donviId}&PageIndex=${pageIndex}&PageSize=${pageSize}`;
     this.dataService.get(url).subscribe({
       next: (resp: any) => {
+        console.log("Dữ liệu"+ JSON.stringify(resp));
         let items: any[] = [];
         let pageSize = this.pageSize;
         let pageIndex = this.pageIndex;
@@ -295,7 +296,8 @@ export class TonghopbangtaiComponent implements OnInit {
     }
     this.dataService.getById('/api/Tonghopbangtai/detail/' + this.Id).subscribe({
       next: (data: TongHopBangTaiDetail) => {
-        this.detail = data;  
+        this.detail = data;
+        console.log("Dữ liệu chi tiết "+ JSON.stringify(this.detail));
         if (data.ngayLap) {
           const d = new Date(data.ngayLap);
           const s = `${d.getFullYear()}-${('0' + (d.getMonth() + 1)).slice(-2)}-${('0' + d.getDate()).slice(-2)}`;
@@ -333,23 +335,23 @@ export class TonghopbangtaiComponent implements OnInit {
 
   private loadFormData(detail: TongHopBangTaiDetail) {
     this.detail = detail;
-    console.log("Dữ liệu"+ this.detail);
-    this.Form.setValue({
-      id: detail.id,
-      maHieu: detail.maHieu,
-      bangTaiId: detail.bangTaiId,
-      donViId: detail.donViId,
-      viTriLapDat: detail.viTriLapDat,
-      ngayLap: detail.ngayLap,
-      nMay: detail.nMay,
-      lMay: detail.lMay,
-      khungDau: detail.khungDau,
-      khungDuoi: detail.khungDuoi,
-      khungBangRoi: detail.khungBangRoi,
-      dayBang: detail.dayBang,
-      conLan: detail.conLan,
-      tinhTrangThietbi: detail.tinhTrangThietbi,
-      ghiChu: detail.ghiChu,
+    console.log("Dữ liệu", this.detail);
+    this.Form.patchValue({
+      id: detail?.id ?? 0,
+      maHieu: detail?.maHieu ?? '',
+      bangTaiId: detail?.bangTaiId ?? 0,
+      donViId: detail?.donViId ?? 0,
+      viTriLapDat: detail?.viTriLapDat ?? '',
+      ngayLap: detail?.ngayLap ?? '',
+      nMay: detail?.nMay ?? '',
+      lMay: detail?.lMay ?? '',
+      khungDau: detail?.khungDau ?? '',
+      khungDuoi: detail?.khungDuoi ?? '',
+      khungBangRoi: detail?.khungBangRoi ?? '',
+      dayBang: detail?.dayBang ?? '',
+      conLan: detail?.conLan ?? '',
+      tinhTrangThietbi: detail?.tinhTrangThietbi ?? '',
+      ghiChu: detail?.ghiChu ?? '',
     });
   }
 
@@ -412,7 +414,7 @@ export class TonghopbangtaiComponent implements OnInit {
     //   this.toastr.error('Dữ liệu không hợp lệ. Vui lòng kiểm tra các trường bắt buộc.', 'Error');
     //   return;
     // }
-
+    this.isLoading = true;
     if (this.themoi) {
       this.dataService.post('/api/Tonghopbangtai', this.Form.value).subscribe({
         next: () => {
@@ -421,6 +423,7 @@ export class TonghopbangtaiComponent implements OnInit {
           this.toastr.success('Lưu dữ liệu thành công', 'Success');
           this.liveDemoVisible = !this.liveDemoVisible;
           this.Form.reset();
+          this.isLoading = false;
         },
         error: (err) => {
           const errorMessage = err.error?.message || 'Lưu dữ liệu thất bại';
@@ -435,6 +438,7 @@ export class TonghopbangtaiComponent implements OnInit {
           this.toastr.success('Lưu dữ liệu thành công', 'Success');
           this.liveDemoVisible = !this.liveDemoVisible;
           this.Form.reset();
+          this.isLoading = false;
         },
         error: (err) => {
           const errorMessage = err.error?.message || 'Lưu dữ liệu thất bại';
@@ -472,7 +476,7 @@ export class TonghopbangtaiComponent implements OnInit {
         id: toNumber(formValue.id),
         maHieu: toTrim(formValue.maHieu),
         bangTaiId: toNumber(formValue.bangTaiId),
-        donViId: toNumber(formValue.dinViId),
+        donViId: toNumber(formValue.donViId),
         viTriLapDat: toTrim(formValue.viTriLapDat),
         ngayLap: normalizeDate(formValue.ngayLap),
         nMay: toTrim(formValue.nMay),

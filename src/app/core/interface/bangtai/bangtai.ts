@@ -19,8 +19,8 @@ export interface TongHopBangTaiDetail {
 export interface TongHopBangTai {
   id: number;
   maHieu: string;
-  tenBangTai: string;
-  tenPhongBan: string;
+  tenThietBi: string;
+  tenPhong: string;
   viTriLapDat: string;
   ngayLap: string;
 } 
