@@ -93,7 +93,7 @@ export class DanhmucbangtaiComponent implements OnInit {
       hide: true,
     },
     {
-      field: 'tenBangTai',
+      field: 'tenThietBi',
       headerName: 'Tên băng tải',
       filter: 'agTextColumnFilter',
       editable: true,
@@ -111,7 +111,7 @@ export class DanhmucbangtaiComponent implements OnInit {
   loadData() {
     this.dataService.get('/api/Danhmucbangtai').subscribe({
       next: (response: any) => {
-        this.data = response;
+        this.data = response;      
       },
       error: () => {
         this.toastr.error('Lấy dữ liệu thất bại', 'Error');

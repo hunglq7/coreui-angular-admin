@@ -17,6 +17,7 @@
             (nzPageIndexChange)="pageIndexChanged($event)" (nzPageSizeChange)="pageSizeChange($event)">
             <thead>
                 <tr>
+                    <th>Thiết bị</th>
                     <th>Nội dung</th>
                     <th>Đơn vị tính</th>
                     <th>Thông số</th>
@@ -26,6 +27,7 @@
             <tbody>
                 @for (item of dataSource; track item.id) {
                 <tr>
+                    <td>{{ item.tenThietBi }}</td>
                     <td>{{ item.noiDung }}</td>
                     <td>{{ item.donViTinh }}</td>
                     <td>{{ item.thongSo }}</td>
@@ -63,7 +65,7 @@
                                 aria-label="Default select example" cSelect sizing="sm">
                                 <option>Chọn thiết bị</option>
                                 @for (item of dsDanhmucBangtai; track item.id) {
-                                <option value="{{ item.id }}">{{ item.tenBangTai }}</option>
+                                <option value="{{ item.id }}">{{ item.tenThietBi }}</option>
                                 }
                             </select>
                         </nz-form-control>

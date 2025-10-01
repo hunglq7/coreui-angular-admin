@@ -31,7 +31,7 @@ import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
 import { BangtaiSearchComponent } from '../../../components/nav-bangtai-search/bangtai-search.component';
-import { ThongSoKyThuatBangTai } from '../../../core/interface/bangtai/ThongSoKyThuatBangTai';
+import { ThongSoKyThuatBangTai, ThongSoKyThuatBangTaiDetail } from '../../../core/interface/bangtai/ThongSoKyThuatBangTai';
 
 @Component({
   selector: 'app-thongsobangtai',
@@ -74,7 +74,7 @@ export class ThongsobangtaiComponent implements OnInit {
   pageDisplay = 10;
   keywordThietbi: number = 0;
   dataSource: ThongSoKyThuatBangTai[] = [];
-  entity: ThongSoKyThuatBangTai = {
+  entity: ThongSoKyThuatBangTaiDetail = {
     id: 0,
     bangTaiId: 0,
     noiDung: '',
@@ -128,7 +128,7 @@ export class ThongsobangtaiComponent implements OnInit {
     this.loadData();
   }
 
-  private loadFormData(items: ThongSoKyThuatBangTai) {
+  private loadFormData(items: ThongSoKyThuatBangTaiDetail) {
     this.entity = items;
     this.Form.setValue({
       id: items.id,
@@ -161,6 +161,7 @@ export class ThongsobangtaiComponent implements OnInit {
     this.dataService.get('/api/Danhmucbangtai').subscribe({
       next: (data: any) => {
         this.dsDanhmucBangtai = data;
+        console.log("Dữ liệu danh mục băng tải "+ JSON.stringify(this.dsDanhmucBangtai));
       },
     });
   }
@@ -178,6 +179,7 @@ export class ThongsobangtaiComponent implements OnInit {
       .subscribe({
         next: (data: any) => {
           this.dataSource = data.items;
+          console.log("Dữ liệu thông số kỹ thuật băng tải "+ JSON.stringify(this.dataSource));
           this.pageSize = data.pageSize;
           this.pageIndex = data.pageIndex;
           this.totalRow = data.totalRecords;
