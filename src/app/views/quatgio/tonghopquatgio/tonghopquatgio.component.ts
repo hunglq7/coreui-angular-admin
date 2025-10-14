@@ -33,6 +33,11 @@ import {
   TabsContentComponent,
   TabsListComponent,
 } from '@coreui/angular';
+import {
+  FormCheckComponent,
+  FormCheckInputDirective,
+  FormCheckLabelDirective,
+} from '@coreui/angular';
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
@@ -52,6 +57,7 @@ export interface Tonghopquatgio {
   ngayLap: string;
   soLuong: number;
   tinhTrangThietBi: string;
+  duPhong:boolean;
   ghiChu: string;
 }
 
@@ -64,6 +70,7 @@ export interface TonghopquatgioDetail {
   ngayLap: string;
   soLuong: number;
   tinhTrangThietBi: string;
+  duPhong:boolean;
   ghiChu: string;
 }
 @Component({
@@ -102,6 +109,9 @@ export interface TonghopquatgioDetail {
     NzToolTipModule,
     NzTableModule,
     NzFormModule,
+    FormCheckComponent,
+    FormCheckInputDirective,
+    FormCheckLabelDirective,
   ],
   templateUrl: './tonghopquatgio.component.html',
   styleUrl: './tonghopquatgio.component.scss',
@@ -129,6 +139,7 @@ export class TonghopquatgioComponent implements OnInit {
     ngayLap: '',
     soLuong: 0,
     tinhTrangThietBi: '',
+    duPhong:false,
     ghiChu: '',
   };
   dsQuatgio: any[] = [];
@@ -175,6 +186,7 @@ export class TonghopquatgioComponent implements OnInit {
       ngayLap: [new Date(), Validators.required],
       soLuong: [1, [Validators.required, Validators.min(1)]],
       tinhTrangThietBi: [''],
+      duPhong:[false],
       ghiChu: [''],
     });
   }
@@ -239,6 +251,7 @@ export class TonghopquatgioComponent implements OnInit {
       ngayLap: new Date().toISOString().split('T')[0],
       soLuong: 1,
       tinhTrangThietBi: '',
+      duPhong:false,
       ghiChu: '',
     });
 
@@ -252,6 +265,7 @@ export class TonghopquatgioComponent implements OnInit {
       ngayLap: new Date().toISOString().split('T')[0],
       soLuong: 1,
       tinhTrangThietBi: '',
+      duPhong:false,
       ghiChu: '',
     };
 
@@ -274,6 +288,7 @@ export class TonghopquatgioComponent implements OnInit {
         ngayLap: this.formatDate(entity.ngayLap),
         soLuong: entity.soLuong || 1,
         tinhTrangThietBi: entity.tinhTrangThietBi || '',
+        duPhong:entity.duPhong|| false,
         ghiChu: entity.ghiChu || '',
       };
 
@@ -399,6 +414,7 @@ export class TonghopquatgioComponent implements OnInit {
       ngayLap: '',
       soLuong: 0,
       tinhTrangThietBi: '',
+      duPhong:false,
       ghiChu: '',
     };
 
@@ -517,6 +533,7 @@ export class TonghopquatgioComponent implements OnInit {
       ngayLap: this.formatDate(formData.ngayLap),
       soLuong: Number(formData.soLuong) || 1,
       tinhTrangThietBi: formData.tinhTrangThietBi || '',
+      duPhong:formData.duPhong|| false,
       ghiChu: formData.ghiChu || '',
     };
 

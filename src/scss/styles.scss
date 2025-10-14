@@ -1,10 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 // Import styles with default layout.
-@use "@coreui/coreui/scss/coreui" as * with (
-  $enable-deprecation-messages: false,
-  $primary:#1b8dfe
-);
+@use "@coreui/coreui/scss/coreui" as * with ($enable-deprecation-messages: false,
+  $primary: #1b8dfe);
 
 // Import Chart.js custom tooltips styles
 @use "@coreui/chartjs/scss/coreui-chartjs";
@@ -22,4 +20,3 @@
 // We use those styles to show code examples, you should remove them in your application.
 @use "examples";
 @use "tailwindcss";
-

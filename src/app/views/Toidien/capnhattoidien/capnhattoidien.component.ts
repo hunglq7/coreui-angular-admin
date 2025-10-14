@@ -248,7 +248,7 @@ export class CapnhattoidienComponent implements OnInit {
     });
   }
   loadFormData(items: TonghoptoitrucDetail) {
-    this.toitrucDetail = items;
+    this.toitrucDetail = items;  
     this.Form.patchValue({
       id: items.id,
       maQuanly: items.maQuanLy,
@@ -295,7 +295,7 @@ export class CapnhattoidienComponent implements OnInit {
           this.pageSize
       )
       .subscribe((data: any) => {
-        this.toitrucs = data.items;
+        this.toitrucs = data.items;            
         this.pageSize = data.pageSize;
         this.pageIndex = data.pageIndex;
         this.totalRow = data.totalRecords;

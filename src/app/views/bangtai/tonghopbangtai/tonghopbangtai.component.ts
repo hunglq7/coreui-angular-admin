@@ -214,11 +214,10 @@ export class TonghopbangtaiComponent implements OnInit {
     const donviId = this.keywordDonvi || 0;
     const pageIndex = Math.max(1, this.pageIndex);
     const pageSize = Math.max(1, Math.min(100, this.pageSize));
-
     const url = `/api/Tonghopbangtai/paging?bangtaiId=${bangtaiId}&donviId=${donviId}&PageIndex=${pageIndex}&PageSize=${pageSize}`;
     this.dataService.get(url).subscribe({
       next: (resp: any) => {
-        console.log("Dữ liệu"+ JSON.stringify(resp));
+        console.log("Dữ liệu băng tải"+ JSON.stringify(resp));
         let items: any[] = [];
         let pageSize = this.pageSize;
         let pageIndex = this.pageIndex;
@@ -296,14 +295,13 @@ export class TonghopbangtaiComponent implements OnInit {
     }
     this.dataService.getById('/api/Tonghopbangtai/detail/' + this.Id).subscribe({
       next: (data: TongHopBangTaiDetail) => {
-        this.detail = data;
-        console.log("Dữ liệu chi tiết "+ JSON.stringify(this.detail));
+        this.detail = data;    
         if (data.ngayLap) {
           const d = new Date(data.ngayLap);
           const s = `${d.getFullYear()}-${('0' + (d.getMonth() + 1)).slice(-2)}-${('0' + d.getDate()).slice(-2)}`;
           this.detail.ngayLap = s;
         }
-        this.loadFormData(this.detail);
+   
       },
       error: () => {
         this.toastr.error('Không thể tải thông tin chi tiết', 'Error');
@@ -335,10 +333,9 @@ export class TonghopbangtaiComponent implements OnInit {
 
   private loadFormData(detail: TongHopBangTaiDetail) {
     this.detail = detail;
-    console.log("Dữ liệu", this.detail);
-    this.Form.patchValue({
+    this.Form.setValue({
       id: detail?.id ?? 0,
-      maHieu: detail?.maHieu ?? '',
+      maHieu: detail?.maHieu??'',
       bangTaiId: detail?.bangTaiId ?? 0,
       donViId: detail?.donViId ?? 0,
       viTriLapDat: detail?.viTriLapDat ?? '',
