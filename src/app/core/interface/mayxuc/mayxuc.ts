@@ -22,6 +22,7 @@ export interface TongHopMayXuc {
   ngayLap: string;
   soLuong: number;
   tinhTrang: string;
+  duPhong:boolean;
   ghiChu: string;
 }
 
@@ -35,5 +36,7 @@ export interface TonghopMayxucDetail {
   ngayLap: string;
   soLuong: number;
   tinhTrang: string;
+  duPhong:boolean;
   ghiChu: string;
+
 }

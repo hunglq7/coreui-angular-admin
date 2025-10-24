@@ -114,6 +114,7 @@ export class TonghopmayxucComponent implements OnInit {
     ngayLap: '',
     soLuong: 0,
     tinhTrang: '',
+    duPhong:false,
     ghiChu: '',
   };
   dsMayxuc: any[] = [];
@@ -162,6 +163,7 @@ export class TonghopmayxucComponent implements OnInit {
       ngayLap: new FormControl({ value: null, disabled: false }),
       soLuong: new FormControl({ value: null, disabled: false }),
       tinhTrang: new FormControl({ value: null, disabled: false }),
+      duPhong: new FormControl({ value: null, disabled: false }),
       ghiChu: new FormControl({ value: null, disabled: false }),
     });
   }
@@ -253,6 +255,7 @@ export class TonghopmayxucComponent implements OnInit {
       ngayLap: today,
       soLuong: 1,
       tinhTrang: '',
+      duPhong:false,
       ghiChu: '',
     };
     this.loadFormData(this.tonghopmayxucDetail);
@@ -270,6 +273,7 @@ export class TonghopmayxucComponent implements OnInit {
       ngayLap: mayxuc.ngayLap,
       soLuong: mayxuc.soLuong,
       tinhTrang: mayxuc.tinhTrang,
+      duPhong:mayxuc.duPhong,
       ghiChu: mayxuc.ghiChu,
     });
   }
