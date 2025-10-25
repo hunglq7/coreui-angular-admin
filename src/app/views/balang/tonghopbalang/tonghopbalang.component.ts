@@ -107,6 +107,7 @@ export class TonghopbalangComponent implements OnInit {
     ngayLap: '',
     viTriLapDat: '',
     tinhTrangKyThuat: '',
+    duPhong:false,
     ghiChu: '',
   };
   dsBaLang: any[] = [];
@@ -130,6 +131,7 @@ export class TonghopbalangComponent implements OnInit {
       ngayLap: new FormControl(null, Validators.required),
       viTriLapDat: new FormControl(''),
       tinhTrangKyThuat: new FormControl(''),
+      duPhong: new FormControl(''),
       ghiChu: new FormControl(''),
     });
   }
@@ -188,6 +190,7 @@ export class TonghopbalangComponent implements OnInit {
       ngayLap: data.ngayLap,
       viTriLapDat: data.viTriLapDat,
       tinhTrangKyThuat: data.tinhTrangKyThuat,
+      duPhong:data.duPhong,
       ghiChu: data.ghiChu,
     });
   }

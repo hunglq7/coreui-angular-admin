@@ -7,6 +7,7 @@ export interface TongHopBaLang {
   donViTinh: string;
   soLuong: number;
   tinhTrangKyThuat: string;
+  duPhong:boolean;
   ghiChu: string;
 }
 
@@ -19,5 +20,6 @@ export interface TongHopBaLangDetail {
   donViTinh: string;
   soLuong: number;
   tinhTrangKyThuat: string;
+  duPhong:boolean;
   ghiChu: string;
 }
