@@ -27,6 +27,12 @@ import {
   TabsContentComponent,
   TabsListComponent,
 } from '@coreui/angular';
+import {
+  FormCheckComponent,
+  FormCheckInputDirective,
+  FormCheckLabelDirective,
+} from '@coreui/angular';
+
 import { NzButtonModule, NzButtonSize } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzFloatButtonModule } from 'ng-zorro-antd/float-button';
@@ -85,6 +91,9 @@ import { SelectSearchComponent } from '../../../components/nav-select-search/sel
     NzModalModule,
     NzToolTipModule,
     NzFormModule,
+    FormCheckComponent,
+    FormCheckInputDirective,
+    FormCheckLabelDirective,
   ],
   templateUrl: './tonghopmayxuc.component.html',
   styleUrl: './tonghopmayxuc.component.scss',
@@ -625,6 +634,7 @@ export class TonghopmayxucComponent implements OnInit {
         ngayLap: normalizeDate(formValue.ngayLap),
         soLuong: toNumber(formValue.soLuong),
         tinhTrang: toTrim(formValue.tinhTrang),
+        duPhong: toTrim(formValue.duPhong),
         ghiChu: toTrim(formValue.ghiChu),
       } as TonghopMayxucDetail;
 

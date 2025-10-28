@@ -192,6 +192,20 @@
                   </nz-form-control>
                 </nz-form-item>
 
+                <!-- Thiết bị dự phòng -->
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5">TB Dự phòng</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <c-form-check [switch]="tonghopmayxucDetail.duPhong">
+                      <input cFormCheckInput checked sizing="lg" type="checkbox"
+                        [(ngModel)]="tonghopmayxucDetail.duPhong" formControlName="duPhong" />
+                      <label cFormCheckLabel>{{
+                        tonghopmayxucDetail.duPhong ? "Kích hoạt" : "Hủy kích hoạt"
+                        }}</label>
+                    </c-form-check>
+                  </nz-form-control>
+                </nz-form-item>
+
                 <!-- Ghi chú -->
                 <nz-form-item>
                   <nz-form-label [nzSpan]="5">Ghi chú</nz-form-label>
