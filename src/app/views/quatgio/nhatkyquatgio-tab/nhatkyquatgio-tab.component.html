@@ -1,16 +1,6 @@
 <c-row ngPreserveWhitespaces>
     <c-col xs="12">
         <div class="mt-2" style="width: 100%; height: 600px">
-            <!-- Debug Information -->
-            <div class="mb-2 p-2" style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px;">
-                <small class="text-muted">
-                    <strong>Debug Info:</strong>
-                    ID: {{ tonghopquatgioId || 'N/A' }} |
-                    Records: {{ rowData.length }} |
-                    Entity: {{ entity?.id || 'N/A' }}
-                </small>
-            </div>
-
             <div class="mb-2">
                 <button cButton size="sm" style="width: 70px" color="primary" (click)="onAddRow()">
                     Thêm
@@ -21,17 +11,6 @@
                 <button cButton style="width: 70px" size="sm" color="primary" (click)="save()">
                     Lưu
                 </button>
-
-                <!-- Debug Buttons -->
-                <button cButton size="sm" style="width: 80px; margin-left: 10px;" color="info"
-                    (click)="checkApiConnection()">
-                    Test API
-                </button>
-                <button cButton size="sm" style="width: 80px; margin-left: 5px;" color="warning"
-                    (click)="retryConnection()">
-                    Retry
-                </button>
-
             </div>
 
             <ag-grid-angular class="ag-theme-quartz" style="height: 95%; width: 100%" [rowData]="rowData" #agGrid
