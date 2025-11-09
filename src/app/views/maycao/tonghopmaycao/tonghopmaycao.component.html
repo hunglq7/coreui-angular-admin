@@ -31,6 +31,7 @@
                       <th scope="col">Chiều dài máy</th>
                       <th scope="col">SL Xích</th>
                       <th scope="col">SL cầu máng</th>
+                      <th scope="col">Dự phòng</th>
                       <th scope="col">Hành động</th>
                     </tr>
                   </thead>
@@ -46,6 +47,7 @@
                       <td>{{ item.chieuDaiMay }}</td>
                       <td>{{ item.soLuongXich }}</td>
                       <td>{{ item.soLuongCauMang }}</td>
+                      <td [style.color]="item.duPhong ? 'red' : ''">{{ item.duPhong ? "Dự phòng" : "" }}</td>
                       <td>
                         <button nz-tooltip [nzTooltipTitle]="titleSua" [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
                           nz-button nzType="primary" style="border-radius: 3px;" [nzSize]="size"
@@ -218,6 +220,19 @@
                           [(ngModel)]="dataMaycaoDetail.tinhTrangThietBi" formControlName="tinhTrangThietBi" />
                       </div>
                     </div>
+                     <!-- Thiết bị dự phòng -->
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="5">TB Dự phòng</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <c-form-check [switch]="dataMaycaoDetail.duPhong">
+                      <input cFormCheckInput checked sizing="lg" type="checkbox" [(ngModel)]="dataMaycaoDetail.duPhong"
+                        formControlName="duPhong" />
+                      <label cFormCheckLabel>{{
+                        dataMaycaoDetail.duPhong ? "Kích hoạt" : "Hủy kích hoạt"
+                        }}</label>
+                    </c-form-check>
+                  </nz-form-control>
+                </nz-form-item>
                     <div class="mb-3 row">
                       <label for="ghiChu" class="col-sm-2 col-form-label">Ghi chú</label>
                       <div class="col-sm-10">

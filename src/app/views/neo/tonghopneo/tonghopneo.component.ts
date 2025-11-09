@@ -49,7 +49,12 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { SelectSearchComponent } from '../../../components/nav-select-search/select-search.component';
 import { ThongsoneoTabComponent } from '../thongsoneo-tab/thongsoneo-tab.component';
 import { NhatkyneoTabComponent } from '../nhatkyneo-tab/nhatkyneo-tab.component';
-
+import { NzFormModule } from 'ng-zorro-antd/form';
+import {
+  FormCheckComponent,
+  FormCheckInputDirective,
+  FormCheckLabelDirective,
+} from '@coreui/angular';
 @Component({
   selector: 'app-tonghopneo',
   imports: [
@@ -89,6 +94,10 @@ import { NhatkyneoTabComponent } from '../nhatkyneo-tab/nhatkyneo-tab.component'
     NzCascaderModule,
     NzTableModule,
     NzToolTipModule,
+    FormCheckComponent,
+    FormCheckInputDirective,
+    FormCheckLabelDirective,
+    NzFormModule,
   ],
   templateUrl: './tonghopneo.component.html',
   styleUrl: './tonghopneo.component.scss',
@@ -115,6 +124,7 @@ export class TonghopneoComponent implements OnInit {
     ngayLap: '',
     soLuong: 0,
     tinhTrangThietBi: '',
+    duPhong:false,
     ghiChu: '',
   };
   dsNeo: any[] = [];
@@ -140,6 +150,7 @@ export class TonghopneoComponent implements OnInit {
       ngayLap: new FormControl(''),
       soLuong: new FormControl(''),
       tinhTrangThietBi: new FormControl(''),
+      duPhong:new FormControl(''),
       ghiChu: new FormControl(''),
     });
   }
@@ -205,6 +216,7 @@ export class TonghopneoComponent implements OnInit {
       ngayLap: items.ngayLap,
       soLuong: items.soLuong,
       tinhTrangThietBi: items.tinhTrangThietBi,
+      duPhong:items.duPhong,
       ghiChu: items.ghiChu,
     });
   }
@@ -316,7 +328,7 @@ export class TonghopneoComponent implements OnInit {
       });
     } else {
       this.dataService
-        .put('/api/Tonghopneo/update', this.Form.value)
+        .put('/api/Tonghopneo', this.Form.value)
         .subscribe({
           next: () => {
             this.loadTonghopNeo();

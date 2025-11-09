@@ -28,7 +28,8 @@
               <th scope="col">Đơn vị</th>
               <th scope="col">Vị trí lắp đặt</th>
               <th scope="col">Ngày lắp</th>
-              <th scope="col">Số lượng</th>
+              <th scope="col">SL đang dùng</th>
+              <th scope="col">Dự phòng</th>
               <th scope="col">Hành động</th>
             </tr>
           </thead>
@@ -41,6 +42,7 @@
               <td>{{ item.viTriLapDat || 'N/A' }}</td>
               <td>{{ item.ngayLap ? (item.ngayLap | date : "dd/MM/yyyy") : 'N/A' }}</td>
               <td>{{ item.soLuong || 0 }}</td>
+              <td [style.color]="item.duPhong ? 'red' : ''">{{ item.duPhong ? "Dự phòng" : "" }}</td>
               <td>
                 <button nz-tooltip [nzTooltipTitle]="titleSua" [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button
                   nzType="primary" style="border-radius: 3px" [nzSize]="size" (click)="onEdit(item.id)">

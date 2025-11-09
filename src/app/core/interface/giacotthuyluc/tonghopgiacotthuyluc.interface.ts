@@ -5,6 +5,7 @@ export interface Tonghopgiacotthuyluc {
   viTriLapDat: string;
   ngayLap: string; // ISO date string
   soLuong: number;
+  duPhong:boolean;
   ghiChu?: string;
 }
 
@@ -15,5 +16,6 @@ export interface Tonghopgiacotthuylucdetail {
   viTriLapDat: string;
   ngayLap: string; // ISO date string
   soLuong: number;
+  duPhong:boolean;
   ghiChu?: string;
 }

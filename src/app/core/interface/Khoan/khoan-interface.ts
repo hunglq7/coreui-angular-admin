@@ -8,6 +8,7 @@ export interface Tonghopkhoan {
   ngayLap: string;
   viTriLapDat: string;
   tinhTrangKyThuat: string;
+  duPhong:boolean;
   ghiChu: string;
 }
 
@@ -20,5 +21,6 @@ export interface TonghopkhoanDetail {
   ngayLap: string;
   viTriLapDat: string;
   tinhTrangKyThuat: string;
+  duPhong:boolean;
   ghiChu: string;
 }

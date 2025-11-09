@@ -25,10 +25,10 @@
                                     <tr>
                                         <th nzLeft scope="col">Thiết bị</th>
                                         <th nzLeft scope="col">Đơn vị</th>
-                                        <th scope="col">Số lượng</th>
+                                        <th scope="col">SL đang dùng</th>
                                         <th scope="col">Ngày lắp</th>
                                         <th scope="col">Vị trí lắp đặt</th>
-                                        <th scope="col">Ghi chú</th>
+                                        <th scope="col">Dự phòng</th>
                                         <th scope="col">Hành động</th>
                                     </tr>
                                 </thead>
@@ -40,7 +40,8 @@
                                         <td>{{ item.soLuong }}</td>
                                         <td>{{ item.ngayLap | date : "dd/MM/yyyy" }}</td>
                                         <td>{{ item.viTriLapDat }}</td>
-                                        <td>{{ item.ghiChu }}</td>
+                                        <td [style.color]="item.duPhong ? 'red' : ''">{{ item.duPhong ? "Dự phòng" : "" }}</td>
+                                 
                                         <td>
                                             <button nz-tooltip [nzTooltipTitle]="titleSua"
                                                 [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button
@@ -161,7 +162,19 @@
                 </nz-form-control>
             </nz-form-item>
 
-
+ <!-- Thiết bị dự phòng -->
+ <nz-form-item>
+    <nz-form-label [nzSpan]="5">TB Dự phòng</nz-form-label>
+    <nz-form-control [nzSpan]="16">
+      <c-form-check [switch]="giacotDetail.duPhong">
+        <input cFormCheckInput checked sizing="lg" type="checkbox" [(ngModel)]="giacotDetail.duPhong"
+          formControlName="duPhong" />
+        <label cFormCheckLabel>{{
+            giacotDetail.duPhong ? "Kích hoạt" : "Hủy kích hoạt"
+          }}</label>
+      </c-form-check>
+    </nz-form-control>
+  </nz-form-item>
             <!-- Ghi chú -->
             <nz-form-item>
                 <nz-form-label [nzSpan]="5">Ghi chú</nz-form-label>

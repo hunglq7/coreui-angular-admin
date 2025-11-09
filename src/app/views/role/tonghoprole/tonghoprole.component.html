@@ -18,13 +18,12 @@
                     <thead>
                         <tr>
                             <th nzLeft scope="col" style="width: 100px">Role</th>
-                            <th scope="col" style="width: 200px">Phòng ban</th>
-                            <th scope="col" style="width: 200px">Vị trí lắp đặt</th>
-                            <th scope="col" style="width: 120px;">Ngày lắp</th>
-                            <th scope="col" style="width: 100px;">Số lượng</th>
-                            <th scope="col" style="width: 140px;">Tình trạng thiết bị</th>
-                            <th scope="col">Dự phòng</th>
-                            <th scope="col">Ghi chú</th>
+                            <th scope="col" >Phòng ban</th>
+                            <th scope="col" >Vị trí lắp đặt</th>
+                            <th scope="col" >Ngày lắp</th>
+                            <th scope="col">Số lượng</th>
+                            <th scope="col" >Tình trạng thiết bị</th>
+                            <th scope="col">Dự phòng</th>                    
                             <th scope="col">Hành động</th>
                         </tr>
                     </thead>
@@ -33,12 +32,13 @@
                         <tr>
                             <td nzLeft>{{ item.tenThietBi }}</td>
                             <td>{{ item.tenPhong }}</td>
-                            <td>{{ item.tenViTriLapDat }}</td>
+                            <td>{{ item.viTriLapDat }}</td>
+                            <td>{{ item.viTriLapDat }}</td>
                             <td>{{ item.ngayLap | date : "dd/MM/yyyy" }}</td>
                             <td>{{ item.soLuong }}</td>
                             <td>{{ item.tinhTrangThietBi }}</td>
-                            <td>{{ item.duPhong ? 'Có' : 'Không' }}</td>
-                            <td>{{ item.ghiChu }}</td>
+                            <td [style.color]="item.duPhong ? 'red' : ''">{{ item.duPhong ? "Dự phòng" : "" }}</td>
+                            
                             <td>
                                 <button nz-tooltip [nzTooltipTitle]="titleSua"
                                     [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button nzType="primary"

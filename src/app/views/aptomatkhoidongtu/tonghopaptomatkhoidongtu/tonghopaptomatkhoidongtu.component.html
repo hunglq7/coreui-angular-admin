@@ -17,13 +17,14 @@
                     (nzPageIndexChange)="pageIndexChanged($event)" (nzPageSizeChange)="pageSizeChange($event)">
                     <thead>
                         <tr>
-                            <th nzLeft scope="col" style="width: 200px">Mã QL</th>
-                            <th scope="col" style="width: 400px">Thiết bị</th>
+                            <th nzLeft scope="col" >Mã QL</th>
+                            <th scope="col" >Thiết bị</th>
                             <th scope="col">Đơn vị</th>
                             <th scope="col">Vị trí lắp đặt</th>
                             <th scope="col">Ngày kiểm định</th>
                             <th scope="col">Ngày lắp</th>
-                            <th scope="col">Số lượng</th>
+                            <th scope="col">SL đang dùng</th>
+                            <th scope="col">Dự phòng</th>
                             <th scope="col">Hành động</th>
                         </tr>
                     </thead>
@@ -37,6 +38,7 @@
                             <td>{{ item.ngayKiemDinh | date : "dd/MM/yyyy" }}</td>
                             <td>{{ item.ngayLap | date : "dd/MM/yyyy" }}</td>
                             <td>{{ item.soLuong }}</td>
+                            <td [style.color]="item.duPhong ? 'red' : ''">{{ item.duPhong ? "Dự phòng" : "" }}</td>
                             <td>
                                 <button nz-tooltip [nzTooltipTitle]="titleSua"
                                     [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button nzType="primary"
@@ -200,6 +202,7 @@
                                         </c-form-check>
                                     </nz-form-control>
                                 </nz-form-item>
+        
 
                                 <!-- Ghi chú -->
                                 <nz-form-item>

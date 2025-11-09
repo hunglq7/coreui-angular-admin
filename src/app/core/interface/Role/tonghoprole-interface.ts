@@ -2,7 +2,7 @@ export interface TonghoproleList {
   id: number;
   tenThietBi: string;
   tenPhong: string;
-  tenViTriLapDat: string;
+  viTriLapDat: string;
   ngayLap: Date;
   soLuong: number;
   tinhTrangThietBi: string;

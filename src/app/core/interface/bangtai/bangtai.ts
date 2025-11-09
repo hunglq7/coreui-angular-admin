@@ -13,6 +13,7 @@ export interface TongHopBangTaiDetail {
   dayBang: string;
   conLan: string;
   tinhTrangThietbi: string;
+  duPhong:boolean;
   ghiChu: string;
 }
 
@@ -23,4 +24,5 @@ export interface TongHopBangTai {
   tenPhong: string;
   viTriLapDat: string;
   ngayLap: string;
+  duPhong:boolean;
 } 

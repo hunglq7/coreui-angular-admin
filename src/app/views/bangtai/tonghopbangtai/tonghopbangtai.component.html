@@ -24,6 +24,7 @@
               <th scope="col">Đơn vị</th>
               <th scope="col">Vị trí lắp đặt</th>
               <th scope="col">Ngày lắp</th>
+              <th scope="col">Dự phòng</th>
               <th scope="col">Hành động</th>
             </tr>
           </thead>
@@ -35,6 +36,7 @@
               <td>{{ item.tenPhong || 'N/A' }}</td>
               <td>{{ item.viTriLapDat || 'N/A' }}</td>
               <td>{{ item.ngayLap ? (item.ngayLap | date : "dd/MM/yyyy") : 'N/A' }}</td>
+              <td [style.color]="item.duPhong ? 'red' : ''">{{ item.duPhong ? "Dự phòng" : "" }}</td>
               <td>
                 <button nz-button nzType="primary" style="border-radius: 3px" [nzSize]="size" (click)="onEdit(item.id)">
                   <nz-icon nzType="edit" style="color: #ffffff" /><span>Sửa</span>
@@ -185,6 +187,20 @@
                   <nz-form-control [nzSpan]="16">
                     <input id="tinhTrangThietbi" nz-input cFormControl sizing="sm" formControlName="tinhTrangThietbi"
                       [(ngModel)]="detail.tinhTrangThietbi" />
+                  </nz-form-control>
+                </nz-form-item>
+
+                 <!-- Thiết bị dự phòng -->
+                 <nz-form-item>
+                  <nz-form-label [nzSpan]="5">TB Dự phòng</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <c-form-check [switch]="detail.duPhong">
+                      <input cFormCheckInput checked sizing="lg" type="checkbox" [(ngModel)]="detail.duPhong"
+                        formControlName="duPhong" />
+                      <label cFormCheckLabel>{{
+                        detail.duPhong ? "Kích hoạt" : "Hủy kích hoạt"
+                        }}</label>
+                    </c-form-check>
                   </nz-form-control>
                 </nz-form-item>
 

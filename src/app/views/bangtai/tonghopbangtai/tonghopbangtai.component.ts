@@ -42,7 +42,11 @@ import { ToastrService } from 'ngx-toastr';
 import * as XLSX from 'xlsx';
 import { TongHopBangTai, TongHopBangTaiDetail } from '../../../core/interface/bangtai/bangtai';
 import { SelectSearchComponent } from '../../../components/nav-select-search/select-search.component';
-
+import {
+  FormCheckComponent,
+  FormCheckInputDirective,
+  FormCheckLabelDirective,
+} from '@coreui/angular';
 @Component({
   selector: 'app-tonghopbangtai',
   imports: [
@@ -79,6 +83,9 @@ import { SelectSearchComponent } from '../../../components/nav-select-search/sel
     NzModalModule,
     NzToolTipModule,
     NzFormModule,
+    FormCheckComponent,
+    FormCheckInputDirective,
+    FormCheckLabelDirective,
   ],
   standalone: true,
   templateUrl: './tonghopbangtai.component.html',
@@ -111,6 +118,7 @@ export class TonghopbangtaiComponent implements OnInit {
     dayBang: '',
     conLan: '',
     tinhTrangThietbi: '',
+    duPhong:false,
     ghiChu: '',
   };
 
@@ -161,6 +169,7 @@ export class TonghopbangtaiComponent implements OnInit {
       dayBang: new FormControl({ value: null, disabled: false }),
       conLan: new FormControl({ value: null, disabled: false }),
       tinhTrangThietbi: new FormControl({ value: null, disabled: false }),
+      duPhong: new FormControl({ value: null, disabled: false }),      
       ghiChu: new FormControl({ value: null, disabled: false }),
     });
   }
@@ -293,7 +302,7 @@ export class TonghopbangtaiComponent implements OnInit {
     if (!this.Id || Number(this.Id) <= 0) {
       return;
     }
-    this.dataService.getById('/api/Tonghopbangtai/detail/' + this.Id).subscribe({
+    this.dataService.getById('/api/Tonghopbangtai/' + this.Id).subscribe({
       next: (data: TongHopBangTaiDetail) => {
         this.detail = data;    
         if (data.ngayLap) {
@@ -326,6 +335,7 @@ export class TonghopbangtaiComponent implements OnInit {
       dayBang: '',
       conLan: '',
       tinhTrangThietbi: '',
+      duPhong:false,
       ghiChu: '',
     };
     this.loadFormData(this.detail);
@@ -348,6 +358,7 @@ export class TonghopbangtaiComponent implements OnInit {
       dayBang: detail?.dayBang ?? '',
       conLan: detail?.conLan ?? '',
       tinhTrangThietbi: detail?.tinhTrangThietbi ?? '',
+      duPhong:detail?.duPhong??"",
       ghiChu: detail?.ghiChu ?? '',
     });
   }
@@ -484,6 +495,7 @@ export class TonghopbangtaiComponent implements OnInit {
         dayBang: toTrim(formValue.dayBang),
         conLan: toTrim(formValue.conLan),
         tinhTrangThietbi: toTrim(formValue.tinhTrangThietbi),
+        duPhong:toTrim(formValue.duPhong),
         ghiChu: toTrim(formValue.ghiChu),
       };
 

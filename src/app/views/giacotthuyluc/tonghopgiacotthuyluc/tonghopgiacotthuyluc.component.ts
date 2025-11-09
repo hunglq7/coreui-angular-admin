@@ -103,6 +103,7 @@ export class TonghopgiacotthuylucComponent implements OnInit {
     soLuong: 1,
     ngayLap: '',
     viTriLapDat: '',
+    duPhong:false,
     ghiChu: '',
   };
   dsGiacot: any[] = [];
@@ -124,6 +125,7 @@ export class TonghopgiacotthuylucComponent implements OnInit {
       soLuong: new FormControl(0, [Validators.required, Validators.min(1)]),
       ngayLap: new FormControl(null, Validators.required),
       viTriLapDat: new FormControl(''),
+      duPhong: new FormControl(''),
       ghiChu: new FormControl(''),
     });
   }
@@ -180,6 +182,7 @@ export class TonghopgiacotthuylucComponent implements OnInit {
       soLuong: data.soLuong,
       ngayLap: data.ngayLap,
       viTriLapDat: data.viTriLapDat,
+      duPhong:data.duPhong,
       ghiChu: data.ghiChu,
     });
   }
@@ -292,7 +295,7 @@ export class TonghopgiacotthuylucComponent implements OnInit {
         });
     } else {
       this.dataService
-        .put('/api/Tonghopgiacotthuyluc/update', this.Form.value)
+        .put('/api/Tonghopgiacotthuyluc', this.Form.value)
         .subscribe({
           next: () => {
             this.loadTonghopgiacot();

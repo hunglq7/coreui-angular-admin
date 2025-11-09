@@ -6,6 +6,7 @@ export interface TongHopAptomatKhoidongtu {
   ngayKiemDinh: string;
   ngayLap: string;
   tinhTrang: string;
+  duPhong:boolean,
   ghiChu: string;
 }
 
@@ -17,5 +18,6 @@ export interface TongHopAptomatKhoidongtuDetail {
   ngayKiemDinh: string;
   ngayLap: string;
   tinhTrang: string;
+  duPhong:boolean,
   ghiChu: string;
 }

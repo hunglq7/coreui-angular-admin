@@ -228,7 +228,7 @@ export class ThongsoneoComponent implements OnInit {
         top: `${pos * 90}px`,
         left: `${pos * 60}px`,
       },
-      nzOnOk: () => this.onDelete(item),
+      nzOnOk: () => this.Delete(item),
     });
   }
   Delete(item: any) {

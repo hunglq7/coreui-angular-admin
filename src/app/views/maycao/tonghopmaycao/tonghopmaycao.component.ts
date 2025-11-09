@@ -31,8 +31,13 @@ import {
   TabsComponent,
   TabsContentComponent,
   TabsListComponent,
+  FormControlDirective,
 } from '@coreui/angular';
-
+import {
+  FormCheckComponent,
+  FormCheckInputDirective,
+  FormCheckLabelDirective,
+} from '@coreui/angular';
 import { DataService } from '../../../core/services/data.service';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
@@ -48,6 +53,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { SelectSearchComponent } from '../../../components/nav-select-search/select-search.component';
 import { ThongsomaycaoTabComponent } from '../thongsomaycao-tab/thongsomaycao-tab.component';
 import { NhatkymaycaoTabComponent } from '../nhatkymaycao-tab/nhatkymaycao-tab.component';
+import { NzFormModule } from 'ng-zorro-antd/form';
 export interface TonghopmaycaoDetail {
   id: number;
   maQuanLy: string;
@@ -60,6 +66,7 @@ export interface TonghopmaycaoDetail {
   soLuongXich: number;
   soLuongCauMang: number;
   tinhTrangThietBi: string;
+  duPhong:boolean;
   ghiChu: string;
 }
 
@@ -75,6 +82,7 @@ export interface TongHopMayCao {
   soLuongXich: number;
   soLuongCauMang: number;
   tinhTrangThietBi: string;
+  duPhong:Boolean;
   ghiChu: string;
 }
 @Component({
@@ -116,7 +124,13 @@ export interface TongHopMayCao {
     NzCascaderModule,
     NzTableModule,
     NzToolTipModule,
+    FormCheckComponent,
+    FormCheckInputDirective,
+    FormCheckLabelDirective,
+    FormControlDirective,
+    NzFormModule,
   ],
+  
   templateUrl: './tonghopmaycao.component.html',
   styleUrl: './tonghopmaycao.component.scss',
 })
@@ -146,6 +160,7 @@ export class TonghopmaycaoComponent implements OnInit {
     soLuongXich: 0,
     soLuongCauMang: 0,
     tinhTrangThietBi: '',
+    duPhong:false,
     ghiChu: '',
   };
   dsMaycao: any[] = [];
@@ -173,6 +188,7 @@ export class TonghopmaycaoComponent implements OnInit {
       soLuongXich: new FormControl(''),
       soLuongCauMang: new FormControl(''),
       tinhTrangThietBi: new FormControl(''),
+      duPhong:new FormControl(''),
       ghiChu: new FormControl(''),
     });
   }
@@ -232,6 +248,7 @@ export class TonghopmaycaoComponent implements OnInit {
       soLuongXich: items.soLuongXich,
       soLuongCauMang: items.soLuongCauMang,
       tinhTrangThietBi: items.tinhTrangThietBi,
+      duPhong:items.duPhong,
       ghiChu: items.ghiChu,
     });
   }

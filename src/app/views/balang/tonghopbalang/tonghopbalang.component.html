@@ -43,7 +43,7 @@
                     <td>{{ item.ngayLap | date : "dd/MM/yyyy" }}</td>
                     <td>{{ item.viTriLapDat }}</td>
                     <td>{{ item.tinhTrangKyThuat }}</td>
-                    <td>{{ item.duPhong}}</td>
+                    <td [style.color]="item.duPhong ? 'red' : ''">{{ item.duPhong ? "Dự phòng" : "" }}</td>
                     <td>
                       <button nz-tooltip [nzTooltipTitle]="titleSua" [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
                         nz-button nzType="primary" style="border-radius: 3px;" [nzSize]="size"

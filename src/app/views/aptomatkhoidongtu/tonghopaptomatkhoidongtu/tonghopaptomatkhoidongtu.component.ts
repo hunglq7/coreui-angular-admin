@@ -59,6 +59,7 @@ export interface TongHopAptomatKhoiDongTu {
   ngayKiemDinh: string;
   ngayLap: string;
   soLuong: number;
+  duPhong:boolean
 }
 
 export interface TongHopAptomatKhoiDongTuDetail {
@@ -145,7 +146,7 @@ export class TonghopaptomatkhoidongtuComponent implements OnInit {
     ngayLap: '',
     soLuong: 1,
     tinhTrangThietBi: '',
-    duPhong: this.keywordDuPhong,
+    duPhong: false,
     ghiChu: '',
   };
   danhSach: any[] = [];

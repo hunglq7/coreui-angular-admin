@@ -25,9 +25,10 @@
                       <th scope="col">Thiết bị</th>
                       <th scope="col">Đơn vị</th>
                       <th scope="col">Ngày lắp</th>
-                      <th scope="col">Số lượng</th>
+                      <th scope="col">SL đang dùng</th>
                       <th scope="col">Vị trí lắp đặt</th>
                       <th scope="col">Tình trạng TB</th>
+                      <th scope="col">Dự phòng</th>
                       <th scope="col">Hành động</th>
                     </tr>
                   </thead>
@@ -40,6 +41,7 @@
                       <td>{{ item.soLuong }}</td>
                       <td>{{ item.viTriLapDat }}</td>
                       <td>{{ item.tinhTrangThietBi }}</td>
+                      <td [style.color]="item.duPhong ? 'red' : ''">{{ item.duPhong ? "Dự phòng" : "" }}</td>
                       <td>
                         <button nz-tooltip [nzTooltipTitle]="titleSua" [nzTooltipTitleContext]="{ $implicit: 'Icon' }"
                           nz-button nzType="primary" style="border-radius: 3px;" [nzSize]="size"
@@ -172,6 +174,22 @@
                       </div>
                     </div>
 
+                      <!-- Thiết bị dự phòng -->
+
+                      <div class="mb-3 row">
+                        <label for="duPhong" class="col-sm-2 col-form-label">Dự phòng</label>
+                        <div class="col-sm-10">
+                          <c-form-check [switch]="dataNeoDetail.duPhong">
+                            <input cFormCheckInput checked sizing="lg" type="checkbox" [(ngModel)]="dataNeoDetail.duPhong"
+                              formControlName="duPhong" />
+                            <label cFormCheckLabel>{{
+                              dataNeoDetail.duPhong ? "Kích hoạt" : "Hủy kích hoạt"
+                              }}</label>
+                          </c-form-check>
+                        </div>
+                      </div>
+               
+
                     <div class="mb-3 row">
                       <label for="ghiChu" class="col-sm-2 col-form-label">Ghi chú</label>
                       <div class="col-sm-10">
@@ -183,7 +201,7 @@
                     <div class="mb-3 row">
                       <div class="col-sm-2 col-form-label"></div>
                       <div class="col-sm-10">
-                        <button type="submit" nz-button nzType="primary" [disabled]="Form.invalid">
+                        <button type="submit" nz-button nzType="primary" >
                           Lưu
                         </button>
                         <button nz-button nzType="default" (click)="onReset()">

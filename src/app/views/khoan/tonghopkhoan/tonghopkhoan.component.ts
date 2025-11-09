@@ -107,7 +107,8 @@ export class TonghopkhoanComponent implements OnInit {
     soLuong: 0,
     ngayLap: '',
     viTriLapDat: '',
-    tinhTrangKyThuat: '',
+    tinhTrangKyThuat: '', 
+    duPhong:false,  
     ghiChu: '',
   };
   dsKhoan: any[] = [];
@@ -134,6 +135,7 @@ export class TonghopkhoanComponent implements OnInit {
       ngayLap: [null, Validators.required],
       viTriLapDat: [''],
       tinhTrangKyThuat: [''],
+      duPhong:[''],
       ghiChu: [''],
     });
   }
@@ -198,6 +200,7 @@ export class TonghopkhoanComponent implements OnInit {
       ngayLap: data.ngayLap,
       viTriLapDat: data.viTriLapDat,
       tinhTrangKyThuat: data.tinhTrangKyThuat,
+      duPhong:data.duPhong,
       ghiChu: data.ghiChu,
     });
   }

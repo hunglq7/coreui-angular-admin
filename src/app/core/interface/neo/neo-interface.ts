@@ -6,6 +6,7 @@ export interface TonghopneoDetail {
   ngayLap: string;
   soLuong: number;
   tinhTrangThietBi: string;
+  duPhong:boolean;
   ghiChu: string;
 }
 
@@ -17,5 +18,6 @@ export interface TongHopNeo {
   ngayLap: string;
   soLuong: number;
   tinhTrangThietBi: string;
+  duPhong:boolean;
   ghiChu: string;
 }

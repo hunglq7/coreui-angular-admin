@@ -26,10 +26,11 @@
                                         <th nzLeft scope="col">Thiết bị</th>
                                         <th nzLeft scope="col">Đơn vị</th>
                                         <th scope="col">Đơn vị tính</th>
-                                        <th scope="col">Số lượng</th>
+                                        <th scope="col">SL đang dùng</th>
                                         <th scope="col">Ngày lắp</th>
                                         <th scope="col">Vị trí lắp đặt</th>
                                         <th scope="col">Tình trạng lắp đặt</th>
+                                        <th scope="col">Dự phòng</th>
                                         <th scope="col">Hành động</th>
                                     </tr>
                                 </thead>
@@ -43,6 +44,7 @@
                                         <td>{{ item.ngayLap | date : "dd/MM/yyyy" }}</td>
                                         <td>{{ item.viTriLapDat }}</td>
                                         <td>{{ item.tinhTrangKyThuat }}</td>
+                                        <td [style.color]="item.duPhong ? 'red' : ''">{{ item.duPhong ? "Dự phòng" : "" }}</td>
                                         <td>
                                             <button nz-tooltip [nzTooltipTitle]="titleSua"
                                                 [nzTooltipTitleContext]="{ $implicit: 'Icon' }" nz-button
@@ -180,6 +182,20 @@
                 <nz-form-control [nzSpan]="16">
                     <input id="tinhTrangKyThuat" nz-input cFormControl sizing="sm" formControlName="tinhTrangKyThuat"
                         [(ngModel)]="khoanDetail.tinhTrangKyThuat" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <!--Dự phòng-->
+            <nz-form-item>
+                <nz-form-label [nzSpan]="5">Dự phòng</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <c-form-check [switch]="khoanDetail.duPhong">
+                        <input cFormCheckInput checked sizing="lg" type="checkbox"
+                            [(ngModel)]="khoanDetail.duPhong" formControlName="duPhong" />
+                        <label cFormCheckLabel>{{
+                            khoanDetail.duPhong ? "Kích hoạt" : "Hủy kích hoạt"
+                            }}</label>
+                    </c-form-check>
                 </nz-form-control>
             </nz-form-item>
 

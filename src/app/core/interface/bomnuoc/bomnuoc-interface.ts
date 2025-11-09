@@ -19,6 +19,7 @@ export interface TongHopBomNuoc {
   tenDonVi: string;
   viTriLapDat: string;
   ngayLap: string;
+  duPhong:boolean;
   soLuong: number;
 }
 
